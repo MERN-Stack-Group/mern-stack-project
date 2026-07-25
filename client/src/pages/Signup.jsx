@@ -2,6 +2,21 @@ import { useState } from "react";
 
 function Signup() {
     const [role, setRole] = useState("");
+    const [formData, setFormData] = useState({});
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.placeholder]: e.target.value,
+        })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(formData);
+        console.log(role);
+    };
+
   return (
     <div>
       <h1>GradBridge Signup Page</h1>
@@ -19,24 +34,25 @@ function Signup() {
             Selected role: {role}
         </p>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         {role === "mentor" && (
             <>
-            <input placeholder="Name"/>
-            <input placeholder="Email"/>
-            <input placeholder="University"/>
+            <input placeholder="Name" onChange={handleChange}/>
+            <input placeholder="NIC" onChange={handleChange}/>
+            <input placeholder="University" onChange={handleChange}/>
             </>
         )}
         
-        <input placeholder="Email"/>
-        
-        <input placeholder="Password" type="password"/>
+        <input placeholder="Email" onChange={handleChange}/>
+
+        <input placeholder="Password" type="password" onChange={handleChange}/>
 
         <button type="submit">
         Sign Up
         </button>
-
+        <p>{JSON.stringify(formData)}</p>
         </form>
+        
     </div>
   );
 }

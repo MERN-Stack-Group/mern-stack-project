@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function Signup() {
+function Signup({ switchToSignin }) {
     const [role, setRole] = useState("");
     const [formData, setFormData] = useState({});
 
@@ -78,7 +78,7 @@ function Signup() {
 
         <p className="text-center text-[#B8B0A8] mt-4">
         Already have an account?
-        <button type="button" className="text-[#7E8C54] ml-2">
+        <button onClick={switchToSignin} type="button" className="text-[#7E8C54] ml-2">
             Sign In
         </button>
         </p>

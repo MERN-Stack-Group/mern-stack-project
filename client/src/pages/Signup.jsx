@@ -36,7 +36,7 @@ function Signup({ switchToSignin }) {
 
       <div className="flex gap-3 mb-6">
 
-      <button 
+      <button type="button"
         className={`flex-1 p-2 rounded-lg transition ${
             role === "alumni"
                 ? "bg-[#7E8C54] text-white"
@@ -46,7 +46,7 @@ function Signup({ switchToSignin }) {
         Alumni
         </button>
 
-      <button 
+      <button type="button"
         className={`flex-1 p-2 rounded-lg transition ${
             role === "mentor"
                 ? "bg-[#7E8C54] text-white"

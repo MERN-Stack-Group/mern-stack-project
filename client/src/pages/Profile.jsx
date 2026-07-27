@@ -1,6 +1,18 @@
 import React from "react";
+import { MentorshipModel } from "../components/MentorshipModel";
+import { useNavigate } from "react-router-dom";
 
 export const Profile = () => {
+  const navigate = useNavigate();
+
+  const completedMentorships = () => {
+    navigate("/mentorships-completed");
+  };
+
+  const activeMentorships = () => {
+    navigate("/mentorships-active");
+  };
+
   return (
     <div className="flex flex-col md:flex-row gap-6 p-4 md:p-[5vh] w-full min-h-screen bg-gray-100 justify-center">
       {/* Main Content Container (Left Side) */}
@@ -95,6 +107,16 @@ export const Profile = () => {
               </div>
             </div>
           </div>
+
+          {/* Centered View All Button */}
+          <div className="mt-5 border-t border-gray-200 pt-2">
+            <button
+              onClick={activeMentorships}
+              className="w-full py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors text-center cursor-pointer"
+            >
+              View All
+            </button>
+          </div>
         </div>
 
         {/* Completed Mentorships Section */}
@@ -139,6 +161,15 @@ export const Profile = () => {
                 </p>
               </div>
             </div>
+          </div>
+          {/* Centered View All Button */}
+          <div className="mt-5 border-t border-gray-200 pt-2">
+            <button
+              onClick={completedMentorships}
+              className="w-full py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors text-center cursor-pointer"
+            >
+              View All
+            </button>
           </div>
         </div>
       </div>

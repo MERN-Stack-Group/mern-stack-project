@@ -5,6 +5,8 @@ import banner from "../assets/banner.jpg";
 import TagCard from "../components/TagCard";
 
 export const Profile = () => {
+  const userType = "alumni";
+
   const navigate = useNavigate();
 
   const completedMentorships = () => {
@@ -13,6 +15,10 @@ export const Profile = () => {
 
   const activeMentorships = () => {
     navigate("/mentorships-active");
+  };
+
+  const viewAllReviews = () => {
+    navigate("/reviews");
   };
 
   const [isAboutExpanded, setIsAboutExpanded] = useState(false);
@@ -37,14 +43,14 @@ export const Profile = () => {
     "AWS",
     "Spring Boot",
   ];
-  
+
   return (
     <div className="flex flex-col md:flex-row gap-6 p-4 md:p-[5vh] w-full min-h-screen bg-gray-100 justify-center">
       {/* Main Content Container (Left Side) */}
       <div className="flex flex-col gap-4 w-full md:w-2/3 lg:w-3/4 max-w-4xl">
         {/* Hero Section */}
         <div className="relative bg-white rounded-lg border border-gray-300 overflow-visible pb-6 shadow-sm">
-          {/* Banner Container (Added 'relative' to anchor the camera button) */}
+          {/* Banner Container */}
           <div className="relative h-48 w-full bg-blue-400 rounded-t-lg flex items-center justify-center text-white font-bold tracking-widest">
             <img
               src={banner}
@@ -117,7 +123,7 @@ export const Profile = () => {
               </p>
             </div>
 
-            {/* University/Company Link (Always visible) */}
+            {/* University Link (Always visible) */}
             <div className="flex flex-row items-center md:items-start md:justify-end gap-3 w-full md:w-auto mt-2 md:mt-0">
               <div className="w-8 h-8 bg-purple-500 flex-shrink-0 flex items-center justify-center text-white text-[10px] rounded shadow-sm">
                 LOGO
@@ -127,6 +133,37 @@ export const Profile = () => {
               </span>
             </div>
           </div>
+
+          {/* Current Employer Section (Alumni Only) */}
+          {userType === "alumni" ? (
+            <div className="mt-6 border-t border-gray-200 pt-6 px-6">
+              <h2 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">
+                Current Employer
+              </h2>
+              <div className="flex items-start gap-4">
+                {/* Company Logo Placeholder */}
+                <div className="w-14 h-14 bg-slate-100 border border-gray-200 rounded-md flex-shrink-0 flex items-center justify-center text-gray-500 text-xs font-bold shadow-sm">
+                  LOGO
+                </div>
+
+                {/* Employment Details */}
+                <div className="flex flex-col">
+                  <h3 className="text-base font-bold text-gray-900 leading-tight">
+                    Tech Innovations Inc.
+                  </h3>
+                  <p className="text-sm font-semibold text-gray-700 mt-0.5">
+                    Senior Software Engineer
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1.5">
+                    Jan 2024 - Present • Full-time
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Colombo, Sri Lanka • Hybrid
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : null}
         </div>
 
         {/* About Section */}
@@ -263,6 +300,61 @@ export const Profile = () => {
             </button>
           </div>
         </div>
+
+        {/* Mentorship Reviews Section (Alumni Only) */}
+        {userType === "alumni" ? (
+          <div className="bg-white rounded-lg border border-gray-300 p-5 shadow-sm">
+            <h2 className="text-base font-bold text-gray-900 mb-4">
+              Mentee Reviews
+            </h2>
+
+            <div className="flex flex-col gap-4">
+              {/* Review Item 1 */}
+              <div className="border-b border-gray-200 pb-3">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-gray-900">
+                    David Perera
+                  </span>
+                  <span className="text-sm font-bold text-yellow-500 tracking-widest">
+                    ★★★★★
+                  </span>
+                </div>
+                <p className="text-xs text-gray-700 line-clamp-3 leading-relaxed">
+                  "Incredible mentorship experience. The deep dive into Agile
+                  project management and sprint planning completely changed how
+                  I approach software development."
+                </p>
+              </div>
+
+              {/* Review Item 2 */}
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-gray-900">
+                    Samantha Lee
+                  </span>
+                  <span className="text-sm font-bold text-yellow-500 tracking-widest">
+                    ★★★★☆
+                  </span>
+                </div>
+                <p className="text-xs text-gray-700 line-clamp-3 leading-relaxed">
+                  "Very patient and knowledgeable. The guidance on Java concepts
+                  and internship preparation was exactly what I needed to secure
+                  a position."
+                </p>
+              </div>
+            </div>
+
+            {/* Centered View All Button */}
+            <div className="mt-5 border-t border-gray-200 pt-2">
+              <button
+                onClick={viewAllReviews}
+                className="w-full py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors text-center cursor-pointer"
+              >
+                View All
+              </button>
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );

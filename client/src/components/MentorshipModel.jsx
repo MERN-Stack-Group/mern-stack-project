@@ -47,7 +47,7 @@ export const MentorshipModel = ({ viewType = "completed" }) => {
     viewType === "active" ? "Active Mentorships" : "Mentorship History";
 
   return (
-    <div className="flex flex-col gap-4 w-4/6 ml-10 mt-5">
+    <div className="flex flex-col gap-4 w-full md:w-4/6 ml-0 md:ml-10 mt-5">
       <h2 className="text-xl font-bold text-gray-900 mb-2">{sectionTitle}</h2>
 
       {/* Dynamically map through the selected array */}

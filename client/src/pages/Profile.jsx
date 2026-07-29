@@ -3,11 +3,17 @@ import { useNavigate } from "react-router-dom";
 import heroImage from "../assets/dp.jpg";
 import banner from "../assets/banner.jpg";
 import TagCard from "../components/TagCard";
+import { useAuth } from "../hooks/AuthContext";
 
 export const Profile = () => {
-  const userType = "alumni";
+  const { user, loading } = useAuth(); // Instantly access DB user data
+
+  const [isAboutExpanded, setIsAboutExpanded] = useState(false);
 
   const navigate = useNavigate();
+
+  // Fallback while DB is loading
+  if (loading) return <div className="h-16 bg-[#2C4C3B] w-full"></div>;
 
   const completedMentorships = () => {
     navigate("/mentorships-completed");
@@ -20,8 +26,6 @@ export const Profile = () => {
   const viewAllReviews = () => {
     navigate("/reviews");
   };
-
-  const [isAboutExpanded, setIsAboutExpanded] = useState(false);
 
   const aboutText =
     "Undergraduate student focusing on information technology and cybersecurity. Highly interested in bridging operational efficiency with technical solutions. I have a strong passion for learning new technologies, developing secure web applications, and participating in hackathons. My recent projects include building a chess engine in Java and simulating operating system algorithms. I am constantly looking for opportunities to grow and contribute to impactful tech initiatives.";
@@ -135,7 +139,7 @@ export const Profile = () => {
           </div>
 
           {/* Current Employer Section (Alumni Only) */}
-          {userType === "alumni" ? (
+          {user?.userType === "alumni" ? (
             <div className="mt-6 border-t border-gray-200 pt-6 px-6">
               <h2 className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">
                 Current Employer
@@ -302,7 +306,7 @@ export const Profile = () => {
         </div>
 
         {/* Mentorship Reviews Section (Alumni Only) */}
-        {userType === "alumni" ? (
+        {user?.userType === "alumni" ? (
           <div className="bg-white rounded-lg border border-gray-300 p-5 shadow-sm">
             <h2 className="text-base font-bold text-gray-900 mb-4">
               Mentee Reviews

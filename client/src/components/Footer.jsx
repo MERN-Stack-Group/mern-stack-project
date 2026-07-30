@@ -7,7 +7,7 @@ function Footer() {
             </h2>
 
             <p className="text-[#B8B0A8] mt-2">
-                Connecting students and alumni.
+                Connecting students with experienced alumni and mentors.
             </p>
         </footer>
     );

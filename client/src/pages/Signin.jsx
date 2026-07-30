@@ -1,6 +1,17 @@
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
-function Signin({ switchToSignup }) {
+function Signin({ setIsLoggedIn, setRole }) {
+  const navigate = useNavigate();
+   function handleLogin(e) {
+        e.preventDefault();
+        // temporary testing login
+        setIsLoggedIn(true);
+        // change this to test different navbars
+        setRole("student");
+
+        navigate("/");
+    }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0f0d0b]">
     <div className="bg-[#24201D] w-full max-w-md p-8 rounded-2xl shadow-xl border border-stone-800">
@@ -16,7 +27,9 @@ function Signin({ switchToSignup }) {
             Welcome Back!
         </p>
 
-        <form className="flex flex-col gap-3 mt-6">
+        <form 
+        onSubmit={handleLogin}
+        className="flex flex-col gap-3 mt-6">
 
       <input className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2 rounded-lg placeholder:text-stone-500"
       placeholder="Email" />

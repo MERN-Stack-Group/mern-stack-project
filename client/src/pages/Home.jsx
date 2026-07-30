@@ -3,10 +3,13 @@ import Hero from "../components/Hero";
 import InfoSection from "../components/InfoSection";
 import Footer from "../components/Footer";
 
-function Home() {
+function Home({isLoggedIn, role}) {
     return (
         <>
-            <Navbar />
+            <Navbar 
+                isLoggedIn={isLoggedIn}
+                role={role}
+            />
             <Hero />
             <InfoSection />
             <Footer />

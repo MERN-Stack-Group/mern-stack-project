@@ -1,3 +1,5 @@
+{/*Roles = Student, Alumni */}
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -41,27 +43,27 @@ function Signup({ switchToSignin }) {
 
       <button type="button"
         className={`flex-1 p-2 rounded-lg transition ${
+            role === "student"
+                ? "bg-[#7E8C54] text-white"
+                : "bg-[#312C28] text-[#B8B0A8]"
+        }`} 
+        onClick={() => setRole("student")}>
+        Student
+        </button>
+
+      <button type="button"
+        className={`flex-1 p-2 rounded-lg transition ${
             role === "alumni"
                 ? "bg-[#7E8C54] text-white"
                 : "bg-[#312C28] text-[#B8B0A8]"
         }`} 
         onClick={() => setRole("alumni")}>
-        Alumni
-        </button>
-
-      <button type="button"
-        className={`flex-1 p-2 rounded-lg transition ${
-            role === "mentor"
-                ? "bg-[#7E8C54] text-white"
-                : "bg-[#312C28] text-[#B8B0A8]"
-        }`} 
-        onClick={() => setRole("mentor")}>
-            Mentor</button>
+            Alumni</button>
 
         </div>
 
       <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
-        {role === "mentor" && (
+        {role === "alumni" && (
             <>
             <input required className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2 rounded-lg placeholder:text-stone-500" placeholder="Name" onChange={handleChange}/>
 

@@ -4,6 +4,9 @@ import { MentorshipModel } from "./components/MentorshipModel";
 import { Navbar } from "./layouts/Navbar";
 import { AuthProvider } from "./hooks/AuthContext";
 import StudentSearch from "./pages/StudentSearch";
+import MentorSearch from "./pages/MentorSearch";
+import MentorshipProgramSearch from "./pages/MentorshipProgramSearch";
+import OpportunityBoard from "./pages/OpportunityBoard";
 
 function App() {
   return (
@@ -11,7 +14,19 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Profile />} />
+         <Route path="/" element={<StudentSearch />} />
+        
+         <Route path="/mentor-search" element={<MentorSearch />} />
+          
+          <Route 
+             path="/mentorship-programs" 
+             element={<MentorshipProgramSearch />} 
+          />
+
+          <Route 
+               path="/opportunities" 
+               element={<OpportunityBoard />} 
+          />
 
           <Route
             path="/mentorships-completed"

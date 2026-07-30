@@ -1,21 +1,25 @@
 function Hero() {
     return (
         <section>
+            <h2>
+                 UNIVERSITY ALUMNI & MENTORSHIP NETWORK
+            </h2>
+
             <h1>
-                Bridging Students and Alumni for a Better Future
+                Bridging the gap between student ambition and professional mastery.
             </h1>
 
             <p>
-                GradBridge connects students with experienced alumni
-                for mentorship, networking, and career opportunities.
+                "Current students on one bank, seniors & alumni on the other —
+                mentorship as the crossing."
             </p>
 
             <button>
-                Get Started
+                Joing GradBridge
             </button>
 
             <button>
-                Learn More
+                Log In
             </button>
         </section>
     );

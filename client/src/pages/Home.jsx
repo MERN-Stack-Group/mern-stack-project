@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
-import Features from "../components/Features";
+import InfoSection from "../components/InfoSection";
 import Footer from "../components/Footer";
 
 function Home() {
@@ -8,7 +8,7 @@ function Home() {
         <>
             <Navbar />
             <Hero />
-            <Features />
+            <InfoSection />
             <Footer />
         </>
     );

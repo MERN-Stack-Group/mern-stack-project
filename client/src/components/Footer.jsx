@@ -1,12 +1,12 @@
 function Footer() {
     return (
-        <footer className="text-center py-10 border-t">
+        <footer className="border-[#4A433E] text-center py-8 border-t">
 
-            <h2 className="text-xl font-bold">
+            <h2 className="text-[#F5F1EA] text-xl font-bold">
                 GradBridge
             </h2>
 
-            <p className="mt-2">
+            <p className="text-[#B8B0A8] mt-2">
                 Connecting students and alumni.
             </p>
         </footer>

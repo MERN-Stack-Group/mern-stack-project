@@ -1,66 +1,109 @@
+import {
+    GraduationCap,
+    Briefcase,
+    ShieldCheck,
+    Network
+} from "lucide-react";
+
 function InfoSection() {
-
-    const features = [
-        {
-            title: "STUDENT BANK",
-            subtitle: "Current Students",
-            text: "Seek career guidance, project feedback, and internship opportunities from experienced seniors and verified alumni."
-        },
-
-        {
-            title: "ALUMNI BANK",
-            subtitle: "Seniors & Alumni",
-            text: "Give back to your alma mater by offering mentorship, sharing industry insights, and posting exclusive job listings."
-        },
-
-        {
-            title: "Verified Alumni Credentials",
-            text: "Admin-verified profiles ensure authentic connections with verified company backgrounds and industry expertise."
-        },
-
-        {
-            title: "Exclusive Opportunity Board",
-            text: "Direct access to internships, full-time jobs, and research projects posted specifically for graduates."
-        },
-
-        {
-            title: "Structured Mentorship Pipeline",
-            text: "Clear stages from initial request to active sessions and mentorship completion."
-        }
-    ];
-
     return (
         <section className="px-10 py-20">
 
-            <div className="grid md:grid-cols-2 gap-8">
+            {/* Main student/alumni card */}
 
-                {features.map((feature, index) => (
-                    <div
-                        key={index}
-                        className="p-8 rounded-2xl border"
-                    >
+        <div className="bg-[#24201D] border border-[#4A433E] rounded-3xl p-10">
 
-                        <h2 className="text-xl font-bold">
-                            {feature.title}
-                        </h2>
+            <div className="grid md:grid-cols-2 gap-10 relative">
 
+            {/* Student Bank */}        
+                <div className="text-center md:border-r md:border-[#4A433E] md:pr-10">
+                    <GraduationCap
+                        size={45}
+                        className="text-[#7E8C54] mx-auto"
+                    />
 
-                        {feature.subtitle && (
-                            <h3 className="mt-2 font-semibold">
-                                {feature.subtitle}
-                            </h3>
-                        )}
+                    <h2 className="text-[#B8B0A8]  mt-5">
+                        Student Bank
+                    </h2>
 
+                    <h3 className="text-2xl font-bold text-[#F5F1EA] mt-2">
+                        Current Students
+                    </h3>
 
-                        <p className="mt-4">
-                            {feature.text}
-                        </p>
+                    <p className="text-[#B8B0A8] mt-4">
+                        Seek career guidance, project feedback,
+                        and internship opportunities from experienced
+                        seniors and verified alumni.
+                    </p>
 
-                    </div>
-                ))}
                 </div>
 
-        </section>
+                {/* Alumni Bank */}
+
+                <div className="text-center md:pl-10">
+
+                    <Network
+                        size={45}
+                        className="text-[#7E8C54] mx-auto"
+                    />
+
+                    <h2 className="text-[#B8B0A8]  mt-5">
+                        Alumni Bank
+                    </h2>
+
+                    <h3 className="text-2xl font-bold text-[#F5F1EA] mt-2">
+                        Seniors & Alumni
+                    </h3>
+
+                    <p className="text-[#B8B0A8] mt-4">
+                        Give back to your alma mater by offering
+                        mentorship, sharing industry insights,
+                        and posting opportunities.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+            {/* Feature cards */ }
+
+    <div className="grid md:grid-cols-3 gap-6 mt-8">
+        <FeatureCard
+            icon={<ShieldCheck />}
+            title="Verified Alumni Credentials"
+            text="Admin-verified profiles ensure authentic connections."
+        />
+        <FeatureCard
+            icon={<Briefcase />}
+            title="Opportunity Board"
+            text="Access internships, jobs, and research opportunities."
+        />
+        <FeatureCard
+            icon={<Network />}
+            title="Mentorship Pipeline"
+            text="Structured stages from request to completion."
+        />
+    </div>
+        </section >
+    );
+}
+function FeatureCard({ icon, title, text }) {
+
+    return (
+        <div className="bg-[#24201D] border border-[#4A433E] rounded-2xl p-6 hover:border-[#7E8C54] transition">
+
+            <div className="text-[#7E8C54]">
+                {icon}
+            </div>
+
+            <h3 className="text-[#F5F1EA] font-bold text-xl mt-4">
+                {title}
+            </h3>
+
+            <p className="text-[#B8B0A8] mt-3">
+                {text}
+            </p>
+
+        </div>
     );
 }
 

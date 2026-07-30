@@ -45,10 +45,12 @@ export const Navbar = () => {
             to: "/saved", 
             icon: Bookmark 
           },
+          
         ]
       : [
           { label: "Mentorships", to: "/mentorships", icon: Users },
           { label: "Opportunities", to: "/opportunities", icon: Briefcase },
+          { label: "Pending Approval", to: "/pending-approval", icon: Users},
         ];
 
   return (
@@ -97,6 +99,7 @@ export const Navbar = () => {
             >
               <UserCircle size={24} strokeWidth={2} />
             </Link>
+
 
             {/* Logout Icon */}
             <button

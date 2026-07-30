@@ -2,13 +2,18 @@ import { Link } from "react-router-dom";
 
 function Navbar({ isLoggedIn, role }) {
     return (
-        <nav className="flex justify-between items-center px-10 py-6">
+        <nav className="flex justify-between items-center px-10 py-6 bg-[#0c0a0a] border-b border-[#4A433E]">
 
             <div>
                 {/*CHANGE!!!*/}
+                <Link to="/" className="flex items-center gap-3">
+
+                <div className="w-10 h-10 rounded-xl bg-[#7E8C54] flex items-center justify-center">
+                <span className="font-bold text-[#F5F1EA]">GB</span></div>
                 <h1 className="text-2xl font-bold text-[#F5F1EA]">
-                    GB <span className="font-normal"> GradBridge</span>
-                </h1>
+                    GradBridge
+                    </h1>
+                </Link>
             </div>
 
 

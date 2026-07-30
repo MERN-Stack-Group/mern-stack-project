@@ -11,7 +11,7 @@ function App() {
         <Navbar />
         <Routes>
           {/* Your main profile page */}
-          <Route path="/" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
 
           {/* The separate mentorship history page */}
           <Route

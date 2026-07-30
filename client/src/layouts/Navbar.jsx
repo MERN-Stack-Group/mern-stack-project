@@ -15,7 +15,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate("/");
+    navigate("/profile");
   };
 
   // Fallback while DB is loading

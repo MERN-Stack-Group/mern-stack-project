@@ -19,7 +19,7 @@ export const Navbar = () => {
   };
 
   // Fallback while DB is loading
-  if (loading) return <div className="h-16 bg-[#2C4C3B] w-full"></div>;
+  if (loading) return <div className="h-16 bg-[#4A044E] w-full"></div>;
 
   // Navigation Data Mapped by Role with corresponding Icons
   const navLinks =
@@ -54,7 +54,7 @@ export const Navbar = () => {
   return (
     <>
       {/* TOP NAVBAR (Always visible, handles Desktop Links) */}
-      <nav className="bg-[#2C4C3B] px-4 md:px-6 py-3 md:py-4 shadow-md w-full sticky top-0 z-50">
+      <nav className="bg-[#4A044E] px-4 md:px-6 py-3 md:py-4 shadow-md w-full sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           
           {/* Logo Section */}
@@ -76,7 +76,7 @@ export const Navbar = () => {
                     `flex items-center gap-2 pb-1 border-b-2 transition-colors ${
                       isActive
                         ? "text-white border-white font-semibold"
-                        : "text-[#A9C4A6] border-transparent hover:text-white"
+                        : "text-purple-200 border-transparent hover:text-white"
                     }`
                   }
                 >
@@ -88,11 +88,11 @@ export const Navbar = () => {
           </div>
 
           {/* Action Icons (Profile & Logout) */}
-          <div className="flex items-center gap-2 md:gap-4 md:border-l md:border-[#446A50] md:pl-6">
+          <div className="flex items-center gap-2 md:gap-4 md:border-l md:border-purple-800 md:pl-6">
             {/* Profile Icon */}
             <Link
               to="/profile"
-              className="p-2 rounded-full text-[#A9C4A6] hover:bg-[#446A50] hover:text-white transition-colors"
+              className="p-2 rounded-full text-purple-200 hover:bg-[#6B116E] hover:text-white transition-colors"
               title="Profile"
             >
               <UserCircle size={24} strokeWidth={2} />
@@ -100,7 +100,7 @@ export const Navbar = () => {
 
             {/* Logout Icon */}
             <button
-              className="p-2 rounded-full text-[#A9C4A6] hover:bg-rose-700 hover:text-white transition-colors"
+              className="p-2 rounded-full text-purple-200 hover:bg-[#6B116E] hover:text-white transition-colors"
               title="Logout"
               onClick={handleLogout}
             >
@@ -111,7 +111,7 @@ export const Navbar = () => {
       </nav>
 
       {/* MOBILE BOTTOM NAVIGATION (Hidden on Desktop) */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full bg-[#2C4C3B] shadow-[0_-4px_10px_rgba(0,0,0,0.2)] z-50 flex justify-around items-center h-16 px-2 border-t border-[#446A50]">
+      <nav className="md:hidden fixed bottom-0 left-0 w-full bg-[#4A044E] shadow-[0_-4px_10px_rgba(0,0,0,0.2)] z-50 flex justify-around items-center h-16 px-2 border-t border-[#6B116E]">
         {navLinks.map((link, index) => {
           const Icon = link.icon;
           return (
@@ -120,7 +120,7 @@ export const Navbar = () => {
               to={link.to}
               className={({ isActive }) =>
                 `flex flex-col items-center justify-center w-full gap-1 transition-colors ${
-                  isActive ? "text-white" : "text-[#A9C4A6] hover:text-white"
+                  isActive ? "text-white" : "text-purple-200 hover:text-white"
                 }`
               }
             >

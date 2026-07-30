@@ -1,73 +1,64 @@
 function InfoSection() {
+
+    const features = [
+        {
+            title: "STUDENT BANK",
+            subtitle: "Current Students",
+            text: "Seek career guidance, project feedback, and internship opportunities from experienced seniors and verified alumni."
+        },
+
+        {
+            title: "ALUMNI BANK",
+            subtitle: "Seniors & Alumni",
+            text: "Give back to your alma mater by offering mentorship, sharing industry insights, and posting exclusive job listings."
+        },
+
+        {
+            title: "Verified Alumni Credentials",
+            text: "Admin-verified profiles ensure authentic connections with verified company backgrounds and industry expertise."
+        },
+
+        {
+            title: "Exclusive Opportunity Board",
+            text: "Direct access to internships, full-time jobs, and research projects posted specifically for graduates."
+        },
+
+        {
+            title: "Structured Mentorship Pipeline",
+            text: "Clear stages from initial request to active sessions and mentorship completion."
+        }
+    ];
+
     return (
-        <section>
+        <section className="px-10 py-20">
 
-            <div>
-                <h2>
-                    STUDENT BANK
-                </h2>
+            <div className="grid md:grid-cols-2 gap-8">
 
-                <h3>
-                    Current Students
-                </h3>
+                {features.map((feature, index) => (
+                    <div
+                        key={index}
+                        className="p-8 rounded-2xl border"
+                    >
 
-                <p>
-                    Seek career guidance, project feedback, and internship
-                    opportunities from experienced seniors and verified alumni.
-                </p>
-            </div>
+                        <h2 className="text-xl font-bold">
+                            {feature.title}
+                        </h2>
 
 
-            <div>
-                <h2>
-                    ALUMNI BANK
-                </h2>
-
-                <h3>
-                    Seniors & Alumni
-                </h3>
-
-                <p>
-                    Give back to your alma mater by offering mentorship,
-                    sharing industry insights, and posting exclusive job listings.
-                </p>
-            </div>
+                        {feature.subtitle && (
+                            <h3 className="mt-2 font-semibold">
+                                {feature.subtitle}
+                            </h3>
+                        )}
 
 
-            <div>
-                <h3>
-                    Verified Alumni Credentials
-                </h3>
+                        <p className="mt-4">
+                            {feature.text}
+                        </p>
 
-                <p>
-                    Admin-verified profiles ensure authentic connections with
-                    verified company backgrounds and industry expertise.
-                </p>
-            </div>
-
-
-            <div>
-                <h3>
-                    Exclusive Opportunity Board
-                </h3>
-
-                <p>
-                    Direct access to internships, full-time jobs, and research
-                    projects posted specifically for university graduates.
-                </p>
-            </div>
-
-
-            <div>
-                <h3>
-                    Structured Mentorship Pipeline
-                </h3>
-
-                <p>
-                    Clear handoff stages from initial request to active sessions
-                    and peer-reviewed mentorship completions.
-                </p>
-            </div>
+                    </div>
+                ))}
+                </div>
 
         </section>
     );

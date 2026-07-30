@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Signin({ switchToSignup }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0f0d0b]">
@@ -29,9 +31,12 @@ function Signin({ switchToSignup }) {
       <p className="text-center text-[#B8B0A8] mt-4">
         Don't have an account?
 
-        <button className="text-[#7E8C54] ml-2" type="button" onClick={switchToSignup}>
-          Sign Up
-        </button>
+        <Link 
+    to="/signup"
+    className="text-[#7E8C54] ml-2"
+>
+    Sign Up
+</Link>
       </p>
 
         </form>

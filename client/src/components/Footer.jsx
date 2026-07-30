@@ -1,19 +1,14 @@
 function Footer() {
     return (
-        <footer>
+        <footer className="text-center py-10 border-t">
 
-            <h3>
+            <h2 className="text-xl font-bold">
                 GradBridge
-            </h3>
+            </h2>
 
-            <p>
+            <p className="mt-2">
                 Connecting students and alumni.
             </p>
-
-            <p>
-                © 2026 GradBridge. All rights reserved.
-            </p>
-
         </footer>
     );
 }

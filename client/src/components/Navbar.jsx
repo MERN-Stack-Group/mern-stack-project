@@ -2,14 +2,22 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
     return (
-        <nav>
-            <div>
-                <h1>GB GradBridge</h1>
-            </div>
+        <nav className="flex justify-between items-center px-10 py-6">
 
-            <div>
-                <Link to="/login">Log In</Link>
-                <Link to="/signup">Register</Link>
+            {/*CHANGE!!!*/}
+            <h1 className="text-2xl font-bold text-[#F5F1EA]">
+                GB <span className="font-normal"> GradBridge</span>
+            </h1>
+
+
+            <div className="flex gap-5">
+                <Link to="/signin" className="px-5 py-2 rounded-lg border">
+                    Log In
+                </Link>
+
+                <Link to="/signup" className="px-5 py-2 rounded-lg bg-black text-white">
+                    Register
+                </Link>
             </div>
         </nav>
     );

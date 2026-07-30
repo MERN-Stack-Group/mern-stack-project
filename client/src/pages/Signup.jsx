@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Signup({ switchToSignin }) {
     const [role, setRole] = useState("");
@@ -86,9 +87,9 @@ function Signup({ switchToSignin }) {
 
         <p className="text-center text-[#B8B0A8] mt-4">
         Already have an account?
-        <button onClick={switchToSignin} type="button" className="text-[#7E8C54] ml-2">
-            Sign In
-        </button>
+        <Link
+        to="/signin"
+        className="text-[#7E8C54] ml-2">Sign In</Link>
         </p>
         </form>
 

@@ -3,6 +3,7 @@ import { Profile } from "./pages/Profile";
 import { MentorshipModel } from "./components/MentorshipModel";
 import { Navbar } from "./layouts/Navbar";
 import { AuthProvider } from "./hooks/AuthContext";
+import PendingApproval from "./pages/PendingApproval";
 
 function App() {
   return (
@@ -21,6 +22,10 @@ function App() {
           <Route
             path="/mentorships-active"
             element={<MentorshipModel viewType="active" />}
+          />
+          <Route
+           path="/pending-approval"
+           element={<PendingApproval />}
           />
         </Routes>
       </BrowserRouter>

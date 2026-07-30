@@ -2,48 +2,114 @@ import { useState } from "react";
 
 function PendingApproval() {
   const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "Kasun Perera",
-      email: "kasun@gmail.com",
-      faculty: "Computing",
-      industry: "Software Engineering",
-      date: "2026-07-20",
-    },
-    {
-      id: 2,
-      name: "Nimali Silva",
-      email: "nimali@gmail.com",
-      faculty: "Business",
-      industry: "Marketing",
-      date: "2026-07-21",
-    },
+  {
+  id: 1,
+  name: "Kasun Perera",
+  nic: "200012345678",
+  email: "kasun@gmail.com",
+  faculty: "Computing",
+  industry: "Software Engineering",
+  date: "2026-07-20",
+  },
+  {
+  id: 2,
+  name: "Nimali Silva",
+  nic: "199856789012",
+  email: "nimali@gmail.com",
+  faculty: "Business",
+  industry: "Marketing",
+  date: "2026-07-21",
+  },
     {
       id: 3,
       name: "Amal Fernando",
+      nic: "199912345678",
       email: "amal@gmail.com",
       faculty: "Engineering",
       industry: "IT",
       date: "2026-07-22",
     },
   ]);
+ const [approvedUsers, setApprovedUsers] = useState([]);
 
-  const [approvedCount, setApprovedCount] = useState(0);
-  const [rejectedCount, setRejectedCount] = useState(0);
+const [rejectedUsers, setRejectedUsers] = useState([]);
+
+const [selectedView, setSelectedView] = useState("pending");
+  
   const [darkMode, setDarkMode] = useState(false);
 
   // Approve user
-  const approveUser = (id) => {
-    setUsers(users.filter((user) => user.id !== id));
-    setApprovedCount(approvedCount + 1);
-  };
+ const approveUser = (id) => {
+
+  const pendingUser = users.find(
+    (user) => user.id === id
+  );
+
+  const rejectedUser = rejectedUsers.find(
+    (user) => user.id === id
+  );
+
+
+  const userToApprove = pendingUser || rejectedUser;
+
+
+  if (!userToApprove) return;
+
+  setApprovedUsers([
+    ...approvedUsers,
+    userToApprove
+  ]);
+
+  setUsers(
+    users.filter(
+      (user) => user.id !== id
+    )
+  );
+
+  setRejectedUsers(
+    rejectedUsers.filter(
+      (user) => user.id !== id
+    )
+  );
+
+};
 
   // Reject user
   const rejectUser = (id) => {
-    setUsers(users.filter((user) => user.id !== id));
-    setRejectedCount(rejectedCount + 1);
-  };
 
+  const pendingUser = users.find(
+    (user) => user.id === id
+  );
+
+
+  const approvedUser = approvedUsers.find(
+    (user) => user.id === id
+  );
+
+
+  const userToReject = pendingUser || approvedUser;
+
+
+  if (!userToReject) return;
+
+  setRejectedUsers([
+    ...rejectedUsers,
+    userToReject
+  ]);
+
+  setUsers(
+    users.filter(
+      (user) => user.id !== id
+    )
+  );
+
+  setApprovedUsers(
+    approvedUsers.filter(
+      (user) => user.id !== id
+    )
+  );
+
+};
   return (
     
     <div
@@ -91,13 +157,16 @@ function PendingApproval() {
       darkMode ? "bg-gray-800" : "bg-white"
     }`}
   >
-    <h3 className={darkMode ? "text-white" : "text-gray-500"}>
-      Pending Requests
-    </h3>
+   <h3
+onClick={() => setSelectedView("pending")}
+className="cursor-pointer hover:text-purple-600"
+>
+  Pending Requests
+</h3>
 
-    <p className="text-3xl font-bold text-purple-600">
-      {users.length}
-    </p>
+<p className="text-3xl font-bold text-purple-600">
+  {users.length}
+</p>
   </div>
 
 
@@ -107,13 +176,16 @@ function PendingApproval() {
       darkMode ? "bg-gray-800" : "bg-white"
     }`}
   >
-    <h3 className={darkMode ? "text-white" : "text-gray-500"}>
-      Approved
-    </h3>
+    <h3
+onClick={() => setSelectedView("approved")}
+className="cursor-pointer hover:text-purple-600"
+>
+  Approved
+</h3>
 
-    <p className="text-3xl font-bold text-purple-600">
-      {approvedCount}
-    </p>
+<p className="text-3xl font-bold text-purple-600">
+  {approvedUsers.length}
+</p>
   </div>
 
 
@@ -123,13 +195,16 @@ function PendingApproval() {
       darkMode ? "bg-gray-800" : "bg-white"
     }`}
   >
-    <h3 className={darkMode ? "text-white" : "text-gray-500"}>
-      Rejected
-    </h3>
+    <h3
+onClick={() => setSelectedView("rejected")}
+className="cursor-pointer hover:text-purple-600"
+>
+  Rejected
+</h3>
 
-    <p className="text-3xl font-bold text-purple-600">
-      {rejectedCount}
-    </p>
+<p className="text-3xl font-bold text-purple-600">
+  {rejectedUsers.length}
+</p>
   </div>
 
 </section>
@@ -141,14 +216,23 @@ function PendingApproval() {
   }`}
 >
           <h2 className="text-xl font-bold mb-5">
-            Alumni Registration Requests
-          </h2>
+
+{
+ selectedView === "pending"
+ ? "Pending Requests"
+ : selectedView === "approved"
+ ? "Approved Alumni"
+ : "Rejected Alumni"
+}
+
+</h2>
 
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className={darkMode ? "bg-purple-900 text-white" : "bg-purple-100 text-gray-800"}>
                   <th className="p-3 text-left">Name</th>
+                  <th className="p-3 text-left">NIC</th>
                   <th className="p-3 text-left">Email</th>
                   <th className="p-3 text-left">Faculty</th>
                   <th className="p-3 text-left">Industry</th>
@@ -158,7 +242,13 @@ function PendingApproval() {
               </thead>
 
               <tbody>
-                {users.map((user) => (
+                {(
+ selectedView === "pending"
+ ? users
+ : selectedView === "approved"
+ ? approvedUsers
+ : rejectedUsers
+).map((user)=>(
                   <tr
   key={user.id}
   className={`border-b ${
@@ -166,6 +256,8 @@ function PendingApproval() {
   }`}
 >
                     <td className="p-3">{user.name}</td>
+
+                    <td className="p-3">{user.nic}</td>
 
                     <td className="p-3">{user.email}</td>
 
@@ -176,30 +268,82 @@ function PendingApproval() {
                     <td className="p-3">{user.date}</td>
 
                     <td className="p-3">
-                      <button
-                        onClick={() => approveUser(user.id)}
-                        className="bg-purple-600 text-white px-3 py-2 rounded mr-2"
-                      >
-                        Approve
-                      </button>
 
-                      <button
-                        onClick={() => rejectUser(user.id)}
-                        className="bg-purple-100 text-purple-700 px-3 py-2 rounded"
-                      >
-                        Reject
-                      </button>
-                    </td>
+  {selectedView === "pending" && (
+    <>
+      <button
+        onClick={() => approveUser(user.id)}
+        className="bg-purple-600 text-white px-3 py-2 rounded mr-2"
+      >
+        Approve
+      </button>
+
+      <button
+        onClick={() => rejectUser(user.id)}
+        className="bg-purple-100 text-purple-700 px-3 py-2 rounded"
+      >
+        Reject
+      </button>
+    </>
+  )}
+
+
+  {selectedView === "approved" && (
+  <>
+    <span className="text-green-600 font-bold mr-3">
+      Approved
+    </span>
+
+    <button
+      onClick={() => rejectUser(user.id)}
+      className="bg-red-500 text-white px-3 py-2 rounded"
+    >
+      Reject
+    </button>
+  </>
+)}
+
+
+{selectedView === "rejected" && (
+  <>
+    <span className="text-red-600 font-bold mr-3">
+      Rejected
+    </span>
+
+    <button
+      onClick={() => approveUser(user.id)}
+      className="bg-purple-600 text-white px-3 py-2 rounded"
+    >
+      Approve
+    </button>
+  </>
+)}
+
+</td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
-            {users.length === 0 && (
-              <p className="text-center text-gray-500 py-6">
-                No pending approval requests.
-              </p>
-            )}
+            {selectedView === "pending" && users.length === 0 && (
+  <p className="text-center text-gray-500 py-6">
+    No pending approval requests.
+  </p>
+)}
+
+
+{selectedView === "approved" && approvedUsers.length === 0 && (
+  <p className="text-center text-gray-500 py-6">
+    No approved users yet.
+  </p>
+)}
+
+
+{selectedView === "rejected" && rejectedUsers.length === 0 && (
+  <p className="text-center text-gray-500 py-6">
+    No rejected users yet.
+  </p>
+)}
           </div>
         </section>
       </main>

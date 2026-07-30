@@ -25,29 +25,29 @@ export const Navbar = () => {
   const navLinks =
     user?.userType === "student"
       ? [
-          {
-            label: "Discover Mentors",
-            to: "/discover-mentors",
-            icon: Compass,
-          },
-          {
-            label: "Network",
-            to: "/mentorship-discovering",
-            icon: Users,
-          },
-          {
-            label: "Opportunities",
-            to: "/opportunity-board",
-            icon: Briefcase,
-          },
-          { 
-            label: "Saved", 
-            to: "/saved", 
-            icon: Bookmark 
-          },
-        ]
+  {
+    label: "Mentors",
+    to: "/mentor-search",
+    icon: Compass,
+  },
+  {
+    label: "Programs",
+    to: "/mentorship-programs",
+    icon: Users,
+  },
+  {
+    label: "Opportunities",
+    to: "/opportunities",
+    icon: Briefcase,
+  },
+  {
+    label: "Students",
+    to: "/student-search",
+    icon: Bookmark,
+  },
+]
       : [
-          { label: "Mentorships", to: "/mentorships", icon: Users },
+          { label: "Mentorships", to: "/mentorship-programs", icon: Users },
           { label: "Opportunities", to: "/opportunities", icon: Briefcase },
         ];
 

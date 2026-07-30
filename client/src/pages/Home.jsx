@@ -10,7 +10,10 @@ function Home({isLoggedIn, role}) {
                 isLoggedIn={isLoggedIn}
                 role={role}
             />
-            <Hero />
+            <Hero 
+                isLoggedIn={isLoggedIn}
+                role={role}
+                />
             <InfoSection />
             <Footer />
         </>

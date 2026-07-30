@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function Hero() {
+function Hero({ isLoggedIn, role }) {
     return (
         <section className="min-h-[80vh] flex items-center justify-center px-10">
         <div className="text-center max-w-4xl">
@@ -21,13 +21,36 @@ function Hero() {
                 Current students on one bank, seniors & alumni on the other —
                 mentorship as the crossing.
             </p>
+
+
             <div className="flex justify-center gap-5 mt-10">
 
+            {!isLoggedIn && (
                 <Link 
                 to="/signup"
                 className="bg-[#7E8C54] hover:bg-[#8E9E84] px-8 py-3 rounded-xl text-[#F5F1EA] transition">
                     Joing GradBridge
                 </Link>
+            )}
+
+            {/*Explore mentors page link */}
+            {isLoggedIn && role === "student" && (
+                <Link 
+                to="/"
+                className="bg-[#7E8C54] hover:bg-[#8E9E84] px-8 py-3 rounded-xl text-[#F5F1EA] transition">
+                    Explore Mentors
+                </Link>
+            )}
+
+            {/*View requests page link */}
+            {isLoggedIn && role === "alumni" && (
+                <Link 
+                to="/"
+                className="bg-[#7E8C54] hover:bg-[#8E9E84] px-8 py-3 rounded-xl text-[#F5F1EA] transition">
+                    View Requests
+                </Link>
+            )}
+                
 
                 
             </div>

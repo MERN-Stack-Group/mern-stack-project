@@ -1,84 +1,65 @@
 import { Link } from "react-router-dom";
 
 function Navbar({ isLoggedIn, role }) {
-    return (
-        <nav className="flex justify-between items-center px-10 py-6">
+  return (
+    <nav className="flex justify-between items-center px-10 py-6">
+      <div>
+        {/*CHANGE!!!*/}
+        <h1 className="text-2xl font-bold text-[#F5F1EA]">
+          GB <span className="font-normal"> GradBridge</span>
+        </h1>
+      </div>
 
-            <div>
-                {/*CHANGE!!!*/}
-                <h1 className="text-2xl font-bold text-[#F5F1EA]">
-                    GB <span className="font-normal"> GradBridge</span>
-                </h1>
-            </div>
+      <div className="flex gap-5 items-center">
+        {/*Guess NAvbar*/}
+        {!isLoggedIn && (
+          <>
+            <Link
+              to="/signin"
+              className="px-5 py-2 rounded-lg border text-[#F5F1EA] hover:text-[#8E9E84] transition"
+            >
+              Log In
+            </Link>
 
+            <Link
+              to="/signup"
+              className="px-5 py-2 rounded-lg bg-[#7E8C54] hover:bg-[#8E9E84] text-[#F5F1EA] transition"
+            >
+              Register
+            </Link>
+          </>
+        )}
 
-            <div className="flex gap-5 items-center">
-                {/*Guess NAvbar*/}
-                {!isLoggedIn && (
-                    <>
-                        <Link
-                            to="/signin"
-                            className="px-5 py-2 rounded-lg border text-[#F5F1EA] hover:text-[#8E9E84] transition">
-                            Log In
-                        </Link>
+        {/*Student navbar */}
+        {isLoggedIn && role === "student" && (
+          <>
+            <Link className="text-[#F5F1EA]">Discover Mentors</Link>
 
-                        <Link to="/signup" className="px-5 py-2 rounded-lg bg-[#7E8C54] hover:bg-[#8E9E84] text-[#F5F1EA] transition">
-                            Register
-                        </Link>
-                    </>
-                )}
+            <Link className="text-[#F5F1EA]">Mentorships</Link>
 
-                {/*Student navbar */}
-                {isLoggedIn && role === "student" && (
-                    <>
-                        <Link className="text-[#F5F1EA]">
-                            Discover Mentors
-                        </Link>
+            <Link className="text-[#F5F1EA]">Opportunities</Link>
 
-                        <Link className="text-[#F5F1EA]">
-                            Mentorships
-                        </Link>
+            <Link className="text-[#F5F1EA]">Saved</Link>
 
-                        <Link className="text-[#F5F1EA]">
-                            Opportunities
-                        </Link>
+            <span className="text-[#B8B0A8]">Role: Student</span>
+          </>
+        )}
 
-                        <Link className="text-[#F5F1EA]">
-                            Saved
-                        </Link>
+        {/*Alumni Navbar */}
+        {isLoggedIn && role === "alumni" && (
+          <>
+            <Link className="text-[#F5F1EA]">Requests</Link>
 
+            <Link className="text-[#F5F1EA]">My Mentees</Link>
 
-                        <span className="text-[#B8B0A8]">
-                            Role: Student
-                        </span>
-                    </>
-                )}
+            <Link className="text-[#F5F1EA]">Opportunities</Link>
 
-                {/*Alumni Navbar */}
-                {isLoggedIn && role === "alumni" && (
-                    <>
-                        <Link className="text-[#F5F1EA]">
-                            Requests
-                        </Link>
-
-                        <Link className="text-[#F5F1EA]">
-                            My Mentees
-                        </Link>
-
-                        <Link className="text-[#F5F1EA]">
-                            Opportunities
-                        </Link>
-
-
-                        <span className="text-[#B8B0A8]">
-                            Role: Alumni
-                        </span>
-                    </>
-                )}
-
-            </div>
-        </nav >
-    );
+            <span className="text-[#B8B0A8]">Role: Alumni</span>
+          </>
+        )}
+      </div>
+    </nav>
+  );
 }
 
 export default Navbar;

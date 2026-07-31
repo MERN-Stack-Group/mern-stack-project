@@ -1,86 +1,53 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState("");
+
+  // Load login state when app starts
+  useEffect(() => {
+    const savedRole = localStorage.getItem("role");
+    const loggedIn = localStorage.getItem("isLoggedIn");
+
+    if (loggedIn === "true") {
+      setIsLoggedIn(true);
+      setRole(savedRole);
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route 
-        path="/" 
-        element={
-        <Home
-          isLoggedIn={isLoggedIn}
-          setIsLoggedIn={setIsLoggedIn}
-          role={role}
-          setRole={setRole}
+        <Route
+          path="/"
+          element={
+            <Home
+              isLoggedIn={isLoggedIn}
+              role={role}
             />
-          } 
+          }
         />
 
-        <Route 
-        path="/signup" 
-        element={
+        <Route
+          path="/signup"
+          element={
             <Signup />
-        } />
+          } />
 
-        <Route 
-        path="/signin" 
-        element={
-            <Signin 
+        <Route
+          path="/signin"
+          element={
+            <Signin
               setIsLoggedIn={setIsLoggedIn}
-              setRole={setRole}/>
-        } />
+              setRole={setRole} />
+          } />
       </Routes>
     </BrowserRouter>
-import { Profile } from "./pages/Profile";
-import { MentorshipModel } from "./components/MentorshipModel";
-import { Navbar } from "./layouts/Navbar";
-import { AuthProvider } from "./hooks/AuthContext";
-import StudentSearch from "./pages/StudentSearch";
-import MentorSearch from "./pages/MentorSearch";
-import MentorshipProgramSearch from "./pages/MentorshipProgramSearch";
-import OpportunityBoard from "./pages/OpportunityBoard";
-
-function App() {
-  return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-         <Route path="/" element={<StudentSearch />} />
-        
-         <Route path="/mentor-search" element={<MentorSearch />} />
-          
-          <Route 
-             path="/mentorship-programs" 
-             element={<MentorshipProgramSearch />} 
-          />
-
-          <Route 
-               path="/opportunities" 
-               element={<OpportunityBoard />} 
-          />
-
-          <Route
-            path="/mentorships-completed"
-            element={<MentorshipModel viewType="completed" />}
-          />
-
-          <Route
-            path="/mentorships-active"
-            element={<MentorshipModel viewType="active" />}
-          />
-
-          {/* Your page */}
-          <Route path="/student-search" element={<StudentSearch />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
   );
 }
 

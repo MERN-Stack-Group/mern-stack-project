@@ -43,19 +43,6 @@ function Signup() {
     
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#0f0d0b] p-6">
 
-                {/*CHANGE!!!*/}
-                <Link to="/" className="flex items-center gap-3">
-
-                <div className="w-10 h-10 rounded-xl bg-[#7E8C54] flex items-center justify-center">
-                    <span className="font-bold text-[#F5F1EA]">GB</span>
-                </div>
-
-                <h1 className="text-2xl font-bold text-[#F5F1EA]">
-                    GradBridge
-                    </h1>
-                </Link>
-            
-
         <div className="bg-[#24201D] w-full max-w-md p-8 rounded-2xl shadow-xl border border-stone-800">
 
       <h1 className="text-3xl font-bold text-[#F5F1EA] text-center" >GradBridge</h1>

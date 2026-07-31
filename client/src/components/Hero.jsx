@@ -29,7 +29,7 @@ function Hero({ isLoggedIn, role }) {
                 <Link 
                 to="/signup"
                 className="bg-[#7E8C54] hover:bg-[#8E9E84] px-8 py-3 rounded-xl text-[#F5F1EA] transition">
-                    Joing GradBridge
+                    Join GradBridge
                 </Link>
             )}
 

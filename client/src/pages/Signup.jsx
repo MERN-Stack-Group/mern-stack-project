@@ -57,10 +57,10 @@ function Signup() {
             
 
         <div className="bg-[#24201D] w-full max-w-md p-8 rounded-2xl shadow-xl border border-stone-800">
-{/*
-      <h1 className="text-3xl font-bold text-[#F5F1EA] text-center" >GradBridge</h1>*/}
 
-      <h2 className="text-xl font-bold text-center text-[#B8B0A8]">
+      <h1 className="text-3xl font-bold text-[#F5F1EA] text-center" >GradBridge</h1>
+
+      <h2 className="text-xl text-center text-[#B8B0A8]">
         Student Mentorship & Alumni Network
       </h2>
 

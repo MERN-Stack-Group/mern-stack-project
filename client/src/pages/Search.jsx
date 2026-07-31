@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SearchCard from "../components/SearchCard";
 
 export default function Search() {
 
@@ -200,35 +201,12 @@ export default function Search() {
       <div className="grid md:grid-cols-3 gap-6 mt-10">
 
 
-        {results.map((item,index)=>(
-
-
-          <div
-
-          key={index}
-
-          className="bg-[#1A0F24] p-6 rounded-xl border border-purple-500"
-
-          >
-
-            <h2 className="text-xl font-bold text-purple-200">
-              {item.name}
-            </h2>
-
-            <p>{item.role}</p>
-
-            <p>Faculty: {item.faculty}</p>
-
-            <p>Industry: {item.industry}</p>
-
-            <p>Type: {item.type}</p>
-
-
-          </div>
-
-
+       {results.map((item, index) => (
+          <SearchCard
+           key={index}
+           item={item}
+         />
         ))}
-
 
       </div>
 

@@ -1,3 +1,5 @@
+{/*Student home page & Alumni Home page */}
+
 import { Link } from "react-router-dom";
 
 function Hero({ isLoggedIn, role }) {
@@ -33,21 +35,64 @@ function Hero({ isLoggedIn, role }) {
                 </Link>
             )}
 
-            {/*Explore mentors page link */}
+            {/*replace "/" with the Explore mentors page link */}
             {isLoggedIn && role === "student" && (
                 <Link 
                 to="/"
-                className="bg-[#7E8C54] hover:bg-[#8E9E84] px-8 py-3 rounded-xl text-[#F5F1EA] transition">
+                className="
+                    group
+                    flex
+                    items-center
+                    gap-3
+                    bg-[#7E8C54]
+                    hover:bg-[#8E9E84]
+                    px-8
+                    py-3
+                    rounded-xl
+                    text-[#F5F1EA]
+                    transition-all
+                    duration-300
+                    hover:-translate-y-1
+                    shadow-lg">
                     Explore Mentors
+                    <span className="
+                        transition-transform
+                        duration-300
+                        group-hover:translate-x-2
+                        ">
+                            →
+                    </span>
                 </Link>
             )}
 
-            {/*View requests page link */}
+            {/*replace "/" with the View requests page link */}
             {isLoggedIn && role === "alumni" && (
                 <Link 
                 to="/"
-                className="bg-[#7E8C54] hover:bg-[#8E9E84] px-8 py-3 rounded-xl text-[#F5F1EA] transition">
+                className="
+                    group
+                    flex
+                    items-center
+                    gap-3
+                    bg-[#7E8C54]
+                    hover:bg-[#8E9E84]
+                    px-8
+                    py-3
+                    rounded-xl
+                    text-[#F5F1EA]
+                    transition-all
+                    duration-300
+                    hover:-translate-y-1
+                    shadow-lg">
                     View Requests
+
+                    <span className="
+                        transition-transform
+                        duration-300
+                        group-hover:translate-x-2
+                        ">
+                            →
+                    </span>
                 </Link>
             )}
                 

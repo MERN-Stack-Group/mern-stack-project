@@ -5,69 +5,87 @@ import {
   Users,
   Briefcase,
   Bookmark,
+  Search,
   UserCircle,
   LogOut,
 } from "lucide-react";
 import { useAuth } from "../hooks/AuthContext";
 
 export const Navbar = () => {
-  const { user, loading } = useAuth(); // Instantly access DB user data
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     navigate("/");
   };
 
-  // Fallback while DB is loading
-  if (loading) return <div className="h-16 bg-[#4A044E] w-full"></div>;
+  if (loading) {
+    return <div className="h-16 bg-[#4A044E] w-full"></div>;
+  }
 
-  // Navigation Data Mapped by Role with corresponding Icons
   const navLinks =
     user?.userType === "student"
       ? [
-  {
-    label: "Mentors",
-    to: "/mentor-search",
-    icon: Compass,
-  },
-  {
-    label: "Programs",
-    to: "/mentorship-programs",
-    icon: Users,
-  },
-  {
-    label: "Opportunities",
-    to: "/opportunities",
-    icon: Briefcase,
-  },
-  {
-    label: "Students",
-    to: "/student-search",
-    icon: Bookmark,
-  },
-]
+          {
+            label: "Search",
+            to: "/search",
+            icon: Search,
+          },
+          {
+            label: "Mentors",
+            to: "/mentor-search",
+            icon: Compass,
+          },
+          {
+            label: "Programs",
+            to: "/mentorship-programs",
+            icon: Users,
+          },
+          {
+            label: "Opportunities",
+            to: "/opportunities",
+            icon: Briefcase,
+          },
+          {
+            label: "Students",
+            to: "/student-search",
+            icon: Bookmark,
+          },
+        ]
       : [
-          { label: "Mentorships", to: "/mentorship-programs", icon: Users },
-          { label: "Opportunities", to: "/opportunities", icon: Briefcase },
+          {
+            label: "Mentorships",
+            to: "/mentorship-programs",
+            icon: Users,
+          },
+          {
+            label: "Opportunities",
+            to: "/opportunities",
+            icon: Briefcase,
+          },
         ];
 
   return (
     <>
-      {/* TOP NAVBAR (Always visible, handles Desktop Links) */}
       <nav className="bg-[#4A044E] px-4 md:px-6 py-3 md:py-4 shadow-md w-full sticky top-0 z-50">
+
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          
-          {/* Logo Section */}
+
+          {/* Logo */}
           <Link to="/" className="flex-shrink-0">
-            <span className="text-xl font-bold text-white tracking-widest cursor-pointer">
+            <span className="text-xl font-bold text-white tracking-widest">
               LOGO
             </span>
           </Link>
 
-          {/* Desktop Navigation Links (Hidden on Mobile) */}
+
+          {/* Navigation Links */}
           <div className="hidden md:flex items-center gap-8">
+
             {navLinks.map((link, index) => {
+
               const Icon = link.icon;
+
               return (
                 <NavLink
                   key={index}
@@ -84,53 +102,35 @@ export const Navbar = () => {
                   {link.label}
                 </NavLink>
               );
+
             })}
+
           </div>
 
-          {/* Action Icons (Profile & Logout) */}
+
+          {/* Profile + Logout */}
           <div className="flex items-center gap-2 md:gap-4 md:border-l md:border-purple-800 md:pl-6">
-            {/* Profile Icon */}
+
             <Link
               to="/profile"
-              className="p-2 rounded-full text-purple-200 hover:bg-[#6B116E] hover:text-white transition-colors"
-              title="Profile"
+              className="p-2 rounded-full text-purple-200 hover:bg-[#6B116E]"
             >
-              <UserCircle size={24} strokeWidth={2} />
+              <UserCircle size={24} />
             </Link>
 
-            {/* Logout Icon */}
+
             <button
-              className="p-2 rounded-full text-purple-200 hover:bg-[#6B116E] hover:text-white transition-colors"
-              title="Logout"
+              className="p-2 rounded-full text-purple-200 hover:bg-[#6B116E]"
               onClick={handleLogout}
             >
-              <LogOut size={24} strokeWidth={2} />
+              <LogOut size={24} />
             </button>
-          </div>
-        </div>
-      </nav>
 
-      {/* MOBILE BOTTOM NAVIGATION (Hidden on Desktop) */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full bg-[#4A044E] shadow-[0_-4px_10px_rgba(0,0,0,0.2)] z-50 flex justify-around items-center h-16 px-2 border-t border-[#6B116E]">
-        {navLinks.map((link, index) => {
-          const Icon = link.icon;
-          return (
-            <NavLink
-              key={index}
-              to={link.to}
-              className={({ isActive }) =>
-                `flex flex-col items-center justify-center w-full gap-1 transition-colors ${
-                  isActive ? "text-white" : "text-purple-200 hover:text-white"
-                }`
-              }
-            >
-              <Icon size={22} />
-              <span className="text-[10px] font-medium text-center leading-tight px-1">
-                {link.label}
-              </span>
-            </NavLink>
-          );
-        })}
+          </div>
+
+
+        </div>
+
       </nav>
     </>
   );

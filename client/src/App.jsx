@@ -7,6 +7,7 @@ import StudentSearch from "./pages/StudentSearch";
 import MentorSearch from "./pages/MentorSearch";
 import MentorshipProgramSearch from "./pages/MentorshipProgramSearch";
 import OpportunityBoard from "./pages/OpportunityBoard";
+import Search from "./pages/Search";
 
 function App() {
   return (
@@ -40,6 +41,10 @@ function App() {
 
           {/* Your page */}
           <Route path="/student-search" element={<StudentSearch />} />
+
+          <Route path="/search" element={<Search />} />
+
+          
         </Routes>
       </BrowserRouter>
     </AuthProvider>

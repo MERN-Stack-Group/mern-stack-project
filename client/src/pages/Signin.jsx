@@ -2,22 +2,46 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
-function Signin({ setIsLoggedIn }) {
+/**
+ * Signin Component
+ * Handles user authentication against locally stored credentials.
+ */
+function Signin({ setIsLoggedIn, setRole }) {
   const navigate = useNavigate();
+  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  function handleLogin(e) {
+  const handleLogin = (e) => {
     e.preventDefault();
 
-    // temporary testing login
-    setIsLoggedIn(true);
-    navigate("/");
-  }
+    // Retrieve mock user data from local storage
+    const savedUser = JSON.parse(localStorage.getItem("user"));
+    if (!savedUser) {
+        alert("No account found. Please sign up first.");
+        return;
+    }
+
+    // Validate credentials
+    if (email === savedUser.email && password === savedUser.password) {
+        setIsLoggedIn(true);
+        if (setRole) setRole(savedUser.role);
+        
+        // Persist session state
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("role", savedUser.role);
+
+        navigate("/");
+    } else {
+        alert("Incorrect email or password.");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0f0d0b] py-10 px-4">
       <div className="bg-[#24201D] w-full max-w-md p-8 rounded-2xl shadow-xl border border-stone-800">
-        {/* Header Section */}
+        
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-[#F5F1EA] text-center">
             GradBridge
@@ -32,7 +56,7 @@ function Signin({ setIsLoggedIn }) {
         </p>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
-          {/* Email Input Field */}
+          
           <div className="flex flex-col gap-1">
             <label htmlFor="email" className="text-sm text-stone-400">
               Email Address
@@ -42,12 +66,13 @@ function Signin({ setIsLoggedIn }) {
               name="email"
               type="email"
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
               placeholder="e.g. johndoe@example.com"
             />
           </div>
 
-          {/* Password Input Field */}
           <div className="flex flex-col gap-1">
             <label htmlFor="password" className="text-sm text-stone-400">
               Password
@@ -57,13 +82,14 @@ function Signin({ setIsLoggedIn }) {
               <input
                 id="password"
                 name="password"
-                type={showPassword ? "text" : "password"} //dynamically change type to show the password
+                type={showPassword ? "text" : "password"}
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 pr-10 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
                 placeholder="••••••••"
               />
 
-              {/* showpassword button */}
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
@@ -75,7 +101,6 @@ function Signin({ setIsLoggedIn }) {
             </div>
           </div>
 
-          {/* Submit Action */}
           <button
             type="submit"
             className="bg-[#7E8C54] hover:bg-[#8E9E84] text-white font-medium p-3 rounded-lg mt-4 transition duration-200"
@@ -83,7 +108,6 @@ function Signin({ setIsLoggedIn }) {
             Sign In
           </button>
 
-          {/* Signup Redirect */}
           <p className="text-center text-[#B8B0A8] mt-4 text-sm">
             Don't have an account?
             <Link

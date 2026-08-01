@@ -1,5 +1,5 @@
 import { useState } from "react";
-import IncomingRequests from "../components/IncomingRequests";
+import IncomingRequests from "../components/IncomingRequests.jsx";
 import MentorshipCard from "../components/MentorshipCard";
 import ProgressTracker from "../components/ProgressTracker";
 import { MentorshipModel } from "../components/MentorshipModel";

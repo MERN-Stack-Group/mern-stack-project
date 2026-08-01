@@ -1,0 +1,10 @@
+Design direction:
+
+Background → #0f0d0b
+Cards → #24201D
+Inner cards → #312C28
+Borders → #4A433E
+Main text → #F5F1EA
+Muted text → #B8B0A8
+Accent → #7E8C54
+Hover → #8E9E84

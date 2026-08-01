@@ -22,77 +22,64 @@ function App() {
         <Navbar />
 
         <Routes>
-          {/* Main Search Page */}
-          <Route path="/" element={<Search />} />
-
-          {/* Search Route */}
-          <Route path="/search" element={<Search />} />
-
-          {/* Profile */}
-          <Route path="/profile" element={<Profile />} />
-
-          {/* Existing Mentorship Pages */}
-          <Route
-            path="/"
-            element={
-              <Home
-                isLoggedIn={isLoggedIn}
-                setIsLoggedIn={setIsLoggedIn}
-                role={role}
-                setRole={setRole}
-              />
-            }
-          />
-
-          {/* Search */}
-          <Route path="/search" element={<Search />} />
+          {/* Core Pages */}
+          <>
+            <Route
+              path="/"
+              element={
+                <Home
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                  role={role}
+                  setRole={setRole}
+                />
+              }
+            />
+            <Route path="/profile" element={<Profile />} />
+          </>
 
           {/* Authentication */}
-          <Route path="/signup" element={<Signup />} />
+          <>
+            <Route path="/signup" element={<Signup />} />
+            <Route
+              path="/signin"
+              element={
+                <Signin setIsLoggedIn={setIsLoggedIn} setRole={setRole} />
+              }
+            />
+          </>
 
-          <Route
-            path="/signin"
-            element={
-              <Signin
-                setIsLoggedIn={setIsLoggedIn}
-                setRole={setRole}
-              />
-            }
-          />
+          {/* Mentorship Views */}
+          <>
+            <Route
+              path="/mentorships-completed"
+              element={<MentorshipModel viewType="completed" />}
+            />
+            <Route
+              path="/mentorships-active"
+              element={<MentorshipModel viewType="active" />}
+            />
+          </>
 
-          {/* Your main profile page */}
-          <Route path="/profile" element={<Profile />} />
-
-          {/* Mentorship */}
-          <Route
-            path="/mentorships-completed"
-            element={<MentorshipModel viewType="completed" />}
-          />
-
-          <Route
-            path="/mentorships-active"
-            element={<MentorshipModel viewType="active" />}
-          />
-
-          <Route
-            path="/search-mentors"
-            element={<Search categoryType="mentors" />}
-          />
-
-          <Route
-            path="/search-opportunites"
-            element={<Search categoryType="opportunities" />}
-          />
-
-          <Route
-            path="/search-students"
-            element={<Search categoryType="students" />}
-          />
-
-          <Route
-            path="/search-mentorships"
-            element={<Search categoryType="mentorships" />}
-          />
+          {/* Search Directories */}
+          <>
+            <Route
+              path="/search-mentors"
+              element={<Search categoryType="mentors" />}
+            />
+            <Route
+              path="/search-opportunites"
+              element={<Search categoryType="opportunities" />}
+            />
+            <Route
+              path="/search-students"
+              element={<Search categoryType="students" />}
+            />
+            <Route
+              path="/search-mentorships"
+              element={<Search categoryType="mentorships" />}
+            />
+          </>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -7,10 +7,8 @@ import { Profile } from "./pages/Profile";
 import { MentorshipModel } from "./components/MentorshipModel";
 import { Navbar } from "./layouts/Navbar";
 import { AuthProvider } from "./hooks/AuthContext";
-import StudentSearch from "./pages/StudentSearch";
-import MentorSearch from "./pages/MentorSearch";
-import MentorshipProgramSearch from "./pages/MentorshipProgramSearch";
-import OpportunityBoard from "./pages/OpportunityBoard";
+
+import Search from "./pages/Search";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -18,9 +16,23 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+
         <Navbar />
 
         <Routes>
+
+          {/* Main Search Page */}
+          <Route path="/" element={<Search />} />
+
+          {/* Search Route */}
+          <Route path="/search" element={<Search />} />
+
+
+          {/* Profile */}
+          <Route path="/profile" element={<Profile />} />
+
+
+          {/* Existing Mentorship Pages */}
           <Route
             path="/"
             element={
@@ -63,6 +75,7 @@ function App() {
 
           <Route path="/student-search" element={<StudentSearch />} />
         </Routes>
+
       </BrowserRouter>
     </AuthProvider>
   );

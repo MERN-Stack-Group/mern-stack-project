@@ -1,14 +1,22 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SelectList from "../components/SelectList";
 import { Eye, EyeOff } from "lucide-react";
 
-function Signup({ switchToSignin }) {
+/**
+ * Signup Component
+ * Handles new user registration, role selection, and persists 
+ * the mock user data to local storage for authentication.
+ */
+function Signup() {
+  const navigate = useNavigate();
+  
   const [role, setRole] = useState("");
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  // Dynamically update form data based on input name attributes
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -33,23 +41,30 @@ function Signup({ switchToSignin }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Ensure a role is selected before submitting
+    // Prevent submission if the user hasn't toggled student/alumni
     if (!role) {
       setMessage("Please select a role to continue.");
       return;
     }
 
-    // Combine role with form data for final payload
+    // Append the selected role to the rest of the form data
     const submissionData = { ...formData, role };
-    console.log("Submitted Payload:", submissionData);
+    
+    // Persist to localStorage so the Signin component can validate it later
+    localStorage.setItem("user", JSON.stringify(submissionData));
 
-    setMessage("Registration submitted!");
+    setMessage("Registration successful! Redirecting...");
+    
+    // Short delay so the user can read the success message before redirect
+    setTimeout(() => {
+        navigate("/signin");
+    }, 1500);
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0f0d0b] py-10 px-4">
       <div className="bg-[#24201D] w-full max-w-lg p-8 rounded-2xl shadow-xl border border-stone-800">
-        {/* Header Section */}
+        
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-[#F5F1EA] text-center">
             GradBridge
@@ -63,7 +78,7 @@ function Signup({ switchToSignin }) {
           Create Account
         </p>
 
-        {/* Role Selection */}
+        {/* Role Selection Tabs */}
         <div className="mb-6">
           <label className="block text-sm font-medium text-stone-400 mb-2">
             I am joining as an:
@@ -94,9 +109,9 @@ function Signup({ switchToSignin }) {
           </div>
         </div>
 
-        {/* Dynamic Form */}
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          {/* Render Alumni specific fields */}
+          
+          {/* Conditional rendering for Alumni-specific fields */}
           {role === "alumni" && (
             <>
               <div className="flex gap-3">
@@ -156,7 +171,7 @@ function Signup({ switchToSignin }) {
             </>
           )}
 
-          {/* Standard fields for both roles */}
+          {/* Standard fields shown for all roles */}
           <div className="flex flex-col gap-1 mt-2">
             <label htmlFor="email" className="text-sm text-stone-400">
               Email Address
@@ -172,7 +187,6 @@ function Signup({ switchToSignin }) {
             />
           </div>
 
-          {/* Password Input Field */}
           <div className="flex flex-col gap-1">
             <label htmlFor="password" className="text-sm text-stone-400">
               Password
@@ -182,13 +196,13 @@ function Signup({ switchToSignin }) {
               <input
                 id="password"
                 name="password"
-                type={showPassword ? "text" : "password"} //dynamically change type to show the password
+                type={showPassword ? "text" : "password"}
                 required
                 className="w-full bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 pr-10 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
                 placeholder="••••••••"
+                onChange={handleChange}
               />
 
-              {/* showpassword button */}
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
@@ -200,16 +214,16 @@ function Signup({ switchToSignin }) {
             </div>
           </div>
 
-          {/* Form Messages */}
           {message && (
             <p
-              className={`text-center mt-2 ${message.includes("Please select") ? "text-red-400" : "text-[#7E8C54]"}`}
+              className={`text-center mt-2 ${
+                message.includes("Please select") ? "text-red-400" : "text-[#7E8C54]"
+              }`}
             >
               {message}
             </p>
           )}
 
-          {/* Submit Action */}
           <button
             type="submit"
             className="bg-[#7E8C54] hover:bg-[#8E9E84] text-white font-medium p-3 rounded-lg mt-4 transition duration-200"
@@ -217,7 +231,6 @@ function Signup({ switchToSignin }) {
             Sign Up
           </button>
 
-          {/* Login Redirect */}
           <p className="text-center text-[#B8B0A8] mt-4 text-sm">
             Already have an account?
             <Link

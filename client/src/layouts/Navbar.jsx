@@ -1,5 +1,4 @@
-import React from "react";
-import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
   Search,
   UserCircle,
@@ -14,6 +13,8 @@ import {
   Bookmark,
   GraduationCap,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { useAuth } from "../hooks/AuthContext";
 
@@ -110,20 +111,10 @@ export const Navbar = () => {
       <nav className="md:hidden fixed bottom-0 left-0 w-full bg-[#4A044E] shadow-[0_-4px_10px_rgba(0,0,0,0.2)] z-50 flex justify-around items-center h-16 px-2 border-t border-[#6B116E]">
         {navLinks.map((link, index) => {
           const Icon = link.icon;
+
           return (
-            <NavLink
-              key={index}
-              to={link.to}
-              className={({ isActive }) =>
-                `flex flex-col items-center justify-center w-full gap-1 transition-colors ${
-                  isActive ? "text-white" : "text-purple-200 hover:text-white"
-                }`
-              }
-            >
+            <NavLink key={index} to={link.to} className="text-purple-200">
               <Icon size={22} />
-              <span className="text-[10px] font-medium text-center leading-tight px-1">
-                {link.label}
-              </span>
             </NavLink>
           );
         })}

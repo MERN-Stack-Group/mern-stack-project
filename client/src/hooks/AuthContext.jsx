@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
         // setUser(response.data);
 
         // Mock Data for now
-        setUser({ name: "Kalana", userType: "student" });
+        setUser({ name: "Kalana", userType: "alumni" });
       } catch (error) {
         console.error("Failed to fetch user");
       } finally {

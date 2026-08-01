@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
 import Home from "./pages/Home";
@@ -9,9 +9,14 @@ import { Profile } from "./pages/Profile";
 
 import { Navbar } from "./layouts/Navbar";
 import { AuthProvider } from "./hooks/AuthContext";
+import PendingApproval from "./pages/PendingApproval";
 
 import { MentorshipModel } from "./components/MentorshipModel";
 
+/**
+ * Main Application Router
+ * Defines core routing, auth state, and view rendering.
+ */
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState(null);
@@ -36,6 +41,12 @@ function App() {
               }
             />
             <Route path="/profile" element={<Profile />} />
+            
+            {/* Added from thanushi branch */}
+            <Route
+              path="/pending-approval"
+              element={<PendingApproval />}
+            />
           </>
 
           {/* Authentication */}

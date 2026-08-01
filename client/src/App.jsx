@@ -16,21 +16,17 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-
         <Navbar />
 
         <Routes>
-
           {/* Main Search Page */}
           <Route path="/" element={<Search />} />
 
           {/* Search Route */}
           <Route path="/search" element={<Search />} />
 
-
           {/* Profile */}
           <Route path="/profile" element={<Profile />} />
-
 
           {/* Existing Mentorship Pages */}
           <Route
@@ -52,14 +48,6 @@ function App() {
             element={<Signin setIsLoggedIn={setIsLoggedIn} setRole={setRole} />}
           />
 
-          <Route path="/mentor-search" element={<MentorSearch />} />
-          <Route
-            path="/mentorship-programs"
-            element={<MentorshipProgramSearch />}
-          />
-
-          <Route path="/opportunities" element={<OpportunityBoard />} />
-
           {/* Your main profile page */}
           <Route path="/profile" element={<Profile />} />
 
@@ -73,9 +61,26 @@ function App() {
             element={<MentorshipModel viewType="active" />}
           />
 
-          <Route path="/student-search" element={<StudentSearch />} />
-        </Routes>
+          <Route
+            path="/search-mentors"
+            element={<Search categoryType="mentors" />}
+          />
 
+          <Route
+            path="/search-opportunites"
+            element={<Search categoryType="opportunities" />}
+          />
+
+          <Route
+            path="/search-students"
+            element={<Search categoryType="students" />}
+          />
+
+          <Route
+            path="/search-mentorships"
+            element={<Search categoryType="mentorships" />}
+          />
+        </Routes>
       </BrowserRouter>
     </AuthProvider>
   );

@@ -1,18 +1,21 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
+
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
+import Search from "./pages/Search";
 import { Profile } from "./pages/Profile";
-import { MentorshipModel } from "./components/MentorshipModel";
+
 import { Navbar } from "./layouts/Navbar";
 import { AuthProvider } from "./hooks/AuthContext";
 
-import Search from "./pages/Search";
+import { MentorshipModel } from "./components/MentorshipModel";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState(null);
+
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -21,18 +24,7 @@ function App() {
 
         <Routes>
 
-          {/* Main Search Page */}
-          <Route path="/" element={<Search />} />
-
-          {/* Search Route */}
-          <Route path="/search" element={<Search />} />
-
-
-          {/* Profile */}
-          <Route path="/profile" element={<Profile />} />
-
-
-          {/* Existing Mentorship Pages */}
+          {/* Home */}
           <Route
             path="/"
             element={
@@ -45,24 +37,26 @@ function App() {
             }
           />
 
+          {/* Search */}
+          <Route path="/search" element={<Search />} />
+
+          {/* Authentication */}
           <Route path="/signup" element={<Signup />} />
 
           <Route
             path="/signin"
-            element={<Signin setIsLoggedIn={setIsLoggedIn} setRole={setRole} />}
+            element={
+              <Signin
+                setIsLoggedIn={setIsLoggedIn}
+                setRole={setRole}
+              />
+            }
           />
 
-          <Route path="/mentor-search" element={<MentorSearch />} />
-          <Route
-            path="/mentorship-programs"
-            element={<MentorshipProgramSearch />}
-          />
-
-          <Route path="/opportunities" element={<OpportunityBoard />} />
-
-          {/* Your main profile page */}
+          {/* Profile */}
           <Route path="/profile" element={<Profile />} />
 
+          {/* Mentorship */}
           <Route
             path="/mentorships-completed"
             element={<MentorshipModel viewType="completed" />}
@@ -73,7 +67,6 @@ function App() {
             element={<MentorshipModel viewType="active" />}
           />
 
-          <Route path="/student-search" element={<StudentSearch />} />
         </Routes>
 
       </BrowserRouter>

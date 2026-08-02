@@ -1,8 +1,6 @@
 import React from "react";
-import { MentorshipCard } from "./MentorshipCard";
-
+import MentorshipCard from "./MentorshipCard";
 export const MentorshipModel = ({ viewType = "completed" }) => {
-
   const activeMentorships = [
     {
       id: "a1",
@@ -15,7 +13,6 @@ export const MentorshipModel = ({ viewType = "completed" }) => {
         "Focusing on transitioning from basic IT support to systems architecture, with emphasis on scalable database design and operational workflows.",
     },
   ];
-
 
   const completedMentorships = [
     {
@@ -41,37 +38,21 @@ export const MentorshipModel = ({ viewType = "completed" }) => {
     },
   ];
 
-
-  const data =
-    viewType === "active"
-      ? activeMentorships
-      : completedMentorships;
-
+  const data = viewType === "active" ? activeMentorships : completedMentorships;
 
   return (
     <div className="flex flex-col gap-4 w-full md:w-4/6 ml-0 md:ml-10 mt-5">
-
       <h2 className="text-xl font-bold text-gray-900">
-        {viewType === "active"
-          ? "Active Mentorships"
-          : "Mentorship History"}
+        {viewType === "active" ? "Active Mentorships" : "Mentorship History"}
       </h2>
 
-
-      {data.map((item)=>(
-        <MentorshipCard
-          key={item.id}
-          {...item}
-        />
+      {data.map((item) => (
+        <MentorshipCard key={item.id} {...item} />
       ))}
 
-
-      {data.length===0 && (
-        <p className="text-gray-500 italic">
-          No mentorships found.
-        </p>
+      {data.length === 0 && (
+        <p className="text-gray-500 italic">No mentorships found.</p>
       )}
-
     </div>
   );
 };

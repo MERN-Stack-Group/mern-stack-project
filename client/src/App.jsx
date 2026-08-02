@@ -42,12 +42,9 @@ function App() {
               }
             />
             <Route path="/profile" element={<Profile />} />
-            
+
             {/* Added from thanushi branch */}
-            <Route
-              path="/pending-approval"
-              element={<PendingApproval />}
-            />
+            <Route path="/pending-approval" element={<PendingApproval />} />
           </>
 
           {/* Authentication */}
@@ -91,6 +88,8 @@ function App() {
               path="/search-mentorships"
               element={<Search categoryType="mentorships" />}
             />
+
+            <Route path="/mentor-dashboard" element={<MentorDashboard />} />
           </>
         </Routes>
       </BrowserRouter>

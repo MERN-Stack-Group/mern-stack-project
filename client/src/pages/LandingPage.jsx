@@ -5,10 +5,7 @@ import Footer from "../components/Footer";
 function Home({ isLoggedIn, role }) {
     return (
         <div className="bg-[#0f0d0b] min-h-screen">
-            <Hero
-                isLoggedIn={isLoggedIn}
-                role={role}
-            />
+            <Hero/>
             <InfoSection />
             <Footer />
 

@@ -166,11 +166,8 @@ export const Profile = () => {
                   <p className="text-sm font-semibold text-gray-700 mt-0.5">
                     Senior Software Engineer
                   </p>
-                  <p className="text-xs text-gray-500 mt-1.5">
-                    Jan 2024 - Present • Full-time
-                  </p>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    Colombo, Sri Lanka • Hybrid
+                    Colombo, Sri Lanka
                   </p>
                 </div>
               </div>

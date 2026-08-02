@@ -24,8 +24,6 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const logoDestination = user ? "/home" : "/";
-
   const handleLogout = () => {
     // TODO: clear tokens/session data if needed before redirect
     navigate("/");
@@ -68,7 +66,7 @@ export const Navbar = () => {
       {/* --- Desktop Nav --- */}
       <nav className="bg-[#4A044E] px-4 md:px-6 py-3 md:py-4 shadow-md w-full sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link to={logoDestination} className="flex-shrink-0">
+          <Link to="/" className="flex-shrink-0">
             <span className="text-xl font-bold text-white tracking-widest cursor-pointer">
               LOGO
             </span>

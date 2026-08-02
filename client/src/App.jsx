@@ -2,7 +2,6 @@ import MentorDashboard from "./pages/MentorDashboard";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
-import LandingPage from "./pages/LandingPage";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Search from "./pages/Search";
@@ -14,7 +13,7 @@ import PendingApproval from "./pages/PendingApproval";
 
 import { MentorshipModel } from "./components/MentorshipModel";
 
-import Home from "./pages/Home";
+import ProtectedRoot from "./pages/ProtectedRoot";
 
 /**
  * Main Application Router
@@ -32,18 +31,7 @@ function App() {
         <Routes>
           {/* Core Pages */}
           <>
-            <Route
-              path="/"
-              element={
-                <LandingPage
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                  role={role}
-                  setRole={setRole}
-                />
-              }
-            />
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<ProtectedRoot />} />
             <Route path="/profile" element={<Profile />} />
 
             {/* Added from thanushi branch */}

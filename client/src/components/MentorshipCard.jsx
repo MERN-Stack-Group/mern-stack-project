@@ -1,138 +1,212 @@
 import React, { useState } from "react";
-import ProgressTracker from "./ProgressTracker";
 
-const MentorshipProgramCard = ({ 
-  program, 
-  onNextStep, 
-  onPrevStep, 
-  onRemoveStudent, 
-  onUndoRemove,
-  onSave // New Prop
+// The MentorshipCard component displays program details, mentee information,
+// and provides a system to manage reviews for completed programs.
+export const MentorshipCard = ({
+  programName,
+  duration,
+  // Defaulting status to an empty string prevents TypeError crashes if the prop is omitted by the parent.
+  status = "",
+  menteeName,
+  menteeRole,
+  introduction,
 }) => {
-  const [showStudents, setShowStudents] = useState(false);
-  const { title, duration, status, step, mentees = [], removedMentees = [] } = program;
+  // Evaluates completion state to conditionally render review features.
+  // Optional chaining prevents runtime errors if status is null or undefined.
+  const isCompleted = status?.toLowerCase() === "completed";
+
+  // State management for the internal review system.
+  const [reviews, setReviews] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [reviewData, setReviewData] = useState({ rating: 5, description: "" });
+
+  // Resets the form state to default values before displaying it for a new entry.
+  const handleOpenForm = () => {
+    setReviewData({ rating: 5, description: "" });
+    setEditingIndex(null);
+    setShowForm(true);
+  };
+
+  // Populates the form with existing data and stores the index to track which item is being modified.
+  const handleEdit = (index) => {
+    setReviewData(reviews[index]);
+    setEditingIndex(index);
+    setShowForm(true);
+  };
+
+  // Filters out the review at the specified index to remove it from the state.
+  const handleDelete = (index) => {
+    setReviews(reviews.filter((_, i) => i !== index));
+  };
+
+  // Handles both creating new reviews and updating existing ones based on whether an editing index exists.
+  const handleSubmitReview = () => {
+    if (editingIndex !== null) {
+      const updatedReviews = [...reviews];
+      updatedReviews[editingIndex] = reviewData;
+      setReviews(updatedReviews);
+    } else {
+      setReviews([...reviews, reviewData]);
+    }
+    setShowForm(false);
+  };
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow mb-6">
-      {/* Program Header */}
-      <div className="flex justify-between items-start mb-2">
+    <div className="bg-white rounded-lg border border-gray-300 p-5 shadow-sm transition-shadow hover:shadow-md">
+      {/* Header section grouping the core program identifiers and dynamic status badge */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-2 sm:gap-4">
         <div>
-          <h3 className="text-xl font-bold text-gray-900">{title}</h3>
+          <h3 className="text-lg font-bold text-gray-900 leading-tight">
+            {programName}
+          </h3>
           <p className="text-sm text-gray-500 mt-1">{duration}</p>
         </div>
-        <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase border ${
-          step === 3 ? "bg-green-50 text-green-700 border-green-200" : "bg-blue-50 text-blue-700 border-blue-200"
-        }`}>
+
+        {/* The badge applies a distinct visual style (gray for completed, green for active) based on the derived state */}
+        <span
+          className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide w-max sm:self-start ${
+            isCompleted
+              ? "bg-gray-100 text-gray-600 border border-gray-200"
+              : "bg-emerald-100 text-emerald-700 border border-emerald-200"
+          }`}
+        >
           {status}
         </span>
       </div>
 
-      {/* Aligned Progress Tracker */}
-      <div className="mt-4 px-2">
-        <ProgressTracker currentStep={step} />
+      <div className="mb-5">
+        <p className="text-sm text-gray-700 leading-relaxed">{introduction}</p>
       </div>
 
-      {/* Step Controls */}
-      <div className="flex justify-end gap-3 mt-2 mb-4">
-        <button
-          onClick={onPrevStep}
-          disabled={step === 0}
-          className="px-3 py-1.5 text-xs font-semibold text-gray-600 bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          &larr; Previous Step
-        </button>
-        <button
-          onClick={onNextStep}
-          disabled={step === 3}
-          className="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 border border-transparent rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-        >
-          Next Step &rarr;
-        </button>
-      </div>
+      {/* Footer section containing mentee context and contextual actions */}
+      <div className="border-t border-gray-200 pt-4 flex flex-wrap justify-between items-end gap-4">
+        <div>
+          <h4 className="text-[11px] font-semibold text-gray-500 uppercase tracking-widest mb-3">
+            Mentee
+          </h4>
 
-      {/* NEW: Finalize / Save Banner when program is completed */}
-      {step === 3 && (
-        <div className="mb-4 mt-2 flex flex-col sm:flex-row items-center justify-between bg-green-50 border border-green-200 p-4 rounded-lg animate-fadeIn">
-          <p className="text-sm text-green-800 font-medium mb-2 sm:mb-0">
-            This program has reached completion. Save to move it to your history.
-          </p>
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-indigo-400 rounded-full flex-shrink-0 flex items-center justify-center text-xs text-white font-bold shadow-sm">
+              IMG
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-gray-900 hover:text-blue-700 hover:underline cursor-pointer">
+                {menteeName}
+              </h4>
+              <p className="text-xs text-gray-600 line-clamp-1">{menteeRole}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Ensures the review button is only accessible when the program is finished and the form isn't already active */}
+        {isCompleted && !showForm && (
           <button
-            onClick={() => onSave(program.id)}
-            className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded shadow-sm transition-colors whitespace-nowrap"
+            onClick={handleOpenForm}
+            className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-md hover:bg-blue-700 transition-colors whitespace-nowrap"
           >
-            Save & Finalize
+            Add Review
           </button>
+        )}
+      </div>
+
+      {/* Renders the list of submitted reviews if the state array is not empty */}
+      {reviews.length > 0 && (
+        <div className="mt-5 flex flex-col gap-3">
+          {reviews.map((review, index) => (
+            <div
+              key={index}
+              className="bg-gray-50 rounded-md p-4 border border-gray-200"
+            >
+              <div className="flex justify-between items-start mb-2">
+                <div className="text-sm font-bold text-yellow-500">
+                  {/* Generates solid and empty stars based on the numerical rating value */}
+                  {"★".repeat(review.rating)}
+                  {"☆".repeat(5 - review.rating)}
+                  <span className="text-gray-600 text-xs ml-2 font-normal">
+                    ({review.rating}/5)
+                  </span>
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => handleEdit(index)}
+                    className="text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(index)}
+                    className="text-xs font-semibold text-red-600 hover:text-red-800 transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+              <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                {review.description}
+              </p>
+            </div>
+          ))}
         </div>
       )}
 
-      {/* Accordion Toggle for Students */}
-      <div className="mt-4 border-t border-gray-100 pt-4">
-        <button
-          onClick={() => setShowStudents(!showStudents)}
-          className="flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors focus:outline-none"
-        >
-          {showStudents ? "Hide Enrolled Students" : `View Enrolled Students (${mentees.length})`}
-          <svg
-            className={`w-4 h-4 ml-2 transform transition-transform duration-200 ${
-              showStudents ? "rotate-180" : ""
-            }`}
-            fill="none" stroke="currentColor" viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+      {/* Inline form toggled by the showForm state, adapting its header text based on context (edit vs new) */}
+      {showForm && (
+        <div className="mt-5 bg-gray-50 border border-gray-200 rounded-lg p-5">
+          <h3 className="text-md font-bold text-gray-900 mb-4">
+            {editingIndex !== null ? "Edit Review" : "Leave a Review"}
+          </h3>
 
-        {/* Expandable Mentees Section */}
-        {showStudents && (
-          <div className="mt-4 animate-fadeIn">
-            {removedMentees.length > 0 && (
-              <div className="mb-4 flex items-center justify-between bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-2 rounded-lg text-sm">
-                <span>{removedMentees.length} student(s) removed.</span>
-                <button onClick={onUndoRemove} className="font-bold hover:underline focus:outline-none">
-                  Undo Last Removal
-                </button>
-              </div>
-            )}
-
-            {mentees.length === 0 ? (
-              <p className="text-sm text-gray-500 italic">No students currently enrolled.</p>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {mentees.map((mentee, idx) => (
-                  <div key={idx} className="p-4 bg-gray-50 rounded-lg border border-gray-200 flex flex-col justify-between relative group">
-                    <div>
-                      <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-sm">
-                          {mentee.name.charAt(0)}
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-gray-900">{mentee.name}</h4>
-                          <p className="text-xs text-gray-500">{mentee.program}</p>
-                        </div>
-                      </div>
-                      <p className="text-xs text-gray-600 italic border-l-2 border-indigo-200 pl-2 mt-2 pr-8">
-                        "{mentee.message}"
-                      </p>
-                    </div>
-                    {/* Remove Student Button */}
-                    <button
-                      onClick={() => onRemoveStudent(idx)}
-                      className="absolute top-4 right-4 text-gray-400 hover:text-red-600 p-1 rounded transition-colors focus:outline-none"
-                      title="Remove Student"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Rating (Stars)
+            </label>
+            <select
+              className="w-full border border-gray-300 rounded-md p-2 text-sm bg-white"
+              value={reviewData.rating}
+              onChange={(e) =>
+                setReviewData({ ...reviewData, rating: Number(e.target.value) })
+              }
+            >
+              {[1, 2, 3, 4, 5].map((num) => (
+                <option key={num} value={num}>
+                  {num} Star{num > 1 ? "s" : ""}
+                </option>
+              ))}
+            </select>
           </div>
-        )}
-      </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Description
+            </label>
+            <textarea
+              className="w-full border border-gray-300 rounded-md p-2 text-sm bg-white"
+              rows="3"
+              value={reviewData.description}
+              onChange={(e) =>
+                setReviewData({ ...reviewData, description: e.target.value })
+              }
+              placeholder="Share your experience..."
+            />
+          </div>
+
+          <div className="flex justify-end gap-2 mt-2">
+            <button
+              onClick={() => setShowForm(false)}
+              className="px-4 py-2 text-sm text-gray-600 bg-white border border-gray-300 hover:bg-gray-100 rounded-md font-medium transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSubmitReview}
+              className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium transition-colors"
+            >
+              {editingIndex !== null ? "Update" : "Submit"}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
-
-export default MentorshipProgramCard;

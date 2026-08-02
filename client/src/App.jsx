@@ -33,7 +33,7 @@ function App() {
           <>
             <Route path="/" element={<ProtectedRoot />} />
             <Route path="/profile" element={<Profile />} />
-
+            <Route path="/profile/:userId" element={<Profile />} />
             {/* Added from thanushi branch */}
             <Route path="/pending-approval" element={<PendingApproval />} />
           </>
@@ -56,7 +56,15 @@ function App() {
               element={<MentorshipModel viewType="completed" />}
             />
             <Route
+              path="/profile/:userId/mentorships-completed"
+              element={<MentorshipModel viewType="completed" />}
+            />
+            <Route
               path="/mentorships-active"
+              element={<MentorshipModel viewType="active" />}
+            />
+            <Route
+              path="/profile/:userId/mentorships-active"
               element={<MentorshipModel viewType="active" />}
             />
           </>

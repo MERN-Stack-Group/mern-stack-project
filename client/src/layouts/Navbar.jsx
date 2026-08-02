@@ -12,6 +12,7 @@ import {
   Briefcase,
   Bookmark,
   GraduationCap,
+  LayoutDashboard,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -22,6 +23,8 @@ export const Navbar = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const logoDestination = user ? "/home" : "/";
 
   const handleLogout = () => {
     // TODO: clear tokens/session data if needed before redirect
@@ -41,13 +44,21 @@ export const Navbar = () => {
   // build route config based on user role
   const navLinks = user
     ? [
-        { label: "Mentors", to: "/search-mentors", icon: Compass },
-        { label: "Mentorships", to: "/search-mentorships", icon: Users },
-        { label: "Opportunities", to: "/search-opportunites", icon: Briefcase },
-        { label: "Students", to: "/search-students", icon: GraduationCap },
+        { label: "Mentors", to: "/search/mentors", icon: Compass },
+        { label: "Mentorships", to: "/search/mentorships", icon: Users },
+        { label: "Opportunities", to: "/search/opportunites", icon: Briefcase },
+        { label: "Students", to: "/search/students", icon: GraduationCap },
+        ...(user.userType === "alumni"
+          ? [
+              {
+                label: "Dashboard",
+                to: "/mentor-dashboard",
+                icon: LayoutDashboard,
+              },
+            ]
+          : []),
       ]
     : [
-        // unauthenticated visitors
         { label: "Sign In", to: "/signin", icon: LogIn },
         { label: "Get Started", to: "/signup", icon: Zap },
       ];
@@ -57,7 +68,7 @@ export const Navbar = () => {
       {/* --- Desktop Nav --- */}
       <nav className="bg-[#4A044E] px-4 md:px-6 py-3 md:py-4 shadow-md w-full sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link to="/" className="flex-shrink-0">
+          <Link to={logoDestination} className="flex-shrink-0">
             <span className="text-xl font-bold text-white tracking-widest cursor-pointer">
               LOGO
             </span>

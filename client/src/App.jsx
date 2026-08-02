@@ -2,7 +2,6 @@ import MentorDashboard from "./pages/MentorDashboard";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
-import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Search from "./pages/Search";
@@ -13,6 +12,8 @@ import { AuthProvider } from "./hooks/AuthContext";
 import PendingApproval from "./pages/PendingApproval";
 
 import { MentorshipModel } from "./components/MentorshipModel";
+
+import ProtectedRoot from "./pages/ProtectedRoot";
 
 /**
  * Main Application Router
@@ -30,24 +31,11 @@ function App() {
         <Routes>
           {/* Core Pages */}
           <>
-            <Route
-              path="/"
-              element={
-                <Home
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                  role={role}
-                  setRole={setRole}
-                />
-              }
-            />
+            <Route path="/" element={<ProtectedRoot />} />
             <Route path="/profile" element={<Profile />} />
-            
+
             {/* Added from thanushi branch */}
-            <Route
-              path="/pending-approval"
-              element={<PendingApproval />}
-            />
+            <Route path="/pending-approval" element={<PendingApproval />} />
           </>
 
           {/* Authentication */}
@@ -76,20 +64,41 @@ function App() {
           {/* Search Directories */}
           <>
             <Route
-              path="/search-mentors"
+              path="/search/mentors"
               element={<Search categoryType="mentors" />}
             />
             <Route
-              path="/search-opportunites"
+              path="/search/opportunites"
               element={<Search categoryType="opportunities" />}
             />
             <Route
-              path="/search-students"
+              path="/search/students"
               element={<Search categoryType="students" />}
             />
             <Route
-              path="/search-mentorships"
+              path="/search/mentorships"
               element={<Search categoryType="mentorships" />}
+            />
+
+            <Route path="/mentor-dashboard" element={<MentorDashboard />} />
+
+            <Route
+              path="/mentor-dashboard/mentorships/active"
+              element={
+                <MentorDashboard mainTab="mentorship" mentorSub="active" />
+              }
+            />
+            <Route
+              path="/mentor-dashboard/mentorships/history"
+              element={
+                <MentorDashboard mainTab="mentorship" mentorSub="history" />
+              }
+            />
+            <Route
+              path="/mentor-dashboard/mentorships/reviews"
+              element={
+                <MentorDashboard mainTab="mentorship" mentorSub="reviews" />
+              }
             />
           </>
         </Routes>

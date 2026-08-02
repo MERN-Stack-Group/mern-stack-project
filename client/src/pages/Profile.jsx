@@ -16,15 +16,23 @@ export const Profile = () => {
   if (loading) return <div className="h-16 bg-[#2C4C3B] w-full"></div>;
 
   const completedMentorships = () => {
-    navigate("/mentorships-completed");
+    if (user.userType === "alumni") {
+      navigate("/mentor-dashboard/mentorships/history");
+    } else {
+      navigate("/mentorships-completed");
+    }
   };
 
   const activeMentorships = () => {
-    navigate("/mentorships-active");
+    if (user.userType === "alumni") {
+      navigate("/mentor-dashboard/mentorships/active");
+    } else {
+      navigate("/mentorships-active");
+    }
   };
 
   const viewAllReviews = () => {
-    navigate("/reviews");
+    navigate("/mentor-dashboard/mentorships/reviews");
   };
 
   const aboutText =
@@ -158,11 +166,8 @@ export const Profile = () => {
                   <p className="text-sm font-semibold text-gray-700 mt-0.5">
                     Senior Software Engineer
                   </p>
-                  <p className="text-xs text-gray-500 mt-1.5">
-                    Jan 2024 - Present • Full-time
-                  </p>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    Colombo, Sri Lanka • Hybrid
+                    Colombo, Sri Lanka
                   </p>
                 </div>
               </div>

@@ -1,7 +1,7 @@
 import React from "react";
 
-const IncomingRequestsTable = ({ requests, onAccept, onReject }) => {
-  if (requests.length === 0) {
+const IncomingRequestsTable = ({ requests = [], onAccept, onReject }) => {
+  if (!Array.isArray(requests) || requests.length === 0) {
     return (
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center text-gray-500">
         No pending mentorship requests at the moment.

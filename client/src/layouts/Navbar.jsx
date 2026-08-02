@@ -12,6 +12,7 @@ import {
   Briefcase,
   Bookmark,
   GraduationCap,
+  LayoutDashboard,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -41,13 +42,21 @@ export const Navbar = () => {
   // build route config based on user role
   const navLinks = user
     ? [
-        { label: "Mentors", to: "/search-mentors", icon: Compass },
-        { label: "Mentorships", to: "/search-mentorships", icon: Users },
-        { label: "Opportunities", to: "/search-opportunites", icon: Briefcase },
-        { label: "Students", to: "/search-students", icon: GraduationCap },
+        { label: "Mentors", to: "/search/mentors", icon: Compass },
+        { label: "Mentorships", to: "/search/mentorships", icon: Users },
+        { label: "Opportunities", to: "/search/opportunites", icon: Briefcase },
+        { label: "Students", to: "/search/students", icon: GraduationCap },
+        ...(user.userType === "alumni"
+          ? [
+              {
+                label: "Dashboard",
+                to: "/mentor-dashboard",
+                icon: LayoutDashboard,
+              },
+            ]
+          : []),
       ]
     : [
-        // unauthenticated visitors
         { label: "Sign In", to: "/signin", icon: LogIn },
         { label: "Get Started", to: "/signup", icon: Zap },
       ];

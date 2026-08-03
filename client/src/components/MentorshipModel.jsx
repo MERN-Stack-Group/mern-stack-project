@@ -1,5 +1,6 @@
 import React from "react";
-import MentorshipCard from "./MentorshipCard";
+import { MentorshipCard } from "./MentorshipCard";
+
 export const MentorshipModel = ({ viewType = "completed" }) => {
   const activeMentorships = [
     {

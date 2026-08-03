@@ -1,6 +1,8 @@
 import MentorDashboard from "./pages/MentorDashboard";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
+import MentorshipMonitor from "./pages/MentorshipMonitor";
+import AccountManagement from "./pages/AccountManagement";
 
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
@@ -118,12 +120,26 @@ function App() {
                 <MentorDashboard mainTab="mentorship" mentorSub="reviews" />
               }
             />
+            {/* Admin Dashboard */}
             <Route 
             path="/admin-dashboard" 
             element={<AdminDashboard />} 
             />
             <Route path="/users" element={<Users />} />
           </>
+          
+          {/* Monitor Mentorships */}
+          <Route 
+          path="/mentorship-monitor" 
+          element={<MentorshipMonitor />} 
+          />
+
+          {/* Account Management */}
+          <Route 
+          path="/account-management" 
+          element={<AccountManagement />} 
+          />
+          
         </Routes>
       </BrowserRouter>
     </AuthProvider>

@@ -33,6 +33,20 @@ function AdminSidebar() {
         >
           ⏳ Pending Approval
         </li>
+        
+        <li
+        onClick={() => navigate("/mentorship-monitor")}
+         className="cursor-pointer hover:text-yellow-300"
+        >
+         🤝 Mentorship Monitor
+        </li>
+
+        <li
+        onClick={() => navigate("/account-management")}
+        className="cursor-pointer hover:text-yellow-300"
+        >
+        👤 Account Management
+        </li>
 
         <li
           onClick={() => {

@@ -29,7 +29,15 @@ export const Navbar = () => {
     navigate("/");
   };
 
-  const hideOnRoutes = ["/signin", "/signup"];
+  const hideOnRoutes = [
+  "/signin", 
+  "/signup",
+  "/admin-login",
+  "/admin-dashboard",
+  "/pending-approval",
+  "/users",
+  "/mentorship-monitor",
+  "/account-management",];
 
   // hide nav entirely on auth pages
   if (hideOnRoutes.includes(location.pathname)) {

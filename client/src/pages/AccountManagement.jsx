@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AdminSidebar from "../components/AdminSidebar";
 
 function AccountManagement() {
 
@@ -46,7 +47,11 @@ function AccountManagement() {
 
 
   return (
-    <div className="min-h-screen bg-gray-100 p-10">
+  <div className="flex">
+
+    <AdminSidebar />
+
+    <div className="flex-1 min-h-screen bg-gray-100 p-10">
 
       <h1 className="text-3xl font-bold text-gray-800 mb-2">
         Account Management
@@ -141,6 +146,8 @@ function AccountManagement() {
       </div>
 
     </div>
+    </div>
+
   );
 }
 

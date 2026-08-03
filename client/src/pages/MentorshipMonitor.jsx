@@ -1,4 +1,6 @@
 import { useState } from "react";
+import AdminSidebar from "../components/AdminSidebar";
+
 function MentorshipMonitor() {
 
   const [mentorships, setMentorships] = useState([
@@ -28,9 +30,11 @@ function MentorshipMonitor() {
 
 
   return (
-    <div className="flex">
+  <div className="flex">
 
-      <div className="flex-1 min-h-screen bg-gray-100 p-8">
+    <AdminSidebar />
+
+    <div className="flex-1 min-h-screen bg-gray-100 p-8">
 
         <h1 className="text-3xl font-bold text-gray-800 mb-6">
           Mentorship Monitor

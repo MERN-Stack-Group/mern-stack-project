@@ -3,39 +3,32 @@ import AdminSidebar from "../components/AdminSidebar";
 
 function Users() {
 
-  const [users] = useState([
-    {
-      id: 1,
-      name: "Kasun Perera",
-      nic: "200012345678",
-      email: "kasun@gmail.com",
-      faculty: "Computing",
-      industry: "Software Engineering",
-      date: "2026-07-20",
-      status: "Approved",
-    },
-    {
-      id: 2,
-      name: "Nimali Silva",
-      nic: "200112345678",
-      email: "nimali@gmail.com",
-      faculty: "Business",
-      industry: "Marketing",
-      date: "2026-07-21",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      name: "Amal Fernando",
-      nic: "200212345678",
-      email: "amal@gmail.com",
-      faculty: "Engineering",
-      industry: "Civil Engineering",
-      date: "2026-07-22",
-      status: "Rejected",
-    },
-  ]);
-
+  const [users, setUsers] = useState([
+  {
+    id: 1,
+    name: "Kasun Perera",
+    email: "kasun@gmail.com",
+    nic: "200012345678",
+    faculty: "Computing",
+  },
+  {
+    id: 2,
+    name: "Nimali Silva",
+    email: "nimali@gmail.com",
+    nic: "200145678912",
+    faculty: "Engineering",
+  },
+  {
+    id: 3,
+    name: "Amal Fernando",
+    email: "amal@gmail.com",
+    nic: "199978945612",
+    faculty: "Business",
+  },
+]);
+ const removeUser = (id) => {
+  setUsers(users.filter((user) => user.id !== id));
+};
   return (
   <div className="flex">
 
@@ -55,10 +48,10 @@ function Users() {
 
         <tr>
           <th className="p-3">Name</th>
+          <th className="p-3">NIC</th>
           <th className="p-3">Email</th>
           <th className="p-3">Faculty</th>
-          <th className="p-3">Industry</th>
-          <th className="p-3">Status</th>
+          <th className="p-3">Action</th>     
         </tr>
 
       </thead>
@@ -78,6 +71,10 @@ function Users() {
             </td>
 
             <td className="p-3">
+             {user.nic}
+            </td>
+
+            <td className="p-3">
               {user.email}
             </td>
 
@@ -86,15 +83,12 @@ function Users() {
             </td>
 
             <td className="p-3">
-              {user.industry}
-            </td>
-
-            <td className="p-3">
-
-              <span className="px-3 py-1 rounded-full text-sm bg-green-100 text-green-700">
-                {user.status}
-              </span>
-
+            <button
+             onClick={() => removeUser(user.id)}
+             className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg"
+             >
+             Remove
+             </button>
             </td>
 
           </tr>

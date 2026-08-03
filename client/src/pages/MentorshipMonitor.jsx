@@ -20,6 +20,8 @@ function MentorshipMonitor() {
     },
   ]);
 
+  const [search, setSearch] = useState("");
+
   const deleteMentorship = (id) => {
   const updatedList = mentorships.filter(
     (item) => item.id !== id
@@ -44,7 +46,15 @@ function MentorshipMonitor() {
           Monitor and manage mentorship activities.
         </p>
 
-
+<div className="mb-6">
+  <input
+    type="text"
+    placeholder="🔍 Search mentorships..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+   className="w-full md:w-80 px-4 py-2 border border-gray-300 rounded-lg text-gray-800 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
+</div>
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
 
           <table className="w-full text-left">
@@ -64,7 +74,11 @@ function MentorshipMonitor() {
 
             <tbody>
 
-              {mentorships.map((item) => (
+              {mentorships
+            .filter((item) =>
+             item.mentor.toLowerCase().includes(search.toLowerCase())
+             )
+             .map((item) => (
 
                 <tr 
                   key={item.id}

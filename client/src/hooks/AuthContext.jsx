@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
         // setUser(response.data);
 
         // --- 1. Mock Data: Student (Active) ---
+        /*
         setUser({
           _id: "123",
           name: "Kalana",
@@ -42,9 +43,10 @@ export const AuthProvider = ({ children }) => {
             "Spring Boot",
           ],
         });
+        */
 
         // --- 2. Mock Data: Alumni (Commented Out for Testing) ---
-        /*
+
         setUser({
           _id: "124",
           name: "John Doe",
@@ -66,7 +68,6 @@ export const AuthProvider = ({ children }) => {
           jobTitle: "Senior Software Engineer",
           jobLocation: "Colombo, Sri Lanka",
         });
-        */
       } catch (error) {
         console.error("Failed to fetch user");
       } finally {

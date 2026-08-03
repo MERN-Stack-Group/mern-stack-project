@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../hooks/AuthContext";
+import { Link } from "react-router-dom";
 
 // Content definitions for student and alumni roles
 const studentData = {
   headline: "Step Into the Arena",
   subtext: "Find your path, forge connections, and take what's yours.",
   cta: "Get Hunting",
+  to: "/search/mentorships",
   quotes: [
     {
       text: "He who has a why to live for can bear almost any how.",
@@ -54,7 +56,8 @@ const studentData = {
 const alumniData = {
   headline: "Build Your Legacy",
   subtext: "Guide the next generation and find elite talent for your network.",
-  cta: "Scout the Ranks",
+  cta: "Make an Impact",
+  to: "mentor-dashboard",
   quotes: [
     {
       text: "The impediment to action advances action. What stands in the way becomes the way.",
@@ -156,9 +159,12 @@ export default function Home() {
           ))}
         </div>
 
-        <button className="bg-black dark:bg-white text-white dark:text-black py-4 px-10 text-lg font-bold uppercase tracking-wider rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(79,70,229,0.4)] dark:hover:shadow-[0_0_20px_rgba(129,140,248,0.6)]">
+        <Link
+          to={content.to}
+          className="bg-black dark:bg-white text-white dark:text-black py-4 px-10 text-lg font-bold uppercase tracking-wider rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(79,70,229,0.4)] dark:hover:shadow-[0_0_20px_rgba(129,140,248,0.6)]"
+        >
           {content.cta}
-        </button>
+        </Link>
       </main>
     </div>
   );

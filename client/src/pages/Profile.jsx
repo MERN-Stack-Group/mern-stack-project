@@ -75,7 +75,7 @@ export const Profile = () => {
         navigate("/mentorships-completed");
       }
     } else {
-      navigate(`/profile/${userId}/mentorships-completed`);
+      navigate(`/${userId}/profile/mentorships-completed`);
     }
   };
 
@@ -87,7 +87,7 @@ export const Profile = () => {
         navigate("/mentorships-active");
       }
     } else {
-      navigate(`/profile/${userId}/mentorships-active`);
+      navigate(`/${userId}/profile/mentorships-active`);
     }
   };
 
@@ -99,7 +99,7 @@ export const Profile = () => {
         navigate("/mentorships-reviews");
       }
     } else {
-      navigate(`/profile/${userId}/mentorships-reviews`);
+      navigate(`/${userId}/profile/mentorships-reviews`);
     }
   };
 

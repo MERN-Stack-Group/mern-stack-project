@@ -21,6 +21,7 @@ const dateStruct = {
   year: {
     type: Number,
     required: true,
+    min: 2026, //the program lauched in 2026 so the oldest year is 2026
   },
 };
 

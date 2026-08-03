@@ -1,25 +1,31 @@
 const User = require("../models/user");
-const UniversityStudent = require("../models/universityStudent"); //used to check official records of the university
+const UniversityStudent = require("../models/universityStudent");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+// @desc    Register a new user (Student or Alumni)
+// @route   POST /api/users/register
+// @access  Public
 const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role, alumniProfile } = req.body;
+    const { email, password, role, alumniProfile } = req.body;
 
+    let 
+    let name = req.body.name;
     let faculty = req.body.faculty;
     let degree = req.body.degree;
     let studentProfile = req.body.studentProfile;
 
-    // Check if user already exists in the app
+    // Prevent duplicate registrations
     const userExists = await User.findOne({ email });
+
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // UNIVERSITY VERIFICATION LOGIC
+    // STUDENT ROLE VALIDATION
+    // Students are verified against official university records
     if (role && role.includes("student")) {
-      // Search the official university database using the provided email
       const uniRecord = await UniversityStudent.findOne({ email });
 
       if (!uniRecord) {
@@ -29,20 +35,22 @@ const registerUser = async (req, res) => {
         });
       }
 
-      // Override the details with the trusted university data
+      // Use official university data instead of user input
       faculty = uniRecord.faculty;
       degree = uniRecord.degree;
+
       studentProfile = {
         StudentId: uniRecord.studentId,
         year: uniRecord.currentYear,
       };
     }
 
-    // Hash password
+    // Alumni verification is handled manually.
+    // No automated database verification is performed.
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create user (using the potentially overridden data)
     const user = await User.create({
       name,
       email,
@@ -54,7 +62,6 @@ const registerUser = async (req, res) => {
       alumniProfile,
     });
 
-    // Generate JWT
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "30d",
     });
@@ -67,7 +74,8 @@ const registerUser = async (req, res) => {
       degree: user.degree,
       role: user.role,
       studentProfile: user.studentProfile,
-      token: token,
+      alumniProfile: user.alumniProfile,
+      token,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -76,14 +84,13 @@ const registerUser = async (req, res) => {
 
 // @desc    Authenticate a user
 // @route   POST /api/users/login
+// @access  Public
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    //  Find user by email
     const user = await User.findOne({ email });
 
-    // Check user and compare hashed password
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "30d",
@@ -93,11 +100,13 @@ const loginUser = async (req, res) => {
         _id: user.id,
         name: user.name,
         email: user.email,
-        roles: user.roles,
-        token: token,
+        role: user.role,
+        token,
       });
     } else {
-      res.status(401).json({ message: "Invalid email or password" });
+      res.status(401).json({
+        message: "Invalid email or password",
+      });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -106,7 +115,7 @@ const loginUser = async (req, res) => {
 
 // @desc    Get logged in user's profile
 // @route   GET /api/users/profile
-// @access  Private (Requires token)
+// @access  Private
 const getMyProfile = async (req, res) => {
   try {
     res.json(req.user);
@@ -120,12 +129,12 @@ const getMyProfile = async (req, res) => {
 // @access  Private
 const getUserProfileById = async (req, res) => {
   try {
-    const userId = req.params.userId;
-
-    const user = await User.findById(userId).select("-password");
+    const user = await User.findById(req.params.userId).select("-password");
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        message: "User not found",
+      });
     }
 
     res.json(user);
@@ -138,42 +147,47 @@ const getUserProfileById = async (req, res) => {
 // @route   PUT /api/users/profile
 // @access  Private
 const updateUserProfile = async (req, res) => {
-    try {
-        //Find the user by the ID embedded in the JWT token
-        const user = await User.findById(req.user._id);
+  try {
+    const user = await User.findById(req.user._id);
 
-        if (user) {
-            // Update fields ONLY if they were provided in the request
-            user.name = req.body.name || user.name;
-            user.profileImage = req.body.profileImage || user.profileImage;
-            user.about = req.body.about || user.about;
-            user.tags = req.body.tags || user.tags;
-
-            // Handle nested objects safely
-            if (req.body.alumniProfile) {
-                user.alumniProfile = {
-                    ...user.alumniProfile, 
-                    ...req.body.alumniProfile 
-                };
-            }
-
-            const updatedUser = await user.save();
-            
-            res.json({
-                _id: updatedUser._id,
-                name: updatedUser.name,
-                email: updatedUser.email,
-                profileImage: updatedUser.profileImage,
-                about: updatedUser.about,
-                tags: updatedUser.tags,
-                alumniProfile: updatedUser.alumniProfile
-            });
-        } else {
-            res.status(404).json({ message: 'User not found' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
     }
+
+    user.name = req.body.name || user.name;
+    user.profileImage = req.body.profileImage || user.profileImage;
+    user.about = req.body.about || user.about;
+    user.tags = req.body.tags || user.tags;
+
+    if (req.body.alumniProfile) {
+      user.alumniProfile = {
+        ...user.alumniProfile,
+        ...req.body.alumniProfile,
+      };
+    }
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      profileImage: updatedUser.profileImage,
+      about: updatedUser.about,
+      tags: updatedUser.tags,
+      alumniProfile: updatedUser.alumniProfile,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-module.exports = { registerUser, loginUser, getMyProfile, getUserProfileById };
+module.exports = {
+  registerUser,
+  loginUser,
+  getMyProfile,
+  getUserProfileById,
+  updateUserProfile,
+};

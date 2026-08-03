@@ -19,6 +19,15 @@ const mentorshipSchema = new mongoose.Schema(
       enum: ["enrollment", "active", "completed"],
       default: "enrollment",
     },
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
     durationInWeeks: {
       type: Number,
       required: true,

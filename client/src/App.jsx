@@ -20,9 +20,6 @@ import ProtectedRoot from "./pages/ProtectedRoot";
  * Defines core routing, auth state, and view rendering.
  */
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [role, setRole] = useState(null);
-
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -41,12 +38,7 @@ function App() {
           {/* Authentication */}
           <>
             <Route path="/signup" element={<Signup />} />
-            <Route
-              path="/signin"
-              element={
-                <Signin setIsLoggedIn={setIsLoggedIn} setRole={setRole} />
-              }
-            />
+            <Route path="/signin" element={<Signin />} />
           </>
 
           {/* Mentorship Views */}

@@ -1,47 +1,42 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
+import { loginUser } from "../api/userApi";
 
 /**
  * Signin Component
  * Handles user authentication against locally stored credentials.
  */
-function Signin({ setIsLoggedIn, setRole }) {
+function Signin() {
   const navigate = useNavigate();
-  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(""); // State for UI error messages
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Prevent default form submission reload
+    setErrorMsg(""); // Clear previous errors
 
-    // Retrieve mock user data from local storage
-    const savedUser = JSON.parse(localStorage.getItem("user"));
-    if (!savedUser) {
-        alert("No account found. Please sign up first.");
-        return;
-    }
+    try {
+      const data = await loginUser(email, password);
 
-    // Validate credentials
-    if (email === savedUser.email && password === savedUser.password) {
-        setIsLoggedIn(true);
-        if (setRole) setRole(savedUser.role);
-        
-        // Persist session state
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("role", savedUser.role);
+      localStorage.setItem("token", data.token);
 
-        navigate("/");
-    } else {
-        alert("Incorrect email or password.");
+      console.log("Logged in:", data);
+
+      navigate("/");
+    } catch (error) {
+      setErrorMsg("No user found");
+      setEmail("");
+      setPassword("");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0f0d0b] py-10 px-4">
       <div className="bg-[#24201D] w-full max-w-md p-8 rounded-2xl shadow-xl border border-stone-800">
-        
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-[#F5F1EA] text-center">
             GradBridge
@@ -55,8 +50,14 @@ function Signin({ setIsLoggedIn, setRole }) {
           Welcome Back!
         </p>
 
+        {/* Error Message Banner */}
+        {errorMsg && (
+          <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-3 rounded-lg mb-4 text-sm text-center">
+            {errorMsg}
+          </div>
+        )}
+
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
-          
           <div className="flex flex-col gap-1">
             <label htmlFor="email" className="text-sm text-stone-400">
               Email Address

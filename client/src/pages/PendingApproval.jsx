@@ -37,6 +37,7 @@ function PendingApproval() {
 
   // Tracks which table view is currently active
   const [selectedView, setSelectedView] = useState("pending");
+  const [searchTerm, setSearchTerm] = useState("");
   const [darkMode, setDarkMode] = useState(false);
 
   // Moves a user from pending/rejected to the approved list
@@ -65,6 +66,23 @@ function PendingApproval() {
     setApprovedUsers(approvedUsers.filter((user) => user.id !== id));
   };
 
+  let displayUsers = [];
+
+if (selectedTab === "pending") {
+  displayUsers = users;
+} else if (selectedTab === "approved") {
+  displayUsers = approvedUsers;
+} else {
+  displayUsers = rejectedUsers;
+}
+
+displayUsers = displayUsers.filter(
+  (user) =>
+    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.nic.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.faculty.toLowerCase().includes(searchTerm.toLowerCase())
+);
   return (
     <div
       className={`flex min-h-screen ${

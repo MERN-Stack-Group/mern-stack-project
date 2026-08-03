@@ -17,6 +17,10 @@ import ProtectedRoot from "./pages/ProtectedRoot";
 
 import AdminLogin from "./pages/AdminLogin";
 
+import AdminDashboard from "./pages/AdminDashboard";
+
+import Users from "./pages/Users";
+
 /**
  * Main Application Router
  * Defines core routing, auth state, and view rendering.
@@ -114,6 +118,11 @@ function App() {
                 <MentorDashboard mainTab="mentorship" mentorSub="reviews" />
               }
             />
+            <Route 
+            path="/admin-dashboard" 
+            element={<AdminDashboard />} 
+            />
+            <Route path="/users" element={<Users />} />
           </>
         </Routes>
       </BrowserRouter>

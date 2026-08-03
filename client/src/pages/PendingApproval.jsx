@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AdminSidebar from "../components/AdminSidebar";
 
 function PendingApproval() {
   // Mock data for initial pending users
@@ -70,7 +71,9 @@ function PendingApproval() {
       className={`flex min-h-screen ${
         darkMode ? "bg-gray-900 text-white" : "bg-purple-50 text-gray-800"
       }`}
+      
     >
+      <AdminSidebar />
       <main className="flex-1 p-10">
         {/* Header */}
         <header className="flex justify-between items-center mb-10">

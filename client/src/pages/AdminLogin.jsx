@@ -15,7 +15,7 @@ function AdminLogin() {
         if (username === "admin" && password === "1234") {
 
             localStorage.setItem("adminLogin", "true");
-            navigate("/pending-approval");
+            navigate("/admin-dashboard");
 
         } else {
             alert("Invalid Username or Password");
@@ -108,7 +108,6 @@ function AdminLogin() {
     </div>
 
 </div>
-
 
 
                     <button

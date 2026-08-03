@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { applyTimestamps } = require("./mentorship");
 
 const mentorshipRequestSchema = new mongoose.Schema(
   {

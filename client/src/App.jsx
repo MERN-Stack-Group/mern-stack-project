@@ -15,6 +15,8 @@ import { MentorshipModel } from "./components/MentorshipModel";
 
 import ProtectedRoot from "./pages/ProtectedRoot";
 
+import AdminLogin from "./pages/AdminLogin";
+
 /**
  * Main Application Router
  * Defines core routing, auth state, and view rendering.
@@ -101,6 +103,10 @@ function App() {
               element={
                 <MentorDashboard mainTab="mentorship" mentorSub="history" />
               }
+            />
+            <Route 
+            path="/admin-login" 
+            element={<AdminLogin />} 
             />
             <Route
               path="/mentor-dashboard/mentorships/reviews"

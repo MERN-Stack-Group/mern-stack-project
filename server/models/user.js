@@ -29,13 +29,11 @@ const userSchema = new mongoose.Schema(
 
     about: {
       type: String,
-      required: true,
       trim: true,
     },
 
     tags: {
       type: [String],
-      required: true,
       trim: true,
     },
 
@@ -51,7 +49,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
 
-    roles: [
+    role: [
       {
         type: String,
         required: true,
@@ -63,6 +61,7 @@ const userSchema = new mongoose.Schema(
       StudentId: {
         type: String,
         unique: true,
+        sparse:true,
         trim: true,
       },
       year: {
@@ -72,14 +71,6 @@ const userSchema = new mongoose.Schema(
 
     //only populated for alumni user type
     alumniProfile: {
-      degree: {
-        type: String,
-        trim: true,
-      },
-      faculty: {
-        type: String,
-        trim: true,
-      },
       employment: {
         jobTitle: {
           type: String,

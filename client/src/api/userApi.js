@@ -105,3 +105,25 @@ export const updateUserProfile = async (profileData, token) => {
 
   return data;
 };
+
+// Upload profile image (multipart/form-data — do NOT set Content-Type manually)
+export const uploadProfileImage = async (file, token) => {
+  const formData = new FormData();
+  formData.append("profileImage", file);
+
+  const response = await fetch(`${API_URL}/profile/image`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return data;
+};

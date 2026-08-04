@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SelectList from "../components/SelectList";
 import { Eye, EyeOff } from "lucide-react";
-import { registerUser } from "../services/userApi";
+import { registerUser } from "../api/userApi";
 
 /**
  * Signup Component
@@ -78,6 +78,7 @@ function Signup() {
         navigate("/");
       }, 1500);
     } catch (error) {
+      console.log(error);
       setMessage(error.message);
     }
   };

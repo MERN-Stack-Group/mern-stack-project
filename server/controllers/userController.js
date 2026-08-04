@@ -10,7 +10,6 @@ const registerUser = async (req, res) => {
   try {
     const { email, password, role, alumniProfile } = req.body;
 
-    let 
     let name = req.body.name;
     let faculty = req.body.faculty;
     let degree = req.body.degree;
@@ -18,6 +17,8 @@ const registerUser = async (req, res) => {
 
     // Prevent duplicate registrations
     const userExists = await User.findOne({ email });
+    console.log("Checking email:", email);
+    console.log("Found user:", userExists);
 
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
@@ -36,6 +37,7 @@ const registerUser = async (req, res) => {
       }
 
       // Use official university data instead of user input
+      name = uniRecord.name;
       faculty = uniRecord.faculty;
       degree = uniRecord.degree;
 
@@ -61,6 +63,8 @@ const registerUser = async (req, res) => {
       studentProfile,
       alumniProfile,
     });
+
+    console.log("Saved user:", user);
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "30d",
@@ -91,23 +95,33 @@ const loginUser = async (req, res) => {
 
     const user = await User.findOne({ email });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
       });
+    }
 
-      res.json({
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        message: "Incorrect password",
+      });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
+
+    res.json({
+      user: {
         _id: user.id,
         name: user.name,
         email: user.email,
         role: user.role,
-        token,
-      });
-    } else {
-      res.status(401).json({
-        message: "Invalid email or password",
-      });
-    }
+      },
+      token,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -184,10 +198,30 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
+const updateProfileImage = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    user.profileImage = req.file.path;
+
+    await user.save();
+
+    res.json({
+      message: "Profile image updated",
+      profileImage: user.profileImage,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getMyProfile,
   getUserProfileById,
   updateUserProfile,
+  updateProfileImage,
 };

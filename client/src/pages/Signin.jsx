@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { loginUser } from "../api/userApi";
-
+import { useAuth } from "../hooks/AuthContext";
 /**
  * Signin Component
  * Handles user authentication against locally stored credentials.
  */
 function Signin() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,21 +17,30 @@ function Signin() {
   const [errorMsg, setErrorMsg] = useState(""); // State for UI error messages
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent default form submission reload
-    setErrorMsg(""); // Clear previous errors
+    e.preventDefault();
+    setErrorMsg("");
 
     try {
       const data = await loginUser(email, password);
 
       localStorage.setItem("token", data.token);
 
-      console.log("Logged in:", data);
+      setUser(data.user);
 
       navigate("/");
     } catch (error) {
-      setErrorMsg("No user found");
-      setEmail("");
-      setPassword("");
+      if (error.message.includes("User")) {
+        setErrorMsg("No account exists with this email");
+        setEmail("");
+        setPassword("");
+      } else if (error.message.includes("password")) {
+        setErrorMsg("Wrong password");
+        setPassword("");
+      } else {
+        setErrorMsg("An unexpected error occurred");
+        setEmail("");
+        setPassword("");
+      }
     }
   };
 

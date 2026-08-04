@@ -1,15 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search as SearchIcon } from "lucide-react";
 import SearchCard from "../components/SearchCard";
+import { getUsersByRole } from "../api/userApi";
+import { useAuth } from "../hooks/AuthContext";
+import { getMentorships } from "../api/mentorshipApi";
+import { getActiveOpportunities } from "../api/opportunityApi";
 
 // categoryType prop expects: "mentors", "students", "mentorships", or "opportunities"
 export default function Search({ categoryType = "mentors" }) {
+  const { token } = useAuth();
+
   const [faculty, setFaculty] = useState("");
-  const [industry, setIndustry] = useState("");
-  const [type, setType] = useState("");
   const [search, setSearch] = useState("");
 
-  // Map the incoming prop to the correct internal data key
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Normalise the incoming prop to a canonical category name
   const categoryMap = {
     mentor: "mentors",
     mentors: "mentors",
@@ -21,79 +29,116 @@ export default function Search({ categoryType = "mentors" }) {
     opportunities: "opportunities",
   };
 
+  //list of faculties
+  const faculties = [
+    "Faculty of Humanities and Social Sciences",
+    "Faculty of Applied Sciences",
+    "Faculty of Management Studies and Commerce",
+    "Faculty of Medical Sciences",
+    "Faculty of Graduate Studies",
+    "Faculty of Technology",
+    "Faculty of Engineering",
+    "Faculty of Allied Health Sciences",
+    "Faculty of Dental Sciences",
+    "Faculty of Computing",
+    "Faculty of Urban and Aquatic Bioresources",
+  ];
   const currentCategory = categoryMap[categoryType.toLowerCase()] || "mentors";
 
-  const data = {
-    mentors: [
-      {
-        name: "Sarah Johnson",
-        jobTitle: "Senior Frontend Developer",
-        company: "TechNova",
-        faculty: "Computing",
-        industry: "Software Engineering",
-        type: "Professional",
-        imageUrl: "https://i.pravatar.cc/150?u=sarah",
-        experience: "5+ Years",
-      },
-      {
-        name: "David Perera",
-        jobTitle: "Backend Engineer",
-        company: "Sysco",
-        faculty: "Technology",
-        industry: "IT",
-        type: "Academic",
-        imageUrl: "https://i.pravatar.cc/150?u=david",
-        experience: "8 Years",
-      },
-    ],
-    students: [
-      {
-        name: "John Silva",
-        degree: "BSc (Hons) in Software Engineering",
-        faculty: "Computing",
-        industry: "Software Engineering",
-        type: "Student",
-        imageUrl: "https://i.pravatar.cc/150?u=john",
-        gradYear: "2027",
-      },
-    ],
-    mentorships: [
-      {
-        name: "Web Development Mastery",
-        duration: "6 Month Program",
-        postedBy: "Sarah Johnson",
-        seatsLeft: 3,
-        faculty: "Computing",
-        industry: "Software Engineering",
-        type: "Program",
-      },
-    ],
-    opportunities: [
-      {
-        name: "Software Engineering Intern",
-        employmentType: "Internship",
-        postedBy: "David Perera",
-        company: "Sysco",
-        location: "Colombo",
-        faculty: "Technology",
-        industry: "IT",
-        type: "Opportunity",
-      },
-    ],
-  };
-
-  const results = (data[currentCategory] || []).filter((item) => {
-    return (
-      item.name.toLowerCase().includes(search.toLowerCase()) &&
-      (faculty === "" || item.faculty === faculty) &&
-      (industry === "" || item.industry === industry) &&
-      (type === "" || item.type === type)
-    );
-  });
-
-  // Capitalize the current category for the page title
+  // Capitalise for the page heading
   const displayTitle =
     currentCategory.charAt(0).toUpperCase() + currentCategory.slice(1);
+
+  // Map a raw DB user document to the shape SearchCard expects
+  const mapUserToCard = (user) => {
+    const isAlumni = user.role?.includes("alumni");
+
+    return {
+      _id: user._id,
+      name: user.name,
+      imageUrl: user.profileImage || null,
+      faculty: user.faculty,
+      degree: isAlumni ? null : user.degree,
+      // Alumni-specific
+      jobTitle: isAlumni
+        ? (user.alumniProfile?.employment?.jobTitle ?? null)
+        : null,
+      company: isAlumni
+        ? (user.alumniProfile?.employment?.employer ?? null)
+        : null,
+      // Student-specific – expose tags as a searchable industry hint
+      tags: Array.isArray(user.tags) ? user.tags : [],
+    };
+  };
+
+  // Map mentorships to cards (when mentorships are implemented)
+  const mapMentorshipToCard = (mentorship) => {
+    return {
+      _id: mentorship._id,
+      name: mentorship.title,
+      description: mentorship.description,
+      duration: mentorship.durationInWeeks + " weeks",
+      postedBy: mentorship.alumni?.name,
+      faculty: mentorship.alumni?.faculty,
+    };
+  };
+
+  const mapOpportunityToCard = (opportunity) => {
+    return {
+      _id: opportunity._id,
+      name: opportunity.title,
+      company: opportunity.companyName,
+      location: opportunity.location,
+      type: opportunity.employmentType,
+      postedBy: opportunity.postedBy?.name,
+    };
+  };
+
+  // Fetch data whenever the category or token changes
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError("");
+      setResults([]);
+
+      try {
+        if (currentCategory === "mentors") {
+          // Mentors = alumni users
+          const users = await getUsersByRole("alumni", token);
+          setResults(users.map(mapUserToCard));
+        } else if (currentCategory === "students") {
+          // Students = student users
+          const users = await getUsersByRole("student", token);
+          setResults(users.map(mapUserToCard));
+        } else if (currentCategory === "mentorships") {
+          const mentorships = await getMentorships(token, "enrollment");
+          setResults(mentorships.map(mapMentorshipToCard));
+        } else if (currentCategory === "opportunities") {
+          const opportunities = await getActiveOpportunities(token);
+          setResults(opportunities.map(mapOpportunityToCard));
+        }
+      } catch (err) {
+        setError(err.message || "Failed to load results. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (token) fetchData();
+  }, [currentCategory, token]);
+
+  //  Client-side filtering on the fetched results
+  const filtered = results.filter((item) => {
+    const matchesSearch = item.name
+      ?.toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchesFaculty =
+      faculty === "" ||
+      (item.faculty ?? "").toLowerCase() === faculty.toLowerCase();
+
+    return matchesSearch && matchesFaculty;
+  });
 
   return (
     <div className="min-h-screen bg-[#051811] text-emerald-50 p-6 md:p-10 font-sans antialiased">
@@ -115,55 +160,48 @@ export default function Search({ categoryType = "mentors" }) {
           />
         </div>
 
-        {/* Filters Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+        {/* Faculty Filter */}
+        <div className="mt-6">
           <select
             value={faculty}
             onChange={(e) => setFaculty(e.target.value)}
             className="w-full p-3.5 rounded-xl bg-[#051811] border border-[#133826] text-emerald-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-300 cursor-pointer appearance-none"
           >
             <option value="">All Faculties</option>
-            <option>Computing</option>
-            <option>Technology</option>
-            <option>Engineering</option>
-            <option>Medical Sciences</option>
-          </select>
-
-          <select
-            value={industry}
-            onChange={(e) => setIndustry(e.target.value)}
-            className="w-full p-3.5 rounded-xl bg-[#051811] border border-[#133826] text-emerald-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-300 cursor-pointer appearance-none"
-          >
-            <option value="">All Industries</option>
-            <option>Software Engineering</option>
-            <option>IT</option>
-          </select>
-
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            className="w-full p-3.5 rounded-xl bg-[#051811] border border-[#133826] text-emerald-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-300 cursor-pointer appearance-none"
-          >
-            <option value="">All Types</option>
-            <option>Professional</option>
-            <option>Academic</option>
-            <option>Student</option>
-            <option>Program</option>
-            <option>Opportunity</option>
+            {faculties.map((f) => (
+              <option key={f} value={f}>
+                {f}
+              </option>
+            ))}
           </select>
         </div>
+
+        {/* ── TODO: Add mentorship / opportunity-specific filters here ──────
+            When mentorships are implemented, add duration / seats filters.
+            When opportunities are implemented, add location / type filters.
+        ───────────────────────────────────────────────────────────────────── */}
       </div>
 
+      {/* Status messages */}
+      {loading && (
+        <p className="text-center text-emerald-500 mt-10 animate-pulse">
+          Loading {currentCategory}…
+        </p>
+      )}
+      {error && <p className="text-center text-red-400 mt-10">{error}</p>}
+
       {/* Results Grid */}
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-        {results.length > 0 ? (
-          results.map((item, index) => <SearchCard key={index} item={item} />)
-        ) : (
-          <div className="col-span-full text-center text-emerald-700 py-10">
-            No results found matching your criteria.
-          </div>
-        )}
-      </div>
+      {!loading && !error && (
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+          {filtered.length > 0 ? (
+            filtered.map((item) => <SearchCard key={item._id} item={item} />)
+          ) : (
+            <div className="col-span-full text-center text-emerald-700 py-10">
+              No results found matching your criteria.
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 
 const ProgressTracker = ({ currentStep = 0 }) => {
-  const steps = ["Posted", "Enrollment", "Started", "Completed"];
+  const steps = ["Enrollment", "Started", "Completed"];
 
   return (
     <div className="w-full pt-4 pb-8">

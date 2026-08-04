@@ -106,7 +106,7 @@ function App() {
           />
 
           <Route
-            path="/search/opportunities"
+            path="/search/opportunites"
             element={<Search categoryType="opportunities" />}
           />
 

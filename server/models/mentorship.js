@@ -43,7 +43,7 @@ const mentorshipSchema = new mongoose.Schema(
 );
 
 // Mongoose Pre-Save Middleware
-mentorshipSchema.pre("save", function (next) {
+mentorshipSchema.pre("save", function () {
   if (this.isModified("stage")) {
     if (this.stage === "active" && !this.startDate) {
       this.startDate = Date.now();
@@ -52,7 +52,6 @@ mentorshipSchema.pre("save", function (next) {
       this.endDate = Date.now();
     }
   }
-  next();
 });
 
 module.exports = mongoose.model("Mentorship", mentorshipSchema);

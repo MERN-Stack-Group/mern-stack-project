@@ -7,6 +7,7 @@ const {
   getUserProfileById,
   updateUserProfile,
   updateProfileImage,
+  getUsersByRole,
 } = require("../controllers/userController");
 const upload = require("../middleware/upload");
 
@@ -30,5 +31,7 @@ router.put(
 
 // Public profile retrieval (identity explicitly passed as a URL parameter)
 router.get("/profile/:userId", protect, getUserProfileById);
+
+router.get("/", protect, getUsersByRole);
 
 module.exports = router;

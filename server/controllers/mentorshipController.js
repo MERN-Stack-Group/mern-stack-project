@@ -125,9 +125,76 @@ const removeStudent = async (req, res) => {
   }
 };
 
+// @desc    Get mentorships by stage
+// @route   GET /api/mentroships/:stage
+// @access  Private
+const getMentorshipsByStage = async (req, res) => {
+  try {
+    const { stage } = req.query;
+
+    let mentorships;
+
+    if (stage) {
+      mentorships = await Mentorship.find({
+        stage: stage,
+      }).populate("alumni", "name email role faculty");
+    } else {
+      mentorships = await Mentorship.find().populate(
+        "alumni",
+        "name email role faculty",
+      );
+    }
+
+    res.json(mentorships);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// @desc    Get any mentorship by ID
+// @route   GET /api/mentorships/:mentorshipId
+// @access  Private
+const getMentorshipById = async (req, res) => {
+  try {
+    const mentorship = await Mentorship.findById(req.params.id);
+
+    if (!mentorship) {
+      return res.status(404).json({
+        message: "Mentorship not found",
+      });
+    }
+
+    res.json(mentorship);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Get mentorships by alumni
+// @route   GET /api/mentorships/alumni/my-programs
+// @access  Private
+const getAlumniMentorships = async (req, res) => {
+  try {
+    const mentorships = await Mentorship.find({
+      alumni: req.user._id,
+    }).populate("alumni", "name email role faculty");
+
+    res.json(mentorships);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   createMentorship,
   deleteMentorship,
   progressStage,
   removeStudent,
+  getMentorshipsByStage,
+  getMentorshipById,
+  getAlumniMentorships,
 };

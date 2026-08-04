@@ -157,6 +157,8 @@ const getUserProfileById = async (req, res) => {
   }
 };
 
+
+
 // @desc    Update user profile
 // @route   PUT /api/users/profile
 // @access  Private
@@ -198,6 +200,11 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
+
+
+// @desc    Update profile image
+// @route   PUT /api/users/profile/image
+// @access  Private
 const updateProfileImage = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -217,6 +224,44 @@ const updateProfileImage = async (req, res) => {
   }
 };
 
+// @desc    Get users by role
+// @route   GET /api/users/:role
+// @access  Private
+const getUsersByRole = async (req, res) => {
+
+    try {
+
+        const { role } = req.query;
+
+
+        let users;
+
+
+        if (role) {
+            users = await User.find({
+                role: role
+            })
+            .select("-password");
+        } 
+        else {
+            users = await User.find()
+            .select("-password");
+        }
+
+
+        res.json(users);
+
+
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message
+        });
+
+    }
+};
+
+
 module.exports = {
   registerUser,
   loginUser,
@@ -224,4 +269,5 @@ module.exports = {
   getUserProfileById,
   updateUserProfile,
   updateProfileImage,
+  getUsersByRole,
 };

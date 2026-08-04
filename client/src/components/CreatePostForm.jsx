@@ -4,6 +4,7 @@ const CreatePostForm = ({ type, onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
     title: "",
     duration: "",
+    durationInWeeks: "",
     description: "",
   });
 
@@ -11,7 +12,9 @@ const CreatePostForm = ({ type, onSubmit, onCancel }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.title || !formData.duration) return;
+    if (!formData.title) return;
+    if (isMentorship && !formData.durationInWeeks) return;
+    if (!isMentorship && !formData.duration) return;
     onSubmit(formData);
   };
 
@@ -47,18 +50,32 @@ const CreatePostForm = ({ type, onSubmit, onCancel }) => {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              {isMentorship ? "Duration (e.g., 6 months)" : "Closing Date"}
+              {isMentorship ? "Duration (in weeks)" : "Closing Date"}
             </label>
-            <input
-              type="text"
-              required
-              placeholder={isMentorship ? "6 months" : "Oct 31, 2026"}
-              className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-              value={formData.duration}
-              onChange={(e) =>
-                setFormData({ ...formData, duration: e.target.value })
-              }
-            />
+            {isMentorship ? (
+              <input
+                type="number"
+                required
+                min="1"
+                placeholder="e.g., 12"
+                className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                value={formData.durationInWeeks}
+                onChange={(e) =>
+                  setFormData({ ...formData, durationInWeeks: e.target.value })
+                }
+              />
+            ) : (
+              <input
+                type="text"
+                required
+                placeholder="Oct 31, 2026"
+                className="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                value={formData.duration}
+                onChange={(e) =>
+                  setFormData({ ...formData, duration: e.target.value })
+                }
+              />
+            )}
           </div>
         </div>
 

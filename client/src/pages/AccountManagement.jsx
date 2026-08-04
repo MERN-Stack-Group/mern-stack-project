@@ -31,15 +31,21 @@ function AccountManagement() {
 
   const [roleFilter, setRoleFilter] = useState("All");
 
-  const suspendUser = (id) => {
-    setUsers(
-      users.map((user) =>
-        user.id === id
-          ? { ...user, status: "Suspended" }
-          : user
-      )
-    );
-  };
+  const toggleSuspendUser = (id) => {
+  setUsers(
+    users.map((user) =>
+      user.id === id
+        ? {
+            ...user,
+            status:
+              user.status === "Active"
+                ? "Suspended"
+                : "Active",
+          }
+        : user
+    )
+  );
+};
 
 
   const deleteUser = (id) => {
@@ -192,10 +198,16 @@ function AccountManagement() {
                 <td className="p-4 space-x-2">
 
                   <button
-                    onClick={() => suspendUser(user.id)}
-                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-lg"
+                  onClick={() => toggleSuspendUser(user.id)}
+                  className={`${
+                   user.status === "Active"
+                     ? "bg-yellow-500 hover:bg-yellow-600"
+                      : "bg-green-500 hover:bg-green-600"
+                  } text-white px-3 py-2 rounded-lg`}
                   >
-                    Suspend
+                 {user.status === "Active"
+                   ? "Suspend"
+                   : "Reactivate"}
                   </button>
 
 

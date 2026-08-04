@@ -35,7 +35,6 @@ export const Navbar = () => {
   "/admin-login",
   "/admin-dashboard",
   "/pending-approval",
-  "/users",
   "/mentorship-monitor",
   "/account-management",];
 

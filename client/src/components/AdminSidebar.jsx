@@ -21,13 +21,6 @@ function AdminSidebar() {
         </li>
 
         <li
-          onClick={() => navigate("/users")}
-          className="cursor-pointer hover:text-yellow-300"
-        >
-          👥 Users
-        </li>
-
-        <li
           onClick={() => navigate("/pending-approval")}
           className="cursor-pointer hover:text-yellow-300"
         >

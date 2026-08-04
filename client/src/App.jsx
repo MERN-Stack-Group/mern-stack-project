@@ -21,7 +21,6 @@ import AdminLogin from "./pages/AdminLogin";
 
 import AdminDashboard from "./pages/AdminDashboard";
 
-import Users from "./pages/Users";
 
 /**
  * Main Application Router
@@ -125,7 +124,6 @@ function App() {
             path="/admin-dashboard" 
             element={<AdminDashboard />} 
             />
-            <Route path="/users" element={<Users />} />
           </>
           
           {/* Monitor Mentorships */}

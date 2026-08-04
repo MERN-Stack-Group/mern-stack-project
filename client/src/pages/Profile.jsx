@@ -10,10 +10,11 @@ export const Profile = () => {
   const { user: currentUser, loading: authLoading, token } = useAuth();
   const { userId } = useParams();
 
-  const [otherUserData, setOtherUserData] = useState(null);
-  const [isFetchingOther, setIsFetchingOther] = useState(false);
-
   const isOwnProfile = !userId || (currentUser && userId === currentUser._id);
+
+  const [otherUserData, setOtherUserData] = useState(null);
+  const [isFetchingOther, setIsFetchingOther] = useState(!isOwnProfile);
+
   const displayData = isOwnProfile ? currentUser : otherUserData;
 
   const [isAboutExpanded, setIsAboutExpanded] = useState(false);
@@ -60,8 +61,11 @@ export const Profile = () => {
     }
   }, [displayData?.about]);
 
-  if (authLoading || (isFetchingOther && !displayData))
-    return <div className="h-16 bg-[#2C4C3B] w-full"></div>;
+  if (authLoading || isFetchingOther || (!isOwnProfile && !otherUserData)) {
+    return (
+      <div className="min-h-screen bg-gray-100 w-full animate-pulse"></div>
+    );
+  }
 
   const completedMentorships = () => {
     if (isOwnProfile) {
@@ -213,7 +217,6 @@ export const Profile = () => {
               </div>
             )}
           </div>
-
           <div className="bg-white rounded-lg border border-gray-300 p-6 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900 mb-4">About</h2>
 
@@ -245,7 +248,10 @@ export const Profile = () => {
               )}
             </div>
           </div>
-          <TagCard topic="Skills and Interests" skills={displayData?.tags} />
+          <TagCard
+            topic="Skills and Interests"
+            skills={displayData?.tags || []}
+          />{" "}
         </div>
 
         <div className="flex flex-col gap-4 w-full md:w-1/3 lg:w-1/4">

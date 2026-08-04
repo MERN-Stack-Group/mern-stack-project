@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import IncomingRequestsTable from "../components/IncomingRequestsTable";
 import MentorshipProgramCard from "../components/MentorshipProgramCard";
 import CompletedProgramCard from "../components/CompletedProgramCard";
 import CreatePostForm from "../components/CreatePostForm";
 import ReviewCard from "../components/ReviewCard"; // <-- Make sure you have this file created
+import { useAuth } from "../hooks/AuthContext";
+import { getMyMentorships, progressMentorshipStage, deleteMentorship, createMentorship } from "../api/mentorshipApi";
 
 // Helper component for the Opportunities section
 const OpportunityCard = ({ opp, onDelete }) => (
@@ -44,16 +46,18 @@ function MentorDashboard({
   mentorSub = "requests",
   oppSub = "active",
 }) {
-  // --- STATE: Main Navigation ---
+  const { user, token } = useAuth();
+
+  // STATE: Main Navigation
   const [activeMainTab, setActiveMainTab] = useState(mainTab); //mentorship,opportunities
   const [mentorSubTab, setMentorSubTab] = useState(mentorSub); //active,history,requests,reviews
   const [oppSubTab, setOppSubTab] = useState(oppSub); //active,history
 
-  // --- STATE: Form Toggles ---
+  // STATE: Form Toggles
   const [showAddMentorship, setShowAddMentorship] = useState(false);
   const [showAddOpportunity, setShowAddOpportunity] = useState(false);
 
-  // --- STATE: Data ---
+  //  STATE: Data
   const [requests, setRequests] = useState([
     {
       id: 1,
@@ -65,23 +69,7 @@ function MentorDashboard({
     },
   ]);
 
-  const [activePrograms, setActivePrograms] = useState([
-    {
-      id: 101,
-      title: "React Development",
-      duration: "Fall 2026",
-      status: "Started",
-      step: 2,
-      mentees: [
-        {
-          name: "Daniel Silva",
-          program: "Computer Science",
-          message: "Looking forward to learning advanced hooks.",
-        },
-      ],
-      removedMentees: [],
-    },
-  ]);
+  const [activePrograms, setActivePrograms] = useState([]);
 
   const [completedPrograms, setCompletedPrograms] = useState([
     {
@@ -113,29 +101,90 @@ function MentorDashboard({
     },
   ]);
 
-  // --- DERIVED STATE: Extract all reviews from completed programs ---
+  useEffect(() => {
+    const fetchPrograms = async () => {
+      if (!token) return;
+      try {
+        const myPrograms = await getMyMentorships(token);
+
+        const myActive = myPrograms
+          .filter((m) => m.stage === "enrollment" || m.stage === "active")
+          .map((m) => ({
+            id: m._id,
+            title: m.title,
+            duration: `${m.durationInWeeks} Weeks`,
+            status: m.stage === "enrollment" ? "Enrollment" : "Active",
+            step: m.stage === "enrollment" ? 0 : 1,
+            savedStep: m.stage === "enrollment" ? 0 : 1,
+            mentees: (m.students || []).map((s) => ({
+              name: s.name || s,
+              program: "Student",
+              message: "",
+            })),
+            removedMentees: [],
+          }));
+
+        const myCompleted = myPrograms
+          .filter((m) => m.stage === "completed")
+          .map((m) => ({
+            id: m._id,
+            title: m.title,
+            duration: `${m.durationInWeeks} Weeks`,
+            mentees: (m.students || []).map((s) => ({
+              name: s.name || s,
+              program: "Student",
+            })),
+            reviews: [], // placeholder until reviews are fetched
+          }));
+
+        setActivePrograms(myActive);
+        setCompletedPrograms(myCompleted);
+      } catch (err) {
+        console.error("Failed to fetch mentorships:", err);
+      }
+    };
+    fetchPrograms();
+  }, [token]);
+
+  // DERIVED STATE: Extract all reviews from completed programs
   const allReviews = completedPrograms.flatMap(
     (program) =>
       program.reviews?.map((review) => ({
         ...review,
         programTitle: program.title,
         duration: program.duration,
-      })) || []
+      })) || [],
   );
 
-  // --- HANDLERS: Creation & Saving ---
-  const handleCreateMentorship = (data) => {
-    const newProgram = {
-      id: Date.now(),
-      title: data.title,
-      duration: data.duration,
-      status: "Posted",
-      step: 0,
-      mentees: [],
-      removedMentees: [],
-    };
-    setActivePrograms([newProgram, ...activePrograms]);
-    setShowAddMentorship(false);
+  // HANDLERS: Creation & Saving
+  const handleCreateMentorship = async (data) => {
+    if (!token) return;
+    try {
+      const created = await createMentorship(
+        {
+          title: data.title,
+          description: data.description,
+          durationInWeeks: Number(data.durationInWeeks),
+        },
+        token
+      );
+
+      const newProgram = {
+        id: created._id,
+        title: created.title,
+        duration: `${created.durationInWeeks} Weeks`,
+        status: "Enrollment",
+        step: 0,
+        savedStep: 0,
+        mentees: [],
+        removedMentees: [],
+      };
+      setActivePrograms([newProgram, ...activePrograms]);
+      setShowAddMentorship(false);
+    } catch (err) {
+      console.error("Failed to create mentorship:", err);
+      alert(err.message || "Failed to create program");
+    }
   };
 
   const handleCreateOpportunity = (data) => {
@@ -150,32 +199,58 @@ function MentorDashboard({
     setShowAddOpportunity(false);
   };
 
-  // Finalizes a program, moving it to history
-  const handleSaveCompletedProgram = (programId) => {
-    const programToSave = activePrograms.find((p) => p.id === programId);
-    if (!programToSave) return;
+  // Save progress (both active and completed)
+  const handleSaveProgress = async (programId, newStep) => {
+    try {
+      const stageName = newStep === 1 ? "active" : newStep === 2 ? "completed" : "enrollment";
+      if (token) {
+        await progressMentorshipStage(programId, stageName, token);
+      }
+      const programToSave = activePrograms.find((p) => p.id === programId);
+      if (!programToSave) return;
+  
+      if (newStep === 2) {
+        const formattedCompletedProgram = {
+          id: programToSave.id,
+          title: programToSave.title,
+          duration: programToSave.duration,
+          mentees: programToSave.mentees,
+          reviews: [], 
+        };
+        setCompletedPrograms([formattedCompletedProgram, ...completedPrograms]);
+        setActivePrograms(activePrograms.filter((p) => p.id !== programId));
+      } else {
+        setActivePrograms((prev) =>
+          prev.map((p) => (p.id === programId ? { ...p, savedStep: newStep } : p))
+        );
+      }
+    } catch (err) {
+      console.error("Failed to save program:", err);
+      alert(err.message || "Failed to save program");
+    }
+  };
 
-    const formattedCompletedProgram = {
-      id: programToSave.id,
-      title: programToSave.title,
-      duration: programToSave.duration,
-      mentees: programToSave.mentees,
-      reviews: [], // Starts with empty reviews
-    };
-
-    setCompletedPrograms([formattedCompletedProgram, ...completedPrograms]);
-    setActivePrograms(activePrograms.filter((p) => p.id !== programId));
+  const handleDeleteProgram = async (programId) => {
+    try {
+      if (token) {
+        await deleteMentorship(programId, token);
+      }
+      setActivePrograms(activePrograms.filter((p) => p.id !== programId));
+    } catch (err) {
+      console.error("Failed to delete program:", err);
+      alert(err.message || "Failed to delete program");
+    }
   };
 
   const handleDeleteOpportunity = (id) => {
     setOpportunities(
       opportunities.map((opp) =>
-        opp.id === id ? { ...opp, status: "deleted" } : opp
-      )
+        opp.id === id ? { ...opp, status: "deleted" } : opp,
+      ),
     );
   };
 
-  // --- HANDLERS: Requests & Active Program Updates ---
+  // HANDLERS: Requests & Active Program Updates
   const handleAccept = (request) => {
     setActivePrograms((prev) => {
       const idx = prev.findIndex((p) => p.title === request.topic);
@@ -217,14 +292,13 @@ function MentorDashboard({
         if (p.id === programId) {
           const newStep = Math.max(0, Math.min(3, p.step + increment));
           let newStatus = p.status;
-          if (newStep === 0) newStatus = "Posted";
-          if (newStep === 1) newStatus = "Enrollment";
-          if (newStep === 2) newStatus = "Started";
-          if (newStep === 3) newStatus = "Completed";
+          if (newStep === 0) newStatus = "Enrollment";
+          if (newStep === 1) newStatus = "Active";
+          if (newStep === 2) newStatus = "Completed";
           return { ...p, step: newStep, status: newStatus };
         }
         return p;
-      })
+      }),
     );
   };
 
@@ -240,7 +314,7 @@ function MentorDashboard({
           };
         }
         return p;
-      })
+      }),
     );
   };
 
@@ -256,11 +330,11 @@ function MentorDashboard({
           };
         }
         return p;
-      })
+      }),
     );
   };
 
-  // --- RENDERERS ---
+  // RENDERERS
   const renderMentorshipSection = () => (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mt-6 min-h-[500px]">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 mb-6">
@@ -278,10 +352,10 @@ function MentorDashboard({
               {tab === "requests"
                 ? `Requests (${requests.length})`
                 : tab === "active"
-                ? "Active Programs"
-                : tab === "reviews"
-                ? "All Reviews"
-                : "History"}
+                  ? "Active Programs"
+                  : tab === "reviews"
+                    ? "All Reviews"
+                    : "History"}
             </button>
           ))}
         </div>
@@ -315,7 +389,8 @@ function MentorDashboard({
       )}
 
       {mentorSubTab === "active" && (
-        <div className="animate-fadeIn space-y-6">
+
+<div className="animate-fadeIn space-y-6">
           {activePrograms.length === 0 && !showAddMentorship ? (
             <p className="text-gray-500 italic">
               No active mentorship programs right now.
@@ -329,7 +404,8 @@ function MentorDashboard({
                 onPrevStep={() => handleUpdateStep(program.id, -1)}
                 onRemoveStudent={(idx) => handleRemoveStudent(program.id, idx)}
                 onUndoRemove={() => handleUndoRemove(program.id)}
-                onSave={handleSaveCompletedProgram}
+                onSave={(step) => handleSaveProgress(program.id, step)}
+                onDelete={handleDeleteProgram}
               />
             ))
           )}

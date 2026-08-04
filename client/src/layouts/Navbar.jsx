@@ -46,7 +46,7 @@ export const Navbar = () => {
         { label: "Mentorships", to: "/search/mentorships", icon: Users },
         { label: "Opportunities", to: "/search/opportunites", icon: Briefcase },
         { label: "Students", to: "/search/students", icon: GraduationCap },
-        ...(user.userType === "alumni"
+        ...(user?.role.includes("alumni")
           ? [
               {
                 label: "Dashboard",

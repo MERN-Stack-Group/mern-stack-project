@@ -29,6 +29,8 @@ function AccountManagement() {
 
   const [search, setSearch] = useState("");
 
+  const [roleFilter, setRoleFilter] = useState("All");
+
   const suspendUser = (id) => {
     setUsers(
       users.map((user) =>
@@ -62,17 +64,65 @@ function AccountManagement() {
         Manage user accounts, suspend and delete accounts.
       </p>
 
-        <div className="mb-6">
+       <div className="mb-6 flex items-center gap-3">
 
+  {/* Search Box */}
   <input
     type="text"
     placeholder="🔍 Search users..."
     value={search}
     onChange={(e) => setSearch(e.target.value)}
-    className="w-full md:w-80 px-4 py-2 border border-gray-300 rounded-lg text-gray-800 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    className="w-80 px-4 py-2 border border-gray-300 rounded-lg text-gray-800 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
   />
 
+  {/* Filter Buttons */}
+
+<div className="flex items-center gap-2">
+
+  <span className="text-gray-700 font-medium">
+    Filter:
+  </span>
+
+  <div className="flex gap-2">
+
+    <button
+  onClick={() => setRoleFilter("All")}
+  className={`px-4 py-2 rounded-lg font-medium transition ${
+    roleFilter === "All"
+      ? "bg-blue-600 text-white shadow-md"
+      : "bg-white text-gray-700 border border-gray-300"
+   }`}
+   >
+  All
+    </button>
+<button
+  onClick={() => setRoleFilter("Student")}
+  className={`px-4 py-2 rounded-lg font-medium transition ${
+    roleFilter === "Student"
+      ? "bg-green-600 text-white shadow-md"
+      : "bg-white text-gray-700 border border-gray-300"
+  }`}
+>
+  Students
+</button>
+
+    <button
+  onClick={() => setRoleFilter("Alumni")}
+  className={`px-4 py-2 rounded-lg font-medium transition ${
+    roleFilter === "Alumni"
+      ? "bg-purple-600 text-white shadow-md"
+      : "bg-white text-gray-700 border border-gray-300"
+  }`}
+>
+  Alumni
+</button>
+
+  </div>
+
 </div>
+</div>
+
+ 
 
       <div className="bg-white rounded-xl shadow-md overflow-hidden">
 
@@ -94,10 +144,17 @@ function AccountManagement() {
           <tbody>
 
             {users
-          .filter((user) =>
-             user.name.toLowerCase().includes(search.toLowerCase())
-            )
-            .map((user) => (
+  .filter((user) => {
+    const matchesSearch = user.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchesRole =
+      roleFilter === "All" || user.role === roleFilter;
+
+    return matchesSearch && matchesRole;
+  })
+  .map((user) => (
 
               <tr
                 key={user.id}

@@ -2,15 +2,16 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SelectList from "../components/SelectList";
 import { Eye, EyeOff } from "lucide-react";
+import { registerUser } from "../api/userApi";
 
 /**
  * Signup Component
- * Handles new user registration, role selection, and persists 
+ * Handles new user registration, role selection, and persists
  * the mock user data to local storage for authentication.
  */
 function Signup() {
   const navigate = useNavigate();
-  
+
   const [role, setRole] = useState("");
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState("");
@@ -38,33 +39,53 @@ function Signup() {
     "Faculty of Urban and Aquatic Bioresources",
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Prevent submission if the user hasn't toggled student/alumni
     if (!role) {
       setMessage("Please select a role to continue.");
       return;
     }
 
-    // Append the selected role to the rest of the form data
-    const submissionData = { ...formData, role };
-    
-    // Persist to localStorage so the Signin component can validate it later
-    localStorage.setItem("user", JSON.stringify(submissionData));
+    try {
+      const submissionData = {
+        email: formData.email,
+        password: formData.password,
+        role: [role],
 
-    setMessage("Registration successful! Redirecting...");
-    
-    // Short delay so the user can read the success message before redirect
-    setTimeout(() => {
-        navigate("/signin");
-    }, 1500);
+        ...(role === "alumni" && {
+          name: `${formData.firstName || ""} ${formData.lastName || ""}`.trim(),
+
+          faculty: formData.faculty,
+
+          degree: formData.degree,
+
+          alumniProfile: {
+            NIC: formData.nic,
+          },
+        }),
+      };
+
+      const data = await registerUser(submissionData);
+
+      localStorage.setItem("token", data.token);
+
+      localStorage.setItem("user", JSON.stringify(data));
+
+      setMessage("Registration successful! Redirecting...");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    } catch (error) {
+      console.log(error);
+      setMessage(error.message);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0f0d0b] py-10 px-4">
       <div className="bg-[#24201D] w-full max-w-lg p-8 rounded-2xl shadow-xl border border-stone-800">
-        
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-[#F5F1EA] text-center">
             GradBridge
@@ -110,7 +131,6 @@ function Signup() {
         </div>
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          
           {/* Conditional rendering for Alumni-specific fields */}
           {role === "alumni" && (
             <>
@@ -168,6 +188,20 @@ function Signup() {
                   required
                 />
               </div>
+
+              <div className="flex flex-col gap-1">
+                <label htmlFor="degree" className="text-sm text-stone-400">
+                  Degree{" "}
+                </label>
+                <input
+                  id="degree"
+                  name="degree"
+                  required
+                  className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
+                  placeholder="e.g. Bachelor of Science in ..."
+                  onChange={handleChange}
+                />
+              </div>
             </>
           )}
 
@@ -217,7 +251,9 @@ function Signup() {
           {message && (
             <p
               className={`text-center mt-2 ${
-                message.includes("Please select") ? "text-red-400" : "text-[#7E8C54]"
+                message.includes("Please select")
+                  ? "text-red-400"
+                  : "text-[#7E8C54]"
               }`}
             >
               {message}

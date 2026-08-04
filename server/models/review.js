@@ -2,13 +2,18 @@ const mongoose = require("mongoose");
 
 const reviewSchema = new mongoose.Schema(
   {
-    mentor: {
-      type: mongoose.Schema.ObjectId,
+    mentorship: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Mentorship",
+      required: true,
+    },
+    reviewer: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    student: {
-      type: mongoose.Schema.ObjectId,
+    mentor: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -23,12 +28,11 @@ const reviewSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
-    date: {
-      type: Date,
-      default: Date.now,
-    },
   },
-  { timestamps: true },
+  { timestamps: true }, 
 );
+
+// Prevent a student from leaving multiple reviews for the exact same program
+reviewSchema.index({ mentorship: 1, reviewer: 1 }, { unique: true });
 
 module.exports = mongoose.model("Review", reviewSchema);

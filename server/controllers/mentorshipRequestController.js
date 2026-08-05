@@ -16,7 +16,7 @@ const createRequest = async (req, res) => {
       return res.status(404).json({ message: "Program not found" });
     }
 
-    if (!["posted", "enrollment"].includes(mentorshipProgram.stage)) {
+    if (!["enrollment"].includes(mentorshipProgram.stage)) {
       return res.status(400).json({
         message: `Cannot apply. This program is currently ${mentorshipProgram.stage}`,
       });
@@ -130,7 +130,7 @@ const getPendingRequests = async (req, res) => {
       status: "pending", // Hardcoded to only fetch actionable requests
     })
       .populate("requester", "name email profileImage degree")
-      .populate("mentorship", "durationInWeeks");
+      .populate("mentorship", "durationInWeeks title");
 
     res.json(pendingRequests);
   } catch (error) {

@@ -1,74 +1,147 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import {
+  getMyReviewForMentorship,
+  getMentorshipReviews,
+  createReview,
+  updateReview,
+  deleteReview,
+} from "../api/reviewApi";
+import { useNavigate } from "react-router-dom";
 
 // The MentorshipCard component displays program details, mentee information,
 // and provides a system to manage reviews for completed programs.
 export const MentorshipCard = ({
+  mentorshipId,
+  currentUser,
+  token,
+  isAlumniView = false,
+  students = [],
   programName,
   duration,
-  // Defaulting status to an empty string prevents TypeError crashes if the prop is omitted by the parent.
   status = "",
   menteeName,
   menteeRole,
   introduction,
 }) => {
-  // Evaluates completion state to conditionally render review features.
-  // Optional chaining prevents runtime errors if status is null or undefined.
   const isCompleted = status?.toLowerCase() === "completed";
+  const isStudent = currentUser?.role?.includes("student");
+  const navigate = useNavigate();
 
   // State management for the internal review system.
-  const [reviews, setReviews] = useState([]);
+  const [review, setReview] = useState(null);
+  const [allReviews, setAllReviews] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [editingIndex, setEditingIndex] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [reviewData, setReviewData] = useState({ rating: 5, description: "" });
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  // Resets the form state to default values before displaying it for a new entry.
+  useEffect(() => {
+    if (isCompleted && mentorshipId && token) {
+      const fetchData = async () => {
+        try {
+          if (isStudent && !isAlumniView) {
+            // Fetch single review for this student
+            const fetchedReview = await getMyReviewForMentorship(
+              mentorshipId,
+              token,
+            );
+            if (fetchedReview) {
+              setReview(fetchedReview);
+            }
+          } else if (isAlumniView) {
+            // Fetch all reviews for this mentorship
+            const fetchedReviews = await getMentorshipReviews(
+              mentorshipId,
+              token,
+            );
+            setAllReviews(fetchedReviews || []);
+          }
+        } catch (err) {
+          console.error("Failed to fetch reviews:", err);
+        }
+      };
+      fetchData();
+    }
+  }, [isCompleted, isStudent, isAlumniView, mentorshipId, token]);
+
   const handleOpenForm = () => {
     setReviewData({ rating: 5, description: "" });
-    setEditingIndex(null);
+    setIsEditing(false);
+    setError("");
     setShowForm(true);
   };
 
-  // Populates the form with existing data and stores the index to track which item is being modified.
-  const handleEdit = (index) => {
-    setReviewData(reviews[index]);
-    setEditingIndex(index);
+  const handleEdit = () => {
+    setReviewData({ rating: review.rating, description: review.content });
+    setIsEditing(true);
+    setError("");
     setShowForm(true);
   };
 
-  // Filters out the review at the specified index to remove it from the state.
-  const handleDelete = (index) => {
-    setReviews(reviews.filter((_, i) => i !== index));
-  };
-
-  // Handles both creating new reviews and updating existing ones based on whether an editing index exists.
-  const handleSubmitReview = () => {
-    if (editingIndex !== null) {
-      const updatedReviews = [...reviews];
-      updatedReviews[editingIndex] = reviewData;
-      setReviews(updatedReviews);
-    } else {
-      setReviews([...reviews, reviewData]);
+  const handleDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete this review?")) return;
+    try {
+      await deleteReview(review._id, token);
+      setReview(null);
+    } catch (err) {
+      console.error("Failed to delete review:", err);
+      alert(err.message || "Failed to delete review");
     }
-    setShowForm(false);
+  };
+
+  const handleSubmitReview = async () => {
+    if (!reviewData.description.trim()) {
+      setError("Please provide a description.");
+      return;
+    }
+    setSubmitting(true);
+    setError("");
+    try {
+      if (isEditing) {
+        const updated = await updateReview(
+          review._id,
+          {
+            rating: reviewData.rating,
+            content: reviewData.description,
+          },
+          token,
+        );
+        setReview(updated);
+      } else {
+        const created = await createReview(
+          {
+            mentorshipId,
+            rating: reviewData.rating,
+            content: reviewData.description,
+          },
+          token,
+        );
+        setReview(created);
+      }
+      setShowForm(false);
+    } catch (err) {
+      setError(err.message || "Failed to submit review");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-300 p-5 shadow-sm transition-shadow hover:shadow-md">
-      {/* Header section grouping the core program identifiers and dynamic status badge */}
+    <div className="bg-surface rounded border border-border p-6 shadow-sm transition-colors">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-2 sm:gap-4">
         <div>
-          <h3 className="text-lg font-bold text-gray-900 leading-tight">
+          <h3 className="text-lg font-bold text-text-primary leading-tight">
             {programName}
           </h3>
-          <p className="text-sm text-gray-500 mt-1">{duration}</p>
+          <p className="text-sm text-text-secondary mt-1">{duration}</p>
         </div>
 
-        {/* The badge applies a distinct visual style (gray for completed, green for active) based on the derived state */}
         <span
-          className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide w-max sm:self-start ${
+          className={`px-3 py-1 rounded text-xs font-bold uppercase tracking-widest w-max sm:self-start ${
             isCompleted
-              ? "bg-gray-100 text-gray-600 border border-gray-200"
-              : "bg-emerald-100 text-emerald-700 border border-emerald-200"
+              ? "bg-surface-hover text-text-secondary border border-border"
+              : "bg-surface text-primary border border-primary"
           }`}
         >
           {status}
@@ -76,93 +149,169 @@ export const MentorshipCard = ({
       </div>
 
       <div className="mb-5">
-        <p className="text-sm text-gray-700 leading-relaxed">{introduction}</p>
+        <p className="text-sm text-text-secondary leading-relaxed">
+          {introduction}
+        </p>
       </div>
 
-      {/* Footer section containing mentee context and contextual actions */}
-      <div className="border-t border-gray-200 pt-4 flex flex-wrap justify-between items-end gap-4">
-        <div>
-          <h4 className="text-[11px] font-semibold text-gray-500 uppercase tracking-widest mb-3">
-            Mentee
+      <div className="border-t border-border pt-4 flex flex-wrap justify-between items-start gap-4">
+        <div className="w-full">
+          <h4 className="text-xs font-bold text-text-secondary uppercase tracking-widest mb-3">
+            {isAlumniView
+              ? students.length > 1
+                ? "Mentees"
+                : "Mentee"
+              : "Mentor"}
           </h4>
 
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-indigo-400 rounded-full flex-shrink-0 flex items-center justify-center text-xs text-white font-bold shadow-sm">
-              IMG
-            </div>
-            <div>
-              <h4 className="text-sm font-bold text-gray-900 hover:text-blue-700 hover:underline cursor-pointer">
-                {menteeName}
-              </h4>
-              <p className="text-xs text-gray-600 line-clamp-1">{menteeRole}</p>
-            </div>
+          <div className="flex flex-col gap-3">
+            {isAlumniView ? (
+              students.length > 0 ? (
+                students.map((student) => (
+                  <div
+                    key={student._id}
+                    className="flex items-center gap-3 border-b border-border pb-2 last:border-b-0 last:pb-0"
+                  >
+                    <div className="w-10 h-10 bg-surface-hover rounded flex-shrink-0 flex items-center justify-center text-xs text-text-secondary font-bold overflow-hidden border border-border">
+                      {student.profileImage ? (
+                        <img
+                          src={student.profileImage}
+                          alt={student.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        student.name?.charAt(0) || "U"
+                      )}
+                    </div>
+                    <div>
+                      <h4
+                        className="text-sm font-bold text-text-primary cursor-pointer hover:text-primary hover:underline transition-colors"
+                        onClick={() => navigate(`/profile/${student._id}`)}
+                      >
+                        {student.name || "Unknown"}
+                      </h4>
+                      <p className="text-xs text-text-secondary line-clamp-1">
+                        {student.degree}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-xs text-text-secondary italic">
+                  No mentees yet.
+                </p>
+              )
+            ) : (
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-surface-hover rounded flex-shrink-0 flex items-center justify-center text-xs text-text-secondary font-bold overflow-hidden border border-border">
+                  {menteeName?.charAt(0) || "U"}
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-text-primary">
+                    {menteeName || "Unknown"}
+                  </h4>
+                  <p className="text-xs text-text-secondary line-clamp-1">
+                    {menteeRole}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Ensures the review button is only accessible when the program is finished and the form isn't already active */}
-        {isCompleted && !showForm && (
+        {isCompleted && isStudent && !isAlumniView && !review && !showForm && (
           <button
             onClick={handleOpenForm}
-            className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-md hover:bg-blue-700 transition-colors whitespace-nowrap"
+            className="mt-2 px-5 py-2.5 bg-primary text-white text-sm font-medium rounded hover:bg-primary-hover border border-transparent transition-colors whitespace-nowrap self-end focus:outline-none"
           >
             Add Review
           </button>
         )}
       </div>
 
-      {/* Renders the list of submitted reviews if the state array is not empty */}
-      {reviews.length > 0 && (
+      {isStudent && !isAlumniView && review && !showForm && (
         <div className="mt-5 flex flex-col gap-3">
-          {reviews.map((review, index) => (
+          <div className="bg-surface-hover rounded p-4 border border-border">
+            <div className="flex justify-between items-start mb-2">
+              <div className="text-sm font-bold text-accent">
+                {"★".repeat(review.rating)}
+                <span className="text-border">
+                  {"☆".repeat(5 - review.rating)}
+                </span>
+                <span className="text-text-secondary text-xs ml-2 font-normal">
+                  ({review.rating}/5)
+                </span>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleEdit}
+                  className="text-xs font-semibold text-primary hover:text-primary-hover transition-colors focus:outline-none"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="text-xs font-semibold text-danger hover:text-danger/80 transition-colors focus:outline-none"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+            <p className="text-sm text-text-secondary whitespace-pre-wrap">
+              {review.content}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {isAlumniView && isCompleted && allReviews.length > 0 && (
+        <div className="mt-5 flex flex-col gap-3 border-t border-border pt-4">
+          <h4 className="text-xs font-bold text-text-secondary uppercase tracking-widest mb-1">
+            Reviews
+          </h4>
+          {allReviews.map((r) => (
             <div
-              key={index}
-              className="bg-gray-50 rounded-md p-4 border border-gray-200"
+              key={r._id}
+              className="bg-surface-hover rounded p-4 border border-border"
             >
               <div className="flex justify-between items-start mb-2">
-                <div className="text-sm font-bold text-yellow-500">
-                  {/* Generates solid and empty stars based on the numerical rating value */}
-                  {"★".repeat(review.rating)}
-                  {"☆".repeat(5 - review.rating)}
-                  <span className="text-gray-600 text-xs ml-2 font-normal">
-                    ({review.rating}/5)
+                <div>
+                  <span
+                    className="text-sm font-bold text-text-primary cursor-pointer hover:underline block"
+                    onClick={() => navigate(`/profile/${r.reviewer?._id}`)}
+                  >
+                    {r.reviewer?.name || "Anonymous"}
                   </span>
-                </div>
-                <div className="flex gap-3">
-                  <button
-                    onClick={() => handleEdit(index)}
-                    className="text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(index)}
-                    className="text-xs font-semibold text-red-600 hover:text-red-800 transition-colors"
-                  >
-                    Delete
-                  </button>
+                  <div className="text-sm font-bold text-accent mt-1">
+                    {"★".repeat(r.rating)}
+                    <span className="text-border">
+                      {"☆".repeat(5 - r.rating)}
+                    </span>
+                  </div>
                 </div>
               </div>
-              <p className="text-sm text-gray-700 whitespace-pre-wrap">
-                {review.description}
+              <p className="text-sm text-text-secondary whitespace-pre-wrap mt-2">
+                {r.content}
               </p>
             </div>
           ))}
         </div>
       )}
 
-      {/* Inline form toggled by the showForm state, adapting its header text based on context (edit vs new) */}
       {showForm && (
-        <div className="mt-5 bg-gray-50 border border-gray-200 rounded-lg p-5">
-          <h3 className="text-md font-bold text-gray-900 mb-4">
-            {editingIndex !== null ? "Edit Review" : "Leave a Review"}
+        <div className="mt-5 bg-surface border border-border rounded p-6">
+          <h3 className="text-lg font-bold text-text-primary mb-5">
+            {isEditing ? "Edit Review" : "Leave a Review"}
           </h3>
 
+          {error && <p className="text-danger text-xs mb-3">{error}</p>}
+
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-text-primary mb-1.5">
               Rating (Stars)
             </label>
             <select
-              className="w-full border border-gray-300 rounded-md p-2 text-sm bg-white"
+              className="w-full border border-border rounded px-4 py-2.5 text-sm bg-surface text-text-primary focus:border-primary focus:outline-none transition-colors"
               value={reviewData.rating}
               onChange={(e) =>
                 setReviewData({ ...reviewData, rating: Number(e.target.value) })
@@ -176,13 +325,13 @@ export const MentorshipCard = ({
             </select>
           </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+          <div className="mb-5">
+            <label className="block text-sm font-semibold text-text-primary mb-1.5">
               Description
             </label>
             <textarea
-              className="w-full border border-gray-300 rounded-md p-2 text-sm bg-white"
-              rows="3"
+              className="w-full border border-border rounded px-4 py-3 text-sm bg-surface text-text-primary focus:border-primary focus:outline-none resize-none transition-colors"
+              rows="4"
               value={reviewData.description}
               onChange={(e) =>
                 setReviewData({ ...reviewData, description: e.target.value })
@@ -191,18 +340,20 @@ export const MentorshipCard = ({
             />
           </div>
 
-          <div className="flex justify-end gap-2 mt-2">
+          <div className="flex justify-end gap-3 mt-4 border-t border-border pt-4">
             <button
+              disabled={submitting}
               onClick={() => setShowForm(false)}
-              className="px-4 py-2 text-sm text-gray-600 bg-white border border-gray-300 hover:bg-gray-100 rounded-md font-medium transition-colors"
+              className="px-4 py-2 text-sm text-text-primary bg-surface hover:bg-surface-hover border border-border rounded font-medium transition-colors disabled:opacity-50 focus:outline-none"
             >
               Cancel
             </button>
             <button
+              disabled={submitting}
               onClick={handleSubmitReview}
-              className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium transition-colors"
+              className="px-4 py-2 text-sm bg-primary text-white border border-transparent rounded hover:bg-primary-hover font-medium transition-colors disabled:opacity-50 focus:outline-none"
             >
-              {editingIndex !== null ? "Update" : "Submit"}
+              {submitting ? "Saving..." : isEditing ? "Update" : "Submit"}
             </button>
           </div>
         </div>

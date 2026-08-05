@@ -13,20 +13,26 @@ import {
   Bookmark,
   GraduationCap,
   LayoutDashboard,
+  SunMedium,
+  MoonStar,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { useTheme } from "../hooks/ThemeContext";
 
 import { useAuth } from "../hooks/AuthContext";
 
 export const Navbar = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { darkMode, setDarkMode } = useTheme();
 
   const handleLogout = () => {
-    // TODO: clear tokens/session data if needed before redirect
-    navigate("/");
+    if (window.confirm("Are you sure you want to logout ?")) {
+      logout();
+      navigate("/");
+    }
   };
 
   const hideOnRoutes = ["/signin", "/signup"];
@@ -37,7 +43,10 @@ export const Navbar = () => {
   }
 
   // empty placeholder to prevent layout shift while checking auth
-  if (loading) return <div className="h-16 bg-[#4A044E] w-full"></div>;
+  if (loading)
+    return (
+      <div className="h-16 bg-surface w-full border-b border-border"></div>
+    );
 
   // build route config based on user role
   const navLinks = user
@@ -64,52 +73,104 @@ export const Navbar = () => {
   return (
     <>
       {/* --- Desktop Nav --- */}
-      <nav className="bg-[#4A044E] px-4 md:px-6 py-3 md:py-4 shadow-md w-full sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link to="/" className="flex-shrink-0">
-            <span className="text-xl font-bold text-white tracking-widest cursor-pointer">
-              LOGO
+      {/* UI Update: Removed blur, solid surface for crisp academic look */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-surface border-b border-border transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <Link to="/" className="flex-shrink-0 flex items-center gap-3">
+            {/* UI Update: Sharper corners on logo */}
+            <div className="w-8 h-8 bg-primary text-white rounded flex items-center justify-center font-bold text-lg">
+              G
+            </div>
+            <span className="text-[22px] font-bold text-text-primary tracking-tight hidden sm:block">
+              GradBridge
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-8 h-full">
             {navLinks.map((link, index) => {
               const Icon = link.icon;
+
               return (
                 <NavLink
                   key={index}
                   to={link.to}
                   className={({ isActive }) =>
-                    `flex items-center gap-2 pb-1 border-b-2 transition-colors ${
+                    `relative flex items-center gap-2 h-full text-[15px] font-medium transition-colors group px-1 ${
                       isActive
-                        ? "text-white border-white font-semibold"
-                        : "text-purple-200 border-transparent hover:text-white"
+                        ? "text-primary"
+                        : "text-text-secondary hover:text-text-primary"
                     }`
                   }
                 >
-                  <Icon size={18} />
-                  {link.label}
+                  {({ isActive }) => (
+                    <>
+                      <Icon
+                        size={18}
+                        className={
+                          isActive
+                            ? "text-primary"
+                            : "text-text-secondary group-hover:text-primary transition-colors"
+                        }
+                      />
+                      {link.label}
+                      {/* UI Update: Thicker, static-feeling bottom border for active tabs */}
+                      <span
+                        className={`absolute bottom-0 left-0 w-full h-[3px] bg-primary transform origin-left transition-transform duration-300 ease-out ${
+                          isActive
+                            ? "scale-x-100"
+                            : "scale-x-0 group-hover:scale-x-100"
+                        }`}
+                      />
+                    </>
+                  )}
                 </NavLink>
               );
             })}
           </div>
+          {user ? (
+            <div className="flex items-center gap-2 md:gap-4">
+              {/* UI Update: Flatter buttons, softer hover backgrounds */}
+              <button
+                className="p-2 rounded text-text-secondary hover:bg-surface-hover hover:text-primary transition-colors focus:outline-none"
+                title="Toggle Theme"
+                onClick={() => setDarkMode((prev) => !prev)}
+              >
+                {darkMode ? <SunMedium size={20} /> : <MoonStar size={20} />}
+              </button>
 
-          {user && (
-            <div className="flex items-center gap-2 md:gap-4 md:border-l md:border-purple-800 md:pl-6">
+              <div className="h-6 w-px bg-border hidden sm:block mx-1"></div>
+
               <Link
                 to="/profile"
-                className="p-2 rounded-full text-purple-200 hover:bg-[#6B116E] hover:text-white transition-colors"
+                className="flex items-center justify-center w-8 h-8 rounded-full bg-surface-hover border border-border text-text-secondary hover:text-primary hover:border-border transition-colors focus:outline-none"
                 title="Profile"
               >
-                <UserCircle size={24} strokeWidth={2} />
+                {user?.profileImage ? (
+                  <img
+                    src={user.profileImage}
+                    alt="Profile"
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                ) : (
+                  <UserCircle size={20} />
+                )}
               </Link>
-
               <button
-                className="p-2 rounded-full text-purple-200 hover:bg-[#6B116E] hover:text-white transition-colors"
+                className="flex items-center justify-center w-8 h-8 rounded bg-surface border border-transparent text-text-secondary hover:text-danger hover:bg-surface-hover transition-colors focus:outline-none"
                 title="Logout"
                 onClick={handleLogout}
               >
-                <LogOut size={24} strokeWidth={2} />
+                <LogOut size={18} />
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-4">
+              <button
+                className="p-2 rounded text-text-secondary hover:bg-surface-hover hover:text-primary transition-colors focus:outline-none"
+                title="Toggle Theme"
+                onClick={() => setDarkMode((prev) => !prev)}
+              >
+                {darkMode ? <SunMedium size={20} /> : <MoonStar size={20} />}
               </button>
             </div>
           )}
@@ -117,17 +178,27 @@ export const Navbar = () => {
       </nav>
 
       {/* --- Mobile Bottom Nav --- */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full bg-[#4A044E] shadow-[0_-4px_10px_rgba(0,0,0,0.2)] z-50 flex justify-around items-center h-16 px-2 border-t border-[#6B116E]">
+      {/* UI Update: Solid background, subtle top border instead of shadow */}
+      <nav className="md:hidden fixed bottom-0 left-0 w-full bg-surface z-50 flex justify-around items-center h-16 px-2 border-t border-border">
         {navLinks.map((link, index) => {
           const Icon = link.icon;
 
           return (
-            <NavLink key={index} to={link.to} className="text-purple-200">
+            <NavLink
+              key={index}
+              to={link.to}
+              className={({ isActive }) =>
+                `p-3 rounded transition-colors ${isActive ? "text-primary" : "text-text-secondary hover:bg-surface-hover"}`
+              }
+            >
               <Icon size={22} />
             </NavLink>
           );
         })}
       </nav>
+
+      {/* Spacer to prevent content from going under the fixed navbar */}
+      <div className="h-16 w-full bg-background"></div>
     </>
   );
 };

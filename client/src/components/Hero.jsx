@@ -1,32 +1,28 @@
-{
-  /*Student home page & Alumni Home page */
-}
-
 import { Link } from "react-router-dom";
 
 function Hero() {
   return (
-    <section className="min-h-[80vh] flex items-center justify-center px-10">
+    <section className="min-h-[70vh] flex items-center justify-center px-6 py-12">
       <div className="text-center max-w-4xl">
-        <p className="text-[#7E8C54] tracking-[0.3em] text-sm font-semibold">
-          UNIVERSITY ALUMNI & MENTORSHIP NETWORK
+        <p className="text-primary tracking-widest text-xs font-bold uppercase mb-4">
+          University Alumni & Mentorship Network
         </p>
 
-        <h1 className="text-5xl md:text-6xl font-bold text-[#F5F1EA] mt-6 leading-tight">
+        <h1 className="text-4xl md:text-5xl font-bold text-text-primary leading-tight">
           Bridging the gap between
-          <span className="text-[#7E8C54]"> student ambition</span> and
+          <span className="text-primary"> student ambition</span> and
           professional mastery.
         </h1>
 
-        <p className="text-[#B8B0A8] mt-6 max-w-3xl mx-auto text-lg">
+        <p className="text-text-secondary mt-6 max-w-2xl mx-auto text-base leading-relaxed">
           Current students on one bank, seniors & alumni on the other —
           mentorship as the crossing.
         </p>
 
-        <div className="flex justify-center gap-5 mt-10">
+        <div className="flex justify-center mt-10">
           <Link
             to="/signup"
-            className="bg-[#7E8C54] hover:bg-[#8E9E84] px-8 py-3 rounded-xl text-[#F5F1EA] transition"
+            className="bg-primary hover:bg-primary-hover px-6 py-3 rounded text-sm font-medium text-white transition-colors focus:outline-none border border-transparent"
           >
             Join GradBridge
           </Link>

@@ -84,33 +84,36 @@ function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0f0d0b] py-10 px-4">
-      <div className="bg-[#24201D] w-full max-w-lg p-8 rounded-2xl shadow-xl border border-stone-800">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#F5F1EA] text-center">
-            GradBridge
+    <div className="min-h-screen bg-background relative overflow-hidden flex items-center justify-center">
+      {/* Dynamic Background */}
+      <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-primary/10 blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-info/10 blur-[100px] pointer-events-none" />
+
+      <div className="bg-surface/80 backdrop-blur-xl w-full max-w-lg p-8 md:p-12 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] border border-border relative z-10 my-8">
+        <div className="mb-8 text-center">
+          <div className="w-12 h-12 bg-primary text-white rounded-xl flex items-center justify-center font-bold text-2xl shadow-sm mx-auto mb-4">
+            G
+          </div>
+          <h1 className="text-3xl font-extrabold text-text-primary tracking-tight">
+            Create an account
           </h1>
-          <h2 className="text-md text-center mt-1 text-[#B8B0A8]">
-            Student Mentorship & Alumni Network
+          <h2 className="text-sm font-medium mt-2 text-text-secondary">
+            Join the GradBridge mentorship network
           </h2>
         </div>
 
-        <p className="text-lg font-semibold text-[#F5F1EA] mb-4">
-          Create Account
-        </p>
-
         {/* Role Selection Tabs */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-stone-400 mb-2">
+        <div className="mb-8">
+          <label className="block text-sm font-semibold text-text-primary mb-3">
             I am joining as an:
           </label>
-          <div className="flex gap-3">
+          <div className="flex gap-3 bg-surface-hover p-1 rounded-xl border border-border">
             <button
               type="button"
-              className={`flex-1 p-2.5 rounded-lg font-medium transition duration-200 ${
+              className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 ${
                 role === "student"
-                  ? "bg-[#7E8C54] text-white shadow-md"
-                  : "bg-[#312C28] text-[#B8B0A8] hover:bg-[#3f3833]"
+                  ? "bg-surface text-primary shadow-sm border border-border/50"
+                  : "text-text-secondary hover:text-text-primary hover:bg-surface/50 border border-transparent"
               }`}
               onClick={() => setRole("student")}
             >
@@ -118,10 +121,10 @@ function Signup() {
             </button>
             <button
               type="button"
-              className={`flex-1 p-2.5 rounded-lg font-medium transition duration-200 ${
+              className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 ${
                 role === "alumni"
-                  ? "bg-[#7E8C54] text-white shadow-md"
-                  : "bg-[#312C28] text-[#B8B0A8] hover:bg-[#3f3833]"
+                  ? "bg-surface text-primary shadow-sm border border-border/50"
+                  : "text-text-secondary hover:text-text-primary hover:bg-surface/50 border border-transparent"
               }`}
               onClick={() => setRole("alumni")}
             >
@@ -130,56 +133,56 @@ function Signup() {
           </div>
         </div>
 
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
           {/* Conditional rendering for Alumni-specific fields */}
           {role === "alumni" && (
-            <>
-              <div className="flex gap-3">
-                <div className="flex-1 flex flex-col gap-1">
-                  <label htmlFor="firstName" className="text-sm text-stone-400">
+            <div className="animate-fadeIn space-y-5">
+              <div className="flex gap-4">
+                <div className="flex-1 flex flex-col gap-1.5">
+                  <label htmlFor="firstName" className="block text-sm font-semibold text-text-primary mb-2">
                     First Name
                   </label>
                   <input
                     id="firstName"
                     name="firstName"
                     required
-                    className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
+                    className="bg-surface border border-border text-text-primary px-4 py-3 rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
                     placeholder="e.g. John"
                     onChange={handleChange}
                   />
                 </div>
 
-                <div className="flex-1 flex flex-col gap-1">
-                  <label htmlFor="lastName" className="text-sm text-stone-400">
+                <div className="flex-1 flex flex-col gap-1.5">
+                  <label htmlFor="lastName" className="block text-sm font-semibold text-text-primary mb-2">
                     Last Name
                   </label>
                   <input
                     id="lastName"
                     name="lastName"
                     required
-                    className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
+                    className="bg-surface border border-border text-text-primary px-4 py-3 rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
                     placeholder="e.g. Doe"
                     onChange={handleChange}
                   />
                 </div>
               </div>
 
-              <div className="flex flex-col gap-1">
-                <label htmlFor="nic" className="text-sm text-stone-400">
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="nic" className="block text-sm font-semibold text-text-primary mb-2">
                   National Identity Card (NIC)
                 </label>
                 <input
                   id="nic"
                   name="nic"
                   required
-                  className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
+                  className="bg-surface border border-border text-text-primary px-4 py-3 rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
                   placeholder="e.g. 199912345678"
                   onChange={handleChange}
                 />
               </div>
 
-              <div className="flex flex-col gap-1">
-                <label className="text-sm text-stone-400">Faculty</label>
+              <div className="flex flex-col gap-1.5">
+                <label className="block text-sm font-semibold text-text-primary mb-2">Faculty</label>
                 <SelectList
                   options={faculties}
                   handleChange={handleChange}
@@ -189,25 +192,25 @@ function Signup() {
                 />
               </div>
 
-              <div className="flex flex-col gap-1">
-                <label htmlFor="degree" className="text-sm text-stone-400">
-                  Degree{" "}
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="degree" className="block text-sm font-semibold text-text-primary mb-2">
+                  Degree
                 </label>
                 <input
                   id="degree"
                   name="degree"
                   required
-                  className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
-                  placeholder="e.g. Bachelor of Science in ..."
+                  className="bg-surface border border-border text-text-primary px-4 py-3 rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
+                  placeholder="e.g. Bachelor of Science in..."
                   onChange={handleChange}
                 />
               </div>
-            </>
+            </div>
           )}
 
           {/* Standard fields shown for all roles */}
-          <div className="flex flex-col gap-1 mt-2">
-            <label htmlFor="email" className="text-sm text-stone-400">
+          <div className="flex flex-col gap-1.5 mt-2">
+            <label htmlFor="email" className="block text-sm font-semibold text-text-primary mb-2">
               Email Address
             </label>
             <input
@@ -215,14 +218,14 @@ function Signup() {
               name="email"
               type="email"
               required
-              className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
+              className="bg-surface border border-border text-text-primary px-4 py-3 rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
               placeholder="e.g. johndoe@example.com"
               onChange={handleChange}
             />
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password" className="text-sm text-stone-400">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="password" className="block text-sm font-semibold text-text-primary mb-2">
               Password
             </label>
 
@@ -232,7 +235,7 @@ function Signup() {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 required
-                className="w-full bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 pr-10 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
+                className="w-full bg-surface border border-border text-text-primary px-4 py-3 pr-10 rounded-xl placeholder:text-text-secondary/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
                 placeholder="••••••••"
                 onChange={handleChange}
               />
@@ -240,38 +243,36 @@ function Signup() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-200 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-text-primary transition-colors focus:outline-none rounded-md p-1 focus-visible:ring-2 focus-visible:ring-primary/50"
                 title={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
           </div>
 
           {message && (
-            <p
-              className={`text-center mt-2 ${
-                message.includes("Please select")
-                  ? "text-red-400"
-                  : "text-[#7E8C54]"
-              }`}
-            >
+            <div className={`mt-2 p-3 rounded-xl text-sm flex items-center gap-2 border ${
+              message.includes("Please select") || message.toLowerCase().includes("error") || message.toLowerCase().includes("failed")
+                ? "bg-danger/10 border-danger/20 text-danger"
+                : "bg-success/10 border-success/20 text-success"
+            }`}>
               {message}
-            </p>
+            </div>
           )}
 
           <button
             type="submit"
-            className="bg-[#7E8C54] hover:bg-[#8E9E84] text-white font-medium p-3 rounded-lg mt-4 transition duration-200"
+            className="w-full bg-primary hover:bg-primary-hover text-white font-bold py-3.5 rounded-xl mt-4 transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98]"
           >
             Sign Up
           </button>
 
-          <p className="text-center text-[#B8B0A8] mt-4 text-sm">
+          <p className="text-center text-text-secondary mt-6 text-sm font-medium">
             Already have an account?
             <Link
               to="/signin"
-              className="text-[#7E8C54] ml-2 font-medium hover:underline"
+              className="text-primary ml-1.5 hover:text-primary-hover transition-colors"
             >
               Sign In
             </Link>

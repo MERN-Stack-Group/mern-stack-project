@@ -38,6 +38,24 @@ export const getActiveOpportunities = async (token) => {
   return data;
 };
 
+// Get opportunity by ID
+export const getOpportunityById = async (id, token) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return data;
+};
+
 // Get deleted opportunities for the logged-in user
 export const getDeletedOpportunities = async (token) => {
   const response = await fetch(`${API_URL}/deleted`, {

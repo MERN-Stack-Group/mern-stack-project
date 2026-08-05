@@ -37,7 +37,6 @@ function PendingApproval() {
 
   // Tracks which table view is currently active
   const [selectedView, setSelectedView] = useState("pending");
-  const [darkMode, setDarkMode] = useState(false);
 
   // Moves a user from pending/rejected to the approved list
   const approveUser = (id) => {
@@ -66,57 +65,50 @@ function PendingApproval() {
   };
 
   return (
-    <div
-      className={`flex min-h-screen ${
-        darkMode ? "bg-gray-900 text-white" : "bg-purple-50 text-gray-800"
-      }`}
-    >
-      <main className="flex-1 p-10">
+    <div className="flex min-h-screen bg-background text-text-primary">
+      <main className="flex-1 p-8 max-w-7xl mx-auto w-full">
         {/* Header */}
-        <header className="flex justify-between items-center mb-10">
+        <header className="flex justify-between items-center mb-8">
           <div>
-            <h1
-              className={`text-3xl font-bold ${
-                darkMode ? "text-white" : "text-gray-800"
-              }`}
-            >
+            <h1 className="text-3xl font-bold text-text-primary">
               Pending Alumni Approvals
             </h1>
-            <p className="text-gray-500 mt-1">
+            <p className="text-text-secondary mt-2 text-sm">
               Review and manage alumni registration requests.
             </p>
           </div>
-
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className="bg-purple-600 hover:bg-purple-700 transition-colors text-white px-5 py-3 rounded-lg font-medium"
-          >
-            {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
-          </button>
         </header>
 
         {/* Summary Cards */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
           {/* Pending Requests Card */}
           <div
             onClick={() => setSelectedView("pending")}
-            className={`p-6 rounded-xl shadow cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${
-              darkMode ? "bg-gray-800" : "bg-white"
-            } ${selectedView === "pending" ? "ring-2 ring-purple-600" : ""}`}
+            className={`p-6 rounded border cursor-pointer transition-colors shadow-sm ${
+              selectedView === "pending"
+                ? "bg-surface-hover border-primary"
+                : "bg-surface border-border hover:bg-surface-hover"
+            }`}
           >
-            <h3 className="text-lg font-semibold mb-2">Pending Requests</h3>
-            <p className="text-3xl font-bold text-purple-600">{users.length}</p>
+            <h3 className="text-sm font-bold text-text-secondary uppercase tracking-widest mb-2">
+              Pending Requests
+            </h3>
+            <p className="text-3xl font-bold text-primary">{users.length}</p>
           </div>
 
           {/* Approved Card */}
           <div
             onClick={() => setSelectedView("approved")}
-            className={`p-6 rounded-xl shadow cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${
-              darkMode ? "bg-gray-800" : "bg-white"
-            } ${selectedView === "approved" ? "ring-2 ring-purple-600" : ""}`}
+            className={`p-6 rounded border cursor-pointer transition-colors shadow-sm ${
+              selectedView === "approved"
+                ? "bg-surface-hover border-primary"
+                : "bg-surface border-border hover:bg-surface-hover"
+            }`}
           >
-            <h3 className="text-lg font-semibold mb-2">Approved</h3>
-            <p className="text-3xl font-bold text-purple-600">
+            <h3 className="text-sm font-bold text-text-secondary uppercase tracking-widest mb-2">
+              Approved
+            </h3>
+            <p className="text-3xl font-bold text-primary">
               {approvedUsers.length}
             </p>
           </div>
@@ -124,24 +116,24 @@ function PendingApproval() {
           {/* Rejected Card */}
           <div
             onClick={() => setSelectedView("rejected")}
-            className={`p-6 rounded-xl shadow cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${
-              darkMode ? "bg-gray-800" : "bg-white"
-            } ${selectedView === "rejected" ? "ring-2 ring-purple-600" : ""}`}
+            className={`p-6 rounded border cursor-pointer transition-colors shadow-sm ${
+              selectedView === "rejected"
+                ? "bg-surface-hover border-primary"
+                : "bg-surface border-border hover:bg-surface-hover"
+            }`}
           >
-            <h3 className="text-lg font-semibold mb-2">Rejected</h3>
-            <p className="text-3xl font-bold text-purple-600">
+            <h3 className="text-sm font-bold text-text-secondary uppercase tracking-widest mb-2">
+              Rejected
+            </h3>
+            <p className="text-3xl font-bold text-primary">
               {rejectedUsers.length}
             </p>
           </div>
         </section>
 
         {/* Alumni Table */}
-        <section
-          className={`p-6 rounded-xl shadow ${
-            darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"
-          }`}
-        >
-          <h2 className="text-xl font-bold mb-5">
+        <section className="p-6 rounded border border-border shadow-sm bg-surface">
+          <h2 className="text-lg font-bold mb-5 text-text-primary">
             {selectedView === "pending"
               ? "Pending Requests"
               : selectedView === "approved"
@@ -149,27 +141,35 @@ function PendingApproval() {
                 : "Rejected Alumni"}
           </h2>
 
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr
-                  className={
-                    darkMode
-                      ? "bg-purple-900 text-white"
-                      : "bg-purple-100 text-gray-800"
-                  }
-                >
-                  <th className="p-3 text-left rounded-tl-lg">Name</th>
-                  <th className="p-3 text-left">NIC</th>
-                  <th className="p-3 text-left">Email</th>
-                  <th className="p-3 text-left">Faculty</th>
-                  <th className="p-3 text-left">Industry</th>
-                  <th className="p-3 text-left">Registered Date</th>
-                  <th className="p-3 text-left rounded-tr-lg">Action</th>
+          <div className="overflow-x-auto border border-border rounded">
+            <table className="w-full text-sm text-left divide-y divide-border">
+              <thead className="bg-surface-hover">
+                <tr>
+                  <th className="px-4 py-3 text-xs font-bold text-text-secondary uppercase tracking-widest">
+                    Name
+                  </th>
+                  <th className="px-4 py-3 text-xs font-bold text-text-secondary uppercase tracking-widest">
+                    NIC
+                  </th>
+                  <th className="px-4 py-3 text-xs font-bold text-text-secondary uppercase tracking-widest">
+                    Email
+                  </th>
+                  <th className="px-4 py-3 text-xs font-bold text-text-secondary uppercase tracking-widest">
+                    Faculty
+                  </th>
+                  <th className="px-4 py-3 text-xs font-bold text-text-secondary uppercase tracking-widest">
+                    Industry
+                  </th>
+                  <th className="px-4 py-3 text-xs font-bold text-text-secondary uppercase tracking-widest">
+                    Registered Date
+                  </th>
+                  <th className="px-4 py-3 text-xs font-bold text-text-secondary uppercase tracking-widest text-right">
+                    Action
+                  </th>
                 </tr>
               </thead>
 
-              <tbody>
+              <tbody className="bg-surface divide-y divide-border">
                 {(selectedView === "pending"
                   ? users
                   : selectedView === "approved"
@@ -178,31 +178,29 @@ function PendingApproval() {
                 ).map((user) => (
                   <tr
                     key={user.id}
-                    className={`border-b hover:bg-opacity-50 transition-colors ${
-                      darkMode
-                        ? "text-white border-gray-700 hover:bg-gray-700"
-                        : "text-gray-800 hover:bg-gray-50"
-                    }`}
+                    className="hover:bg-surface-hover transition-colors text-text-primary"
                   >
-                    <td className="p-3">{user.name}</td>
-                    <td className="p-3">{user.nic}</td>
-                    <td className="p-3">{user.email}</td>
-                    <td className="p-3">{user.faculty}</td>
-                    <td className="p-3">{user.industry}</td>
-                    <td className="p-3">{user.date}</td>
-                    <td className="p-3">
+                    <td className="px-4 py-3 font-medium">{user.name}</td>
+                    <td className="px-4 py-3">{user.nic}</td>
+                    <td className="px-4 py-3">{user.email}</td>
+                    <td className="px-4 py-3">{user.faculty}</td>
+                    <td className="px-4 py-3">{user.industry}</td>
+                    <td className="px-4 py-3 text-text-secondary">
+                      {user.date}
+                    </td>
+                    <td className="px-4 py-3 text-right">
                       {/* Actions for Pending view */}
                       {selectedView === "pending" && (
-                        <div className="flex gap-2">
+                        <div className="flex justify-end gap-2">
                           <button
                             onClick={() => approveUser(user.id)}
-                            className="bg-purple-600 hover:bg-purple-700 transition-colors text-white px-3 py-2 rounded"
+                            className="bg-primary hover:bg-primary-hover transition-colors text-white px-3 py-1.5 rounded text-xs font-bold focus:outline-none"
                           >
                             Approve
                           </button>
                           <button
                             onClick={() => rejectUser(user.id)}
-                            className="bg-purple-100 hover:bg-purple-200 transition-colors text-purple-700 px-3 py-2 rounded"
+                            className="bg-surface hover:bg-surface-hover text-text-secondary hover:text-danger transition-colors border border-border hover:border-danger px-3 py-1.5 rounded text-xs font-bold focus:outline-none"
                           >
                             Reject
                           </button>
@@ -211,13 +209,13 @@ function PendingApproval() {
 
                       {/* Actions for Approved view */}
                       {selectedView === "approved" && (
-                        <div className="flex items-center gap-3">
-                          <span className="text-green-600 font-bold">
+                        <div className="flex justify-end items-center gap-3">
+                          <span className="text-success text-[11px] font-bold uppercase tracking-widest">
                             Approved
                           </span>
                           <button
                             onClick={() => rejectUser(user.id)}
-                            className="bg-red-500 hover:bg-red-600 transition-colors text-white px-3 py-2 rounded text-sm"
+                            className="bg-surface hover:bg-surface-hover text-text-secondary hover:text-danger transition-colors border border-border hover:border-danger px-3 py-1.5 rounded text-xs font-bold focus:outline-none"
                           >
                             Reject
                           </button>
@@ -226,13 +224,13 @@ function PendingApproval() {
 
                       {/* Actions for Rejected view */}
                       {selectedView === "rejected" && (
-                        <div className="flex items-center gap-3">
-                          <span className="text-red-600 font-bold">
+                        <div className="flex justify-end items-center gap-3">
+                          <span className="text-danger text-[11px] font-bold uppercase tracking-widest">
                             Rejected
                           </span>
                           <button
                             onClick={() => approveUser(user.id)}
-                            className="bg-purple-600 hover:bg-purple-700 transition-colors text-white px-3 py-2 rounded text-sm"
+                            className="bg-primary hover:bg-primary-hover transition-colors text-white px-3 py-1.5 rounded text-xs font-bold focus:outline-none"
                           >
                             Approve
                           </button>
@@ -246,21 +244,21 @@ function PendingApproval() {
 
             {/* Empty State Messages */}
             {selectedView === "pending" && users.length === 0 && (
-              <p className="text-center text-gray-500 py-8">
+              <div className="text-center text-text-secondary py-8 text-sm">
                 No pending approval requests.
-              </p>
+              </div>
             )}
 
             {selectedView === "approved" && approvedUsers.length === 0 && (
-              <p className="text-center text-gray-500 py-8">
+              <div className="text-center text-text-secondary py-8 text-sm">
                 No approved users yet.
-              </p>
+              </div>
             )}
 
             {selectedView === "rejected" && rejectedUsers.length === 0 && (
-              <p className="text-center text-gray-500 py-8">
+              <div className="text-center text-text-secondary py-8 text-sm">
                 No rejected users yet.
-              </p>
+              </div>
             )}
           </div>
         </section>

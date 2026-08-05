@@ -1,59 +1,134 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MentorshipCard } from "./MentorshipCard";
+import { useParams, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/AuthContext";
+import { getUserMentorships } from "../api/mentorshipApi";
+import { getMentorReviews } from "../api/reviewApi";
+import { ChevronLeft } from "lucide-react";
 
 export const MentorshipModel = ({ viewType = "completed" }) => {
-  const activeMentorships = [
-    {
-      id: "a1",
-      programName: "Enterprise Architecture Mentorship",
-      duration: "Jan 2026 - Present",
-      status: "Active",
-      menteeName: "Alex Johnson",
-      menteeRole: "Junior Systems Analyst at MAS Holdings",
-      introduction:
-        "Focusing on transitioning from basic IT support to systems architecture, with emphasis on scalable database design and operational workflows.",
-    },
-  ];
+  const { userId } = useParams();
+  const { user, token } = useAuth();
+  const navigate = useNavigate();
 
-  const completedMentorships = [
-    {
-      id: "c1",
-      programName: "Software Engineering Fundamentals",
-      duration: "Jun 2025 - Dec 2025",
-      status: "Completed",
-      menteeName: "Samantha Lee",
-      menteeRole: "CS Student at University of Colombo",
-      introduction:
-        "Guided the mentee through advanced data structures, OOP concepts in Java, and preparing them for technical internships.",
-    },
+  const targetUserId = userId || user?._id;
 
-    {
-      id: "c2",
-      programName: "Agile Project Management",
-      duration: "Jan 2025 - May 2025",
-      status: "Completed",
-      menteeName: "David Perera",
-      menteeRole: "Scrum Master Intern",
-      introduction:
-        "Covered sprint planning, backlog grooming, and communication strategies between developers and stakeholders.",
-    },
-  ];
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const data = viewType === "active" ? activeMentorships : completedMentorships;
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!targetUserId || !token) return;
+      try {
+        setLoading(true);
+        if (viewType === "reviews") {
+          const rData = await getMentorReviews(targetUserId, token);
+          setData(rData);
+        } else {
+          const mData = await getUserMentorships(targetUserId, token);
+          // Filter based on viewType
+          const filtered = mData.filter((m) =>
+            viewType === "active"
+              ? m.stage === "active" || m.stage === "enrollment"
+              : m.stage === "completed",
+          );
+          setData(filtered);
+        }
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [targetUserId, token, viewType]);
+
+  const goBack = () => {
+    navigate(-1);
+  };
 
   return (
-    <div className="flex flex-col gap-4 w-full md:w-4/6 ml-0 md:ml-10 mt-5">
-      <h2 className="text-xl font-bold text-gray-900">
-        {viewType === "active" ? "Active Mentorships" : "Mentorship History"}
-      </h2>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background py-10 w-full">
+      <div className="flex flex-col gap-6 w-full max-w-3xl px-4">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={goBack}
+            className="p-2 bg-surface border border-border rounded hover:bg-surface-hover transition-colors text-text-secondary hover:text-text-primary focus:outline-none"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          <h2 className="text-2xl font-bold text-text-primary">
+            {viewType === "active"
+              ? "Active Mentorships"
+              : viewType === "completed"
+                ? "Mentorship History"
+                : "Mentee Reviews"}
+          </h2>
+        </div>
 
-      {data.map((item) => (
-        <MentorshipCard key={item.id} {...item} />
-      ))}
-
-      {data.length === 0 && (
-        <p className="text-gray-500 italic">No mentorships found.</p>
-      )}
+        {loading ? (
+          <div className="text-text-secondary animate-pulse">Loading...</div>
+        ) : (
+          <div className="flex flex-col gap-4">
+            {viewType === "reviews" ? (
+              data.length > 0 ? (
+                data.map((review, idx) => (
+                  <div
+                    key={review._id || idx}
+                    className="bg-surface rounded border border-border p-5 shadow-sm"
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <span
+                        className="text-sm font-bold text-text-primary hover:underline hover:text-primary transition-colors cursor-pointer"
+                        onClick={() =>
+                          navigate(`/profile/${review.reviewer?._id}`)
+                        }
+                      >
+                        {review.reviewer?.name || "Anonymous"}
+                      </span>
+                      <span className="text-md font-bold text-accent tracking-widest">
+                        {"★".repeat(review.rating)}
+                        <span className="text-border">
+                          {"☆".repeat(5 - review.rating)}
+                        </span>
+                      </span>
+                    </div>
+                    <p className="text-sm text-text-secondary leading-relaxed whitespace-pre-wrap">
+                      "{review.content}"
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-text-secondary italic">No reviews found.</p>
+              )
+            ) : data.length > 0 ? (
+              data.map((item) => {
+                const isAlumniView = item.alumni?._id === targetUserId;
+                return (
+                  <MentorshipCard
+                    key={item._id}
+                    mentorshipId={item._id}
+                    currentUser={user}
+                    token={token}
+                    isAlumniView={isAlumniView}
+                    students={item.students || []}
+                    programName={item.title}
+                    duration={`${item.durationInWeeks} Weeks`}
+                    status={item.stage}
+                    menteeName={item.alumni?.name}
+                    menteeRole={item.alumni?.role?.[0] || "Alumni"}
+                    introduction={item.description}
+                  />
+                );
+              })
+            ) : (
+              <p className="text-text-secondary italic">
+                No mentorships found.
+              </p>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

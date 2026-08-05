@@ -2,22 +2,28 @@ import React from "react";
 
 const TagCard = ({ topic, skills }) => {
   return (
-    <div className="w-full border-l bg-white rounded-lg border border-gray-300 p-6 shadow-sm">
+    <div className="w-full bg-surface rounded border border-border p-6 shadow-sm">
       {/* Topic Title */}
-      <h2 className="text-[#0A2540] text-xl font-bold mb-4 font-sans tracking-wide">
+      <h2 className="text-text-primary text-lg font-bold mb-4 tracking-wide">
         {topic}
       </h2>
 
       {/* Skills Container */}
-      <div className="flex flex-wrap gap-3">
-        {skills.map((skill, index) => (
-          <span
-            key={index}
-            className="px-3 py-1.5 border border-gray-200 rounded-md bg-[#FBFCFD] text-[#0A2540] text-sm font-mono tracking-tight"
-          >
-            {skill}
-          </span>
-        ))}
+      <div className="flex flex-wrap gap-2">
+        {skills.length > 0 ? (
+          skills.map((skill, index) => (
+            <span
+              key={index}
+              className="px-2.5 py-1 border border-border rounded bg-surface-hover text-text-primary text-xs font-semibold transition-colors hover:text-primary hover:border-primary"
+            >
+              {skill}
+            </span>
+          ))
+        ) : (
+          <p className="text-sm text-text-secondary italic">
+            No skills or interests added yet.
+          </p>
+        )}
       </div>
     </div>
   );

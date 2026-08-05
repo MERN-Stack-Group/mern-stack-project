@@ -118,54 +118,96 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[80vh] bg-gray-50 dark:bg-gray-950">
-        <p className="text-xl font-bold text-gray-500 dark:text-gray-400 animate-pulse">
-          Loading...
-        </p>
+      <div className="flex items-center justify-center min-h-[80vh] bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-8 h-8 rounded-full border-2 border-border border-t-primary animate-spin"></div>
+          <p className="text-sm font-semibold text-text-secondary">
+            Loading...
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] text-center p-8 font-sans bg-gray-50 dark:bg-gray-950 transition-colors duration-500">
-      <header className="mb-12">
-        <h1 className="text-5xl font-extrabold mb-4 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 drop-shadow-sm">
-          {content.headline}
-        </h1>
-        <p className="text-xl text-gray-700 dark:text-gray-300 font-medium">
-          {content.subtext}
-        </p>
-      </header>
+    <div className="min-h-screen bg-background flex flex-col justify-center">
+        <header className="mb-10 max-w-3xl mx-auto">
+          <div className="inline-block mb-6 px-3 py-1 rounded bg-surface border border-border text-text-secondary text-[11px] font-bold uppercase tracking-widest shadow-sm">
+            {isStudent ? "For Ambitious Students" : "For Industry Leaders"}
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-text-primary leading-tight">
+            {content.headline}
+          </h1>
+          <p className="text-lg md:text-xl text-text-secondary font-medium max-w-2xl mx-auto">
+            {content.subtext}
+          </p>
+        </header>
 
-      <main className="w-full max-w-2xl">
-        {/* Quote display container */}
-        <div className="relative w-full h-48 mx-auto mb-12">
-          {quotes.map((quote, index) => (
-            <div
-              key={index}
-              className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-1000 ease-in-out ${
-                index === currentIndex
-                  ? "opacity-100 z-10"
-                  : "opacity-0 z-0 pointer-events-none"
-              }`}
-            >
-              <blockquote className="text-2xl font-semibold italic text-gray-800 dark:text-gray-100 mb-4 drop-shadow-md">
-                "{quote.text}"
-              </blockquote>
-              <cite className="text-base font-bold uppercase text-indigo-600 dark:text-indigo-400 not-italic tracking-wider">
-                — <u>{quote.author}</u>
-              </cite>
+        <main className="w-full max-w-3xl">
+          {/* Quote display container */}
+          <div className="relative w-full h-56 mx-auto mb-10 bg-surface border border-border rounded p-8 shadow-sm flex items-center justify-center">
+            <div className="absolute -top-3 -left-3 w-8 h-8 bg-surface-hover border border-border rounded flex items-center justify-center">
+              <span className="text-xl font-serif text-text-secondary leading-none">
+                "
+              </span>
             </div>
-          ))}
-        </div>
 
-        <Link
-          to={content.to}
-          className="bg-black dark:bg-white text-white dark:text-black py-4 px-10 text-lg font-bold uppercase tracking-wider rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_rgba(79,70,229,0.4)] dark:hover:shadow-[0_0_20px_rgba(129,140,248,0.6)]"
-        >
-          {content.cta}
-        </Link>
-      </main>
+            {quotes.map((quote, index) => (
+              <div
+                key={index}
+                className={`absolute inset-0 p-8 flex flex-col items-center justify-center transition-opacity duration-500 ease-in-out ${
+                  index === currentIndex
+                    ? "opacity-100 z-10"
+                    : "opacity-0 z-0 pointer-events-none"
+                }`}
+              >
+                <blockquote className="text-lg md:text-xl font-medium text-text-primary mb-4 italic">
+                  {quote.text}
+                </blockquote>
+                <div className="flex items-center gap-2">
+                  <div className="h-px w-6 bg-border"></div>
+                  <cite className="text-xs font-bold uppercase tracking-widest text-text-secondary not-italic">
+                    {quote.author}
+                  </cite>
+                  <div className="h-px w-6 bg-border"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link
+              to={content.to}
+              className="group relative inline-flex items-center justify-center bg-primary hover:bg-primary-hover text-white py-2.5 px-8 text-sm font-bold rounded transition-colors w-full sm:w-auto focus:outline-none"
+            >
+              <span className="flex items-center gap-2">
+                {content.cta}
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  ></path>
+                </svg>
+              </span>
+            </Link>
+
+            {!user && (
+              <Link
+                to="/search/mentors"
+                className="inline-flex items-center justify-center bg-surface hover:bg-surface-hover text-text-primary py-2.5 px-8 text-sm font-bold rounded border border-border transition-colors w-full sm:w-auto focus:outline-none"
+              >
+                Explore Network
+              </Link>
+            )}
+          </div>
+        </main>
     </div>
   );
 }

@@ -141,62 +141,74 @@ export default function Search({ categoryType = "mentors" }) {
   });
 
   return (
-    <div className="min-h-screen bg-[#051811] text-emerald-50 p-6 md:p-10 font-sans antialiased">
-      <h1 className="text-4xl font-bold text-center text-emerald-400 mb-10 tracking-tight">
+    <div className="min-h-screen bg-background text-text-primary font-sans antialiased">
+      <h1 className="text-4xl font-bold text-center text-primary mb-10 tracking-tight">
         Search {displayTitle}
       </h1>
 
-      <div className="max-w-4xl mx-auto bg-[#091D14] p-6 md:p-8 rounded-2xl border border-[#133826] shadow-xl">
+      <div className="max-w-4xl mx-auto bg-surface p-8 rounded-lg border border-border shadow-md relative overflow-hidden">
+        {/* Subtle top border highlight */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-info opacity-80"></div>
         {/* Search Bar */}
         <div className="relative w-full group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-emerald-600 group-focus-within:text-emerald-400 transition-colors">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-text-secondary group-focus-within:text-primary transition-colors">
             <SearchIcon size={20} />
           </div>
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={`Search ${currentCategory}...`}
-            className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-[#051811] border border-[#133826] text-emerald-50 placeholder-emerald-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-300 shadow-inner"
+            className="w-full pl-12 pr-4 py-4 rounded-2xl bg-surface border border-border text-text-primary placeholder:text-text-secondary/60 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 shadow-sm hover:shadow"
           />
         </div>
 
         {/* Faculty Filter */}
-        <div className="mt-6">
-          <select
-            value={faculty}
-            onChange={(e) => setFaculty(e.target.value)}
-            className="w-full p-3.5 rounded-xl bg-[#051811] border border-[#133826] text-emerald-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-300 cursor-pointer appearance-none"
-          >
-            <option value="">All Faculties</option>
-            {faculties.map((f) => (
-              <option key={f} value={f}>
-                {f}
-              </option>
-            ))}
-          </select>
-        </div>
+        {!currentCategory.includes("opportunities") && (
+          <div className="mt-6">
+            <select
+              value={faculty}
+              onChange={(e) => setFaculty(e.target.value)}
+              className="w-full p-4 rounded-2xl bg-surface border border-border text-text-primary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 cursor-pointer appearance-none shadow-sm hover:shadow"
+            >
+              <option value="">All Faculties</option>
+              {faculties.map((f) => (
+                <option key={f} value={f}>
+                  {f}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
-        {/* ── TODO: Add mentorship / opportunity-specific filters here ──────
-            When mentorships are implemented, add duration / seats filters.
-            When opportunities are implemented, add location / type filters.
-        ───────────────────────────────────────────────────────────────────── */}
+        {/* Add mentorship / opportunity-specific filters 
+            mentorships -> , add duration / seats filters.
+            opportunities -> add location / type filters.
+         */}
       </div>
 
       {/* Status messages */}
       {loading && (
-        <p className="text-center text-emerald-500 mt-10 animate-pulse">
+        <p className="text-center text-primary mt-10 animate-pulse">
           Loading {currentCategory}…
         </p>
       )}
-      {error && <p className="text-center text-red-400 mt-10">{error}</p>}
+      {error && <p className="text-center text-danger mt-10">{error}</p>}
 
       {/* Results Grid */}
       {!loading && !error && (
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
           {filtered.length > 0 ? (
-            filtered.map((item) => <SearchCard key={item._id} item={item} />)
+            filtered.map((item) => {
+              let linkTo = `/profile/${item._id}`;
+              if (currentCategory === "mentorships") {
+                linkTo = `/details/mentorship/${item._id}`;
+              } else if (currentCategory === "opportunities") {
+                linkTo = `/details/opportunity/${item._id}`;
+              }
+              return <SearchCard key={item._id} item={item} linkTo={linkTo} />;
+            })
           ) : (
-            <div className="col-span-full text-center text-emerald-700 py-10">
+            <div className="col-span-full text-center text-text-secondary py-10">
               No results found matching your criteria.
             </div>
           )}

@@ -179,74 +179,37 @@ const EditProfileModal = ({ isOpen, onClose }) => {
       {/* backdrop */}
       <div
         onClick={onClose}
-        style={{
-          position: "fixed",
-          inset: 0,
-          background: "rgba(0,0,0,0.45)",
-          backdropFilter: "blur(3px)",
-          zIndex: 1000,
-          opacity: isOpen ? 1 : 0,
-          pointerEvents: isOpen ? "auto" : "none",
-          transition: "opacity 0.3s ease",
-        }}
+        className={`fixed inset-0 bg-black/45 z-50 transition-opacity duration-300 ${
+          isOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
       />
 
       {/* drawer panel */}
       <div
-        style={{
-          position: "fixed",
-          top: 0,
-          right: 0,
-          height: "100%",
-          width: "min(520px, 100vw)",
-          background: "#ffffff",
-          zIndex: 1001,
-          display: "flex",
-          flexDirection: "column",
-          boxShadow: "-8px 0 40px rgba(0,0,0,0.18)",
-          transform: isOpen ? "translateX(0)" : "translateX(100%)",
-          transition: "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-        }}
+        className={`fixed top-0 right-0 h-full w-full max-w-[520px] bg-surface z-[51] flex flex-col shadow-lg transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         {/* header */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "20px 24px",
-            borderBottom: "1px solid #e5e7eb",
-            background: "linear-gradient(135deg, #172b4d 0%, #1e3a5f 100%)",
-            color: "white",
-            flexShrink: 0,
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div
-              style={{
-                width: 36,
-                height: 36,
-                borderRadius: "50%",
-                background: "rgba(255,255,255,0.15)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-surface-hover flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                style={{ width: 18, height: 18 }}
+                className="w-[18px] h-[18px]"
               >
                 <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.158 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
               </svg>
             </div>
             <div>
-              <h2 style={{ fontSize: 18, fontWeight: 700, margin: 0 }}>
+              <h2 className="text-lg font-bold text-text-primary m-0">
                 Edit Profile
               </h2>
-              <p style={{ fontSize: 12, opacity: 0.7, margin: 0 }}>
+              <p className="text-xs text-text-secondary m-0">
                 Changes are saved immediately
               </p>
             </div>
@@ -254,25 +217,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 
           <button
             onClick={onClose}
-            style={{
-              background: "rgba(255,255,255,0.1)",
-              border: "none",
-              borderRadius: "50%",
-              width: 36,
-              height: 36,
-              color: "white",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transition: "background 0.2s",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.background = "rgba(255,255,255,0.2)")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.background = "rgba(255,255,255,0.1)")
-            }
+            className="w-8 h-8 rounded flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-border transition-colors border-none cursor-pointer focus:outline-none"
             aria-label="Close"
           >
             <svg
@@ -281,7 +226,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
               fill="none"
               stroke="currentColor"
               strokeWidth={2.5}
-              style={{ width: 16, height: 16 }}
+              className="w-4 h-4"
             >
               <path
                 strokeLinecap="round"
@@ -296,122 +241,52 @@ const EditProfileModal = ({ isOpen, onClose }) => {
         <form
           id="edit-profile-form"
           onSubmit={handleSubmit}
-          style={{
-            flex: 1,
-            overflowY: "auto",
-            padding: "24px",
-            display: "flex",
-            flexDirection: "column",
-            gap: 24,
-          }}
+          className="flex-1 overflow-y-auto p-6 flex flex-col gap-6 bg-background"
         >
           {/* Profile Picture */}
           <Section title="Profile Picture">
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 20,
-              }}
-            >
+            <div className="flex items-center gap-5">
               {/* Avatar preview */}
-              <div
-                style={{
-                  position: "relative",
-                  width: 80,
-                  height: 80,
-                  flexShrink: 0,
-                }}
-              >
+              <div className="relative w-20 h-20 flex-shrink-0">
                 <img
                   src={imagePreview || user?.profileImage}
                   alt="Profile"
-                  style={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    border: "3px solid #e5e7eb",
-                  }}
+                  className="w-20 h-20 rounded-full object-cover border-[3px] border-border"
                 />
                 {imageUploading && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      borderRadius: "50%",
-                      background: "rgba(0,0,0,0.45)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <span
-                      style={{
-                        display: "inline-block",
-                        width: 22,
-                        height: 22,
-                        border: "3px solid rgba(255,255,255,0.3)",
-                        borderTop: "3px solid white",
-                        borderRadius: "50%",
-                        animation: "ep-spin 0.7s linear infinite",
-                      }}
-                    />
+                  <div className="absolute inset-0 rounded-full bg-black/45 flex items-center justify-center">
+                    <span className="inline-block w-5 h-5 border-[3px] border-white/30 border-t-white rounded-full animate-spin" />
                   </div>
                 )}
               </div>
 
               {/* Upload controls */}
-              <div style={{ flex: 1 }}>
+              <div className="flex-1">
                 <input
                   ref={fileInputRef}
                   type="file"
                   accept="image/jpeg,image/png,image/jpg"
                   onChange={handleImageChange}
-                  style={{ display: "none" }}
+                  className="hidden"
                   id="profile-image-input"
                 />
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={imageUploading}
-                  style={{
-                    padding: "8px 16px",
-                    background: "white",
-                    border: "1.5px solid #d1d5db",
-                    borderRadius: 8,
-                    fontSize: 13,
-                    fontWeight: 600,
-                    color: "#374151",
-                    cursor: imageUploading ? "not-allowed" : "pointer",
-                    opacity: imageUploading ? 0.6 : 1,
-                    transition: "background 0.2s",
-                    display: "block",
-                    marginBottom: 6,
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!imageUploading)
-                      e.currentTarget.style.background = "#f3f4f6";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "white";
-                  }}
+                  className={`px-4 py-2 bg-surface hover:bg-surface-hover border border-border rounded text-sm font-semibold text-text-primary transition-colors block mb-1.5 focus:outline-none ${
+                    imageUploading
+                      ? "opacity-60 cursor-not-allowed"
+                      : "cursor-pointer"
+                  }`}
                 >
                   {imageUploading ? "Uploading…" : "Change Photo"}
                 </button>
-                <p style={{ fontSize: 11, color: "#9ca3af", margin: 0 }}>
+                <p className="text-[11px] text-text-secondary m-0">
                   JPG or PNG &mdash; uploaded instantly on select
                 </p>
                 {imageError && (
-                  <p
-                    style={{
-                      fontSize: 12,
-                      color: "#b91c1c",
-                      marginTop: 6,
-                    }}
-                  >
-                    {imageError}
-                  </p>
+                  <p className="text-xs text-danger mt-1.5">{imageError}</p>
                 )}
               </div>
             </div>
@@ -457,22 +332,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 onChange={handleChange}
                 placeholder="Tell others about yourself, your interests, and goals..."
                 rows={5}
-                style={{
-                  width: "100%",
-                  padding: "9px 12px",
-                  border: "1.5px solid #d1d5db",
-                  borderRadius: 8,
-                  fontSize: 14,
-                  color: "#111827",
-                  background: "white",
-                  outline: "none",
-                  transition: "border-color 0.2s",
-                  resize: "vertical",
-                  fontFamily: "inherit",
-                  lineHeight: 1.6,
-                }}
-                onFocus={(e) => (e.target.style.borderColor = "#172b4d")}
-                onBlur={(e) => (e.target.style.borderColor = "#d1d5db")}
+                className="w-full px-3 py-2 border border-border rounded text-sm text-text-primary bg-surface outline-none transition-colors resize-y leading-relaxed focus:border-primary"
               />
             </Field>
           </Section>
@@ -480,7 +340,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
           {/* Skills / Interests */}
           <Section title="Skills & Interests">
             <Field label="Add a skill or tag">
-              <div style={{ display: "flex", gap: 8 }}>
+              <div className="flex gap-2">
                 <input
                   ref={tagInputRef}
                   value={form.tagInput}
@@ -489,41 +349,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   }
                   onKeyDown={handleTagKeyDown}
                   placeholder="e.g. React, Python…  (Enter to add)"
-                  style={{
-                    flex: 1,
-                    padding: "9px 12px",
-                    border: "1.5px solid #d1d5db",
-                    borderRadius: 8,
-                    fontSize: 14,
-                    color: "#111827",
-                    background: "white",
-                    outline: "none",
-                    transition: "border-color 0.2s",
-                  }}
-                  onFocus={(e) => (e.target.style.borderColor = "#172b4d")}
-                  onBlur={(e) => (e.target.style.borderColor = "#d1d5db")}
+                  className="flex-1 px-3 py-2 border border-border rounded text-sm text-text-primary bg-surface outline-none transition-colors focus:border-primary"
                 />
                 <button
                   type="button"
                   onClick={addTag}
-                  style={{
-                    padding: "9px 16px",
-                    background: "#172b4d",
-                    color: "white",
-                    border: "none",
-                    borderRadius: 8,
-                    fontSize: 13,
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    transition: "background 0.2s",
-                    whiteSpace: "nowrap",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "#1e3a5f")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "#172b4d")
-                  }
+                  className="px-4 py-2 bg-primary hover:bg-primary-hover text-white border border-transparent rounded text-sm font-bold cursor-pointer transition-colors whitespace-nowrap focus:outline-none"
                 >
                   Add
                 </button>
@@ -531,44 +362,17 @@ const EditProfileModal = ({ isOpen, onClose }) => {
             </Field>
 
             {form.tags.length > 0 && (
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 8,
-                  marginTop: 4,
-                }}
-              >
+              <div className="flex flex-wrap gap-2 mt-1">
                 {form.tags.map((tag) => (
                   <span
                     key={tag}
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 6,
-                      padding: "4px 10px",
-                      background: "#e8f0fe",
-                      color: "#1a56db",
-                      borderRadius: 999,
-                      fontSize: 13,
-                      fontWeight: 500,
-                    }}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-primary/10 text-primary rounded text-xs font-medium"
                   >
                     {tag}
                     <button
                       type="button"
                       onClick={() => removeTag(tag)}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        color: "#1a56db",
-                        cursor: "pointer",
-                        fontSize: 16,
-                        lineHeight: 1,
-                        padding: 0,
-                        display: "flex",
-                        alignItems: "center",
-                      }}
+                      className="bg-transparent border-none text-primary cursor-pointer text-base leading-none p-0 flex items-center focus:outline-none"
                       aria-label={`Remove ${tag}`}
                     >
                       &times;
@@ -611,24 +415,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 
           {/* feedback messages */}
           {error && (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                padding: "12px 16px",
-                background: "#fef2f2",
-                border: "1px solid #fecaca",
-                borderRadius: 8,
-                color: "#b91c1c",
-                fontSize: 13,
-              }}
-            >
+            <div className="flex items-center gap-2.5 px-3 py-2 bg-danger/10 border border-danger/30 rounded text-danger text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                style={{ width: 16, height: 16, flexShrink: 0 }}
+                className="w-4 h-4 flex-shrink-0"
               >
                 <path
                   fillRule="evenodd"
@@ -641,24 +433,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
           )}
 
           {success && (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                padding: "12px 16px",
-                background: "#f0fdf4",
-                border: "1px solid #bbf7d0",
-                borderRadius: 8,
-                color: "#15803d",
-                fontSize: 13,
-              }}
-            >
+            <div className="flex items-center gap-2.5 px-3 py-2 bg-success/10 border border-success/30 rounded text-success text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                style={{ width: 16, height: 16, flexShrink: 0 }}
+                className="w-4 h-4 flex-shrink-0"
               >
                 <path
                   fillRule="evenodd"
@@ -671,34 +451,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
           )}
         </form>
 
-        {/*  sticky footer actions */}
-        <div
-          style={{
-            padding: "16px 24px",
-            borderTop: "1px solid #e5e7eb",
-            display: "flex",
-            gap: 12,
-            flexShrink: 0,
-            background: "#f9fafb",
-          }}
-        >
+        {/* sticky footer actions */}
+        <div className="px-6 py-4 border-t border-border flex gap-3 flex-shrink-0 bg-surface">
           <button
             type="button"
             onClick={onClose}
-            style={{
-              flex: 1,
-              padding: "10px 0",
-              background: "white",
-              border: "1.5px solid #d1d5db",
-              borderRadius: 8,
-              fontSize: 14,
-              fontWeight: 600,
-              color: "#374151",
-              cursor: "pointer",
-              transition: "background 0.2s",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#f3f4f6")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "white")}
+            className="flex-1 py-2 bg-surface hover:bg-surface-hover border border-border rounded text-sm font-semibold text-text-primary cursor-pointer transition-colors focus:outline-none"
           >
             Cancel
           </button>
@@ -706,42 +464,13 @@ const EditProfileModal = ({ isOpen, onClose }) => {
             type="submit"
             form="edit-profile-form"
             disabled={saving}
-            style={{
-              flex: 2,
-              padding: "10px 0",
-              background: "#172b4d",
-              border: "none",
-              borderRadius: 8,
-              fontSize: 14,
-              fontWeight: 700,
-              color: "white",
-              transition: "background 0.2s, opacity 0.2s",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              opacity: saving ? 0.7 : 1,
-              cursor: saving ? "not-allowed" : "pointer",
-            }}
-            onMouseEnter={(e) => {
-              if (!saving) e.currentTarget.style.background = "#1e3a5f";
-            }}
-            onMouseLeave={(e) => {
-              if (!saving) e.currentTarget.style.background = "#172b4d";
-            }}
+            className={`flex-[2] py-2 bg-primary hover:bg-primary-hover border border-transparent rounded text-sm font-bold text-white flex items-center justify-center transition-colors cursor-pointer focus:outline-none ${
+              saving ? "opacity-70 cursor-not-allowed" : ""
+            }`}
           >
             {saving ? (
-              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span
-                  style={{
-                    display: "inline-block",
-                    width: 14,
-                    height: 14,
-                    border: "2px solid rgba(255,255,255,0.3)",
-                    borderTop: "2px solid white",
-                    borderRadius: "50%",
-                    animation: "ep-spin 0.7s linear infinite",
-                  }}
-                />
+              <span className="flex items-center gap-2">
+                <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Saving&hellip;
               </span>
             ) : (
@@ -758,31 +487,18 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 
 const Section = ({ title, children }) => (
   <div>
-    <h3
-      style={{
-        fontSize: 11,
-        fontWeight: 700,
-        letterSpacing: "0.08em",
-        textTransform: "uppercase",
-        color: "#6b7280",
-        marginBottom: 14,
-        paddingBottom: 8,
-        borderBottom: "1px solid #f3f4f6",
-      }}
-    >
+    <h3 className="text-[11px] font-bold tracking-[0.08em] uppercase text-text-secondary mb-3 pb-2 border-b border-border">
       {title}
     </h3>
-    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-      {children}
-    </div>
+    <div className="flex flex-col gap-3.5">{children}</div>
   </div>
 );
 
 const Field = ({ label, required, children }) => (
-  <label style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-    <span style={{ fontSize: 13, fontWeight: 600, color: "#374151" }}>
+  <label className="flex flex-col gap-1.5">
+    <span className="text-sm font-semibold text-text-primary">
       {label}
-      {required && <span style={{ color: "#ef4444", marginLeft: 3 }}>*</span>}
+      {required && <span className="text-danger ml-1">*</span>}
     </span>
     {children}
   </label>
@@ -790,32 +506,9 @@ const Field = ({ label, required, children }) => (
 
 const Input = ({ ...props }) => (
   <input
-    style={{
-      width: "100%",
-      padding: "9px 12px",
-      border: "1.5px solid #d1d5db",
-      borderRadius: 8,
-      fontSize: 14,
-      color: "#111827",
-      background: "white",
-      outline: "none",
-      transition: "border-color 0.2s",
-    }}
-    onFocus={(e) => (e.target.style.borderColor = "#172b4d")}
-    onBlur={(e) => (e.target.style.borderColor = "#d1d5db")}
+    className="w-full px-3 py-2 border border-border rounded text-sm text-text-primary bg-surface outline-none transition-colors focus:border-primary"
     {...props}
   />
 );
-
-/* inject spinner keyframe once */
-if (
-  typeof document !== "undefined" &&
-  !document.getElementById("ep-spin-style")
-) {
-  const s = document.createElement("style");
-  s.id = "ep-spin-style";
-  s.textContent = "@keyframes ep-spin { to { transform: rotate(360deg); } }";
-  document.head.appendChild(s);
-}
 
 export default EditProfileModal;

@@ -24,19 +24,19 @@ const MentorshipProgramCard = ({
   const hasUnsavedChanges = step !== savedStep;
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow mb-6">
+    <div className="bg-surface rounded border border-border p-8 shadow-sm transition-colors mb-6 relative">
       {/* Program Header */}
       <div className="flex justify-between items-start mb-2">
         <div>
-          <h3 className="text-xl font-bold text-gray-900">{title}</h3>
-          <p className="text-sm text-gray-500 mt-1">{duration}</p>
+          <h3 className="text-xl font-bold text-text-primary">{title}</h3>
+          <p className="text-sm text-text-secondary mt-1">{duration}</p>
         </div>
         <div className="flex flex-col items-end gap-2">
           <span
-            className={`px-3 py-1 rounded-full text-xs font-bold uppercase border ${
+            className={`px-3 py-1 rounded text-xs font-bold uppercase tracking-widest border w-max ${
               step === 2
-                ? "bg-green-50 text-green-700 border-green-200"
-                : "bg-blue-50 text-blue-700 border-blue-200"
+                ? "bg-surface-hover text-text-secondary border-border"
+                : "bg-surface text-primary border-primary"
             }`}
           >
             {status}
@@ -44,11 +44,15 @@ const MentorshipProgramCard = ({
           {step === 0 && onDelete && (
             <button
               onClick={() => {
-                if (window.confirm("Are you sure you want to remove this mentorship program? This action cannot be undone.")) {
+                if (
+                  window.confirm(
+                    "Are you sure you want to remove this mentorship program? This action cannot be undone.",
+                  )
+                ) {
                   onDelete(program.id);
                 }
               }}
-              className="text-xs font-semibold text-red-600 hover:text-red-800 transition-colors"
+              className="text-xs font-semibold text-danger hover:text-danger/80 hover:underline transition-colors focus:outline-none"
             >
               Remove Mentorship
             </button>
@@ -62,18 +66,18 @@ const MentorshipProgramCard = ({
       </div>
 
       {/* Step Controls */}
-      <div className="flex justify-end gap-3 mt-2 mb-4">
+      <div className="flex justify-end gap-3 mt-4 mb-4">
         <button
           onClick={onPrevStep}
           disabled={step <= savedStep}
-          className="px-3 py-1.5 text-xs font-semibold text-gray-600 bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 text-xs font-semibold text-text-secondary bg-surface border border-border rounded hover:bg-surface-hover hover:text-text-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none"
         >
           &larr; Previous Step
         </button>
         <button
           onClick={onNextStep}
           disabled={step === 2 || hasUnsavedChanges}
-          className="px-3 py-1.5 text-xs font-semibold text-white bg-blue-600 border border-transparent rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 text-xs font-bold text-white bg-primary border border-transparent rounded hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors focus:outline-none"
         >
           Next Step &rarr;
         </button>
@@ -81,15 +85,15 @@ const MentorshipProgramCard = ({
 
       {/* Finalize / Save Banner when there are unsaved changes */}
       {hasUnsavedChanges && (
-        <div className="mb-4 mt-2 flex flex-col sm:flex-row items-center justify-between bg-yellow-50 border border-yellow-200 p-4 rounded-lg animate-fadeIn">
-          <p className="text-sm text-yellow-800 font-medium mb-2 sm:mb-0">
+        <div className="mb-5 mt-2 flex flex-col sm:flex-row items-center justify-between bg-surface-hover border border-border p-5 rounded animate-fadeIn">
+          <p className="text-sm text-text-primary font-semibold mb-3 sm:mb-0">
             {step === 2
               ? "This program has reached completion. Save to move it to your history."
               : "You have unsaved progress. Save and update to proceed."}
           </p>
           <button
             onClick={() => onSave(step)}
-            className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white text-sm font-bold rounded shadow-sm transition-colors whitespace-nowrap"
+            className="px-5 py-2.5 bg-primary hover:bg-primary-hover border border-transparent text-white text-sm font-bold rounded transition-colors whitespace-nowrap focus:outline-none"
           >
             {step === 2 ? "Save & Finalize" : "Save Changes"}
           </button>
@@ -97,10 +101,10 @@ const MentorshipProgramCard = ({
       )}
 
       {/* Accordion Toggle for Students */}
-      <div className="mt-4 border-t border-gray-100 pt-4">
+      <div className="mt-4 border-t border-border pt-4">
         <button
           onClick={() => setShowStudents(!showStudents)}
-          className="flex items-center text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors focus:outline-none"
+          className="flex items-center text-sm font-semibold text-text-secondary hover:text-text-primary transition-colors focus:outline-none"
         >
           {showStudents
             ? "Hide Enrolled Students"
@@ -126,11 +130,11 @@ const MentorshipProgramCard = ({
         {showStudents && (
           <div className="mt-4 animate-fadeIn">
             {removedMentees.length > 0 && (
-              <div className="mb-4 flex items-center justify-between bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-2 rounded-lg text-sm">
+              <div className="mb-4 flex items-center justify-between bg-surface-hover border border-border text-text-secondary px-4 py-3 rounded text-sm font-medium">
                 <span>{removedMentees.length} student(s) removed.</span>
                 <button
                   onClick={onUndoRemove}
-                  className="font-bold hover:underline focus:outline-none"
+                  className="font-bold text-text-primary hover:underline focus:outline-none"
                 >
                   Undo Last Removal
                 </button>
@@ -138,7 +142,7 @@ const MentorshipProgramCard = ({
             )}
 
             {mentees.length === 0 ? (
-              <p className="text-sm text-gray-500 italic">
+              <p className="text-sm text-text-secondary italic">
                 No students currently enrolled.
               </p>
             ) : (
@@ -146,30 +150,29 @@ const MentorshipProgramCard = ({
                 {mentees.map((mentee, idx) => (
                   <div
                     key={idx}
-                    className="p-4 bg-gray-50 rounded-lg border border-gray-200 flex flex-col justify-between relative group"
+                    className="p-4 bg-surface-hover rounded border border-border flex flex-col justify-between relative group"
                   >
                     <div>
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-sm">
+                        <div className="w-10 h-10 bg-surface text-text-secondary rounded flex items-center justify-center font-bold text-sm border border-border">
                           {mentee.name.charAt(0)}
                         </div>
                         <div>
-                          <h4 className="text-sm font-bold text-gray-900">
+                          <h4 className="text-sm font-bold text-text-primary">
                             {mentee.name}
                           </h4>
-                          <p className="text-xs text-gray-500">
-                            {mentee.program}
-                          </p>
                         </div>
                       </div>
-                      <p className="text-xs text-gray-600 italic border-l-2 border-indigo-200 pl-2 mt-2 pr-8">
-                        "{mentee.message}"
-                      </p>
+                      {mentee.message && (
+                        <p className="text-xs text-text-secondary italic border-l-2 border-border pl-3 mt-3 pr-8">
+                          "{mentee.message}"
+                        </p>
+                      )}
                     </div>
                     {/* Remove Student Button */}
                     <button
                       onClick={() => onRemoveStudent(idx)}
-                      className="absolute top-4 right-4 text-gray-400 hover:text-red-600 p-1 rounded transition-colors focus:outline-none"
+                      className="absolute top-4 right-4 text-text-secondary hover:text-danger p-1 rounded transition-colors focus:outline-none"
                       title="Remove Student"
                     >
                       <svg

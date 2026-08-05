@@ -1,132 +1,126 @@
-import { useState, useRef, useEffect } from "react";
+import {
+  Building,
+  GraduationCap,
+  MapPin,
+  Clock,
+  Briefcase,
+} from "lucide-react";
+import { Link } from "react-router-dom";
 
-export default function SelectList({
-  handleChange,
-  name,
-  options = [],
-  required = false,
-  placeholder,
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const dropdownRef = useRef(null);
-  const [highlightedIndex, setHighlightedIndex] = useState(-1);
-  const optionRefs = useRef([]);
-
-  // Filter the list as the user types
-  const filteredFaculties = options.filter((o) =>
-    o.toLowerCase().includes(inputValue.toLowerCase()),
-  );
-
-  // Handle clicking outside the component
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-        // STRICT ENFORCEMENT: If typed text isn't a valid option, clear it
-        if (!options.includes(inputValue)) {
-          setInputValue("");
-        }
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [inputValue, options]);
-
-  // handles the selected option visibilty if outside visible area
-  useEffect(() => {
-    if (highlightedIndex >= 0 && optionRefs.current[highlightedIndex]) {
-      optionRefs.current[highlightedIndex].scrollIntoView({
-        block: "nearest",
-      });
-    }
-  }, [highlightedIndex]);
-
-  // Handle selection
-  const handleSelect = (option) => {
-    setInputValue(option);
-    setIsOpen(false);
-    // Pass the selected value to your parent component's handleChange
-    if (handleChange) {
-      handleChange({ target: { name: name, value: option } });
-      console.log(option);
-    }
-  };
+export default function SearchCard({ item, linkTo }) {
+  // Determine the layout style based on whether the item has an image (Mentors/Students)
+  const isProfile = Boolean(item.imageUrl);
 
   return (
-    <div className="relative w-full" ref={dropdownRef}>
-      {/* Searchable Input */}
-      <input
-        required={required}
-        name={name}
-        value={inputValue}
-        placeholder={placeholder}
-        className="w-full bg-[#312C28] border border-[#4A433E] text-stone-100 p-2 rounded-lg placeholder:text-stone-500 focus:outline-none focus:border-stone-400"
-        onChange={(e) => {
-          setInputValue(e.target.value);
-          setIsOpen(true);
-          setHighlightedIndex(0);
+    <>
+      <Link to={linkTo} className="block h-full group">
+        <div className="bg-surface p-6 rounded border border-border hover:border-primary hover:bg-surface-hover transition-colors shadow-sm flex flex-col h-full cursor-pointer relative">
+          {isProfile ? (
+            // --- PROFILE LAYOUT (Mentors & Students) ---
+            <div className="flex items-start gap-4 mb-4">
+              <img
+                src={item.imageUrl}
+                alt={item.name}
+                className="w-16 h-16 rounded object-cover border border-border"
+              />
+              <div>
+                <h2 className="text-xl font-bold text-text-primary group-hover:text-primary transition-colors">
+                  {item.name}
+                </h2>
 
-          handleChange({
-            target: {
-              name: name,
-              value: e.target.value,
-            },
-          });
-        }}
-        onClick={() => setIsOpen(true)}
-        onKeyDown={(e) => {
-          if (e.key === "ArrowDown") {
-            setHighlightedIndex((prev) => {
-              e.preventDefault();
+                {/* Conditional Sub-headers based on Mentor vs Student */}
+                {item.jobTitle && (
+                  <p className="text-primary text-sm font-semibold mt-1">
+                    {item.jobTitle}
+                  </p>
+                )}
+                {item.degree && (
+                  <p className="text-primary text-sm font-semibold mt-1 leading-tight">
+                    {item.degree}
+                  </p>
+                )}
 
-              //mimics a circular list
-              return prev < filteredFaculties.length - 1 ? prev + 1 : 0;
-            });
-          }
-
-          if (e.key === "ArrowUp") {
-            e.preventDefault();
-
-            setHighlightedIndex((prev) => {
-              return prev > 0 ? prev - 1 : filteredFaculties.length - 1;
-            });
-          }
-
-          if (e.key === "Enter" && highlightedIndex >= 0) {
-            e.preventDefault();
-
-            handleSelect(filteredFaculties[highlightedIndex]);
-          }
-        }}
-      />
-
-      {/* Pop-down Menu */}
-      {isOpen && (
-        <ul className="absolute left-0 w-full mt-2 overflow-auto border rounded-lg shadow-lg top-full max-h-60 bg-[#312C28] border-[#4A433E] z-50">
-          {filteredFaculties.length > 0 ? (
-            filteredFaculties.map((option, index) => (
-              <li
-                key={option}
-                className={`p-2 cursor-pointer text-stone-100 hover:bg-[#4A433E] transition-colors ${
-                  index === highlightedIndex
-                    ? "bg-[#4A433E]"
-                    : "hover:bg-[#4A433E]"
-                }`}
-                onMouseDown={(e) => {
-                  e.preventDefault(); // Stops input from losing focus before click registers
-                  handleSelect(option);
-                }}
-                ref={(element) => (optionRefs.current[index] = element)}
-              >
-                {option}
-              </li>
-            ))
+                {/* Extra details (Company or Graduation Year) */}
+                {item.company && (
+                  <div className="flex items-center gap-1.5 text-text-secondary text-xs mt-2.5 font-medium">
+                    <Building size={14} /> <span>{item.company}</span>
+                  </div>
+                )}
+                {item.gradYear && (
+                  <div className="flex items-center gap-1.5 text-text-secondary text-xs mt-2.5 font-medium">
+                    <GraduationCap size={14} />{" "}
+                    <span>Class of {item.gradYear}</span>
+                  </div>
+                )}
+              </div>
+            </div>
           ) : (
-            <li className="p-2 italic text-stone-500">No matching options</li>
+            // --- LISTING LAYOUT (Opportunities & Programs) ---
+            <div className="mb-4">
+              <h2 className="text-xl font-bold text-text-primary group-hover:text-primary transition-colors">
+                {item.name}
+              </h2>
+
+              <div className="flex flex-wrap gap-x-5 gap-y-2.5 mt-4">
+                {item.postedBy && (
+                  <div className="flex items-center gap-2 text-text-secondary text-sm font-medium">
+                    <div className="w-6 h-6 rounded bg-surface flex items-center justify-center text-[10px] font-bold text-text-secondary border border-border">
+                      {item.postedBy?.charAt(0)}
+                    </div>
+                    <span>{item.postedBy}</span>
+                  </div>
+                )}
+
+                {item.company && (
+                  <div className="flex items-center gap-1.5 text-text-secondary text-sm font-medium">
+                    <Building size={16} className="text-text-muted" />{" "}
+                    <span>{item.company}</span>
+                  </div>
+                )}
+
+                {item.location && (
+                  <div className="flex items-center gap-1.5 text-text-secondary text-sm font-medium">
+                    <MapPin size={16} className="text-text-muted" />{" "}
+                    <span>{item.location}</span>
+                  </div>
+                )}
+
+                {item.duration && (
+                  <div className="flex items-center gap-1.5 text-text-secondary text-sm font-medium">
+                    <Clock size={16} className="text-text-muted" />{" "}
+                    <span>{item.duration}</span>
+                  </div>
+                )}
+                {item.employmentType && (
+                  <div className="flex items-center gap-1.5 text-text-secondary text-sm font-medium">
+                    <Briefcase size={16} className="text-text-muted" />{" "}
+                    <span>{item.employmentType}</span>
+                  </div>
+                )}
+              </div>
+            </div>
           )}
-        </ul>
-      )}
-    </div>
+
+          {/* --- SHARED TAGS (Pushed to the bottom) --- */}
+          <div className="mt-auto pt-5 flex flex-wrap gap-2 border-t border-border">
+            {item.faculty && (
+              <span className="px-2 py-1 rounded bg-surface-hover text-text-secondary text-[11px] font-bold uppercase tracking-widest border border-border">
+                {item.faculty}
+              </span>
+            )}
+            {item.industry && (
+              <span className="px-2 py-1 rounded bg-surface-hover text-text-secondary text-[11px] font-bold uppercase tracking-widest border border-border">
+                {item.industry}
+              </span>
+            )}
+            {item.type && (
+              <span className="px-2 py-1 rounded bg-surface text-primary text-[11px] font-bold uppercase tracking-widest border border-primary">
+                {item.type}
+              </span>
+            )}
+          </div>
+        </div>
+      </Link>
+    </>
   );
 }

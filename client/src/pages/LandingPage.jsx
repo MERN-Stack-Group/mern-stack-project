@@ -3,14 +3,13 @@ import InfoSection from "../components/InfoSection";
 import Footer from "../components/Footer";
 
 function Home({ isLoggedIn, role }) {
-    return (
-        <div className="bg-[#0f0d0b] min-h-screen">
-            <Hero/>
-            <InfoSection />
-            <Footer />
-
-        </div>
-    );
+  return (
+    <div className="bg-background min-h-screen flex flex-col">
+      <Hero />
+      <InfoSection />
+      <Footer />
+    </div>
+  );
 }
 
 export default Home;

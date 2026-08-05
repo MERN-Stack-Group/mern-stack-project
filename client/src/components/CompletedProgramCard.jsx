@@ -9,23 +9,21 @@ const CompletedProgramCard = ({
   const [showDetails, setShowDetails] = useState(false);
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow mb-6">
-      {/* Header */}
+    <div className="bg-surface rounded border border-border p-8 shadow-sm hover:shadow transition-all duration-200 mb-6 relative">
       <div className="flex justify-between items-start mb-2">
         <div>
-          <h3 className="text-xl font-bold text-gray-900">{title}</h3>
-          <p className="text-sm text-gray-500 mt-1">{duration}</p>
+          <h3 className="text-xl font-bold text-text-primary">{title}</h3>
+          <p className="text-sm text-text-secondary mt-1">{duration}</p>
         </div>
-        <span className="px-3 py-1 rounded-full text-xs font-bold uppercase bg-gray-100 text-gray-700 border border-gray-200">
+        <span className="px-3 py-1 rounded text-xs font-semibold uppercase bg-surface-hover text-text-secondary border border-border">
           Completed
         </span>
       </div>
 
-      {/* Accordion Toggle */}
-      <div className="mt-4 border-t border-gray-100 pt-4">
+      <div className="mt-4 border-t border-border pt-4">
         <button
           onClick={() => setShowDetails(!showDetails)}
-          className="flex items-center text-sm font-semibold text-gray-700 hover:text-gray-900 transition-colors focus:outline-none"
+          className="flex items-center text-sm font-semibold text-text-secondary hover:text-text-primary transition-colors focus:outline-none"
         >
           {showDetails ? "Hide Program Details" : "View Students & Reviews"}
           <svg
@@ -45,41 +43,40 @@ const CompletedProgramCard = ({
           </svg>
         </button>
 
-        {/* Expandable Content */}
         {showDetails && (
           <div className="mt-6 animate-fadeIn space-y-6">
-            {/* Section: Enrolled Students */}
             <div>
-              <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+              <h4 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
                 Participated Students ({mentees.length})
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {mentees.map((mentee, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-200"
+                    className="flex items-center gap-3 p-3 bg-surface-hover rounded border border-border"
                   >
-                    <div className="w-8 h-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center font-bold text-xs">
+                    <div className="w-8 h-8 bg-surface text-primary rounded-full flex items-center justify-center font-bold text-xs border border-border">
                       {mentee.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-gray-900">
+                      <p className="text-sm font-bold text-text-primary">
                         {mentee.name}
                       </p>
-                      <p className="text-xs text-gray-500">{mentee.program}</p>
+                      <p className="text-xs text-text-secondary">
+                        {mentee.program}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Section: Reviews */}
             <div>
-              <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+              <h4 className="text-xs font-bold text-text-secondary uppercase tracking-wider mb-3">
                 Program Reviews ({reviews.length})
               </h4>
               {reviews.length === 0 ? (
-                <p className="text-sm text-gray-500 italic">
+                <p className="text-sm text-text-secondary italic">
                   No reviews submitted yet.
                 </p>
               ) : (
@@ -87,20 +84,20 @@ const CompletedProgramCard = ({
                   {reviews.map((review, idx) => (
                     <div
                       key={idx}
-                      className="p-4 bg-yellow-50/50 rounded-lg border border-yellow-100"
+                      className="p-4 bg-surface-hover rounded border border-border"
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-bold text-gray-900">
+                        <span className="text-sm font-bold text-text-primary">
                           {review.author}
                         </span>
-                        <div className="text-yellow-400 text-sm">
+                        <div className="text-accent text-sm">
                           {"★".repeat(review.rating)}
-                          <span className="text-gray-300">
+                          <span className="text-border">
                             {"★".repeat(5 - review.rating)}
                           </span>
                         </div>
                       </div>
-                      <p className="text-sm text-gray-700 italic">
+                      <p className="text-sm text-text-secondary italic">
                         "{review.description}"
                       </p>
                     </div>

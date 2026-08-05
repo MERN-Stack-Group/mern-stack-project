@@ -1,15 +1,198 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
 @import "tailwindcss";
 
+@theme {
+  --color-primary: var(--token-primary);
+  --color-primary-hover: var(--token-primary-hover);
+
+  --color-secondary: var(--token-secondary);
+  --color-secondary-hover: var(--token-secondary-hover);
+
+  --color-accent: var(--token-accent);
+
+  --color-background: var(--token-background);
+  --color-surface: var(--token-surface);
+  --color-surface-hover: var(--token-surface-hover);
+
+  --color-text-primary: var(--token-text-primary);
+  --color-text-secondary: var(--token-text-secondary);
+  --color-text-muted: var(--token-text-muted);
+
+  --color-border: var(--token-border);
+
+  --color-success: var(--token-success);
+  --color-danger: var(--token-danger);
+  --color-info: var(--token-info);
+
+  --shadow-sm: var(--token-shadow-sm);
+  --shadow-md: var(--token-shadow-md);
+  --shadow-lg: var(--token-shadow-lg);
+
+  /* ResearchGate uses slightly more rigid, academic borders */
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.5rem;
+}
+
 :root {
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color: #f5f1ea;
-  background-color: #0f0d0b;
+  /* ===== Light Mode (ResearchGate Inspired) ===== */
+  --token-primary: #00ccbb; /* RG Teal */
+  --token-primary-hover: #00a89a; /* Darker Teal */
+
+  --token-secondary: #5a6470; /* Academic Slate */
+  --token-secondary-hover: #404852;
+
+  --token-accent: #f5a623; /* Warm highlight */
+
+  --token-background: #f6f6f6; /* Off-white/Gray canvas */
+  --token-surface: #ffffff; /* Pure white content cards */
+  --token-surface-hover: #f9f9f9; /* Very subtle hover */
+
+  --token-text-primary: #333333; /* Charcoal text for readability */
+  --token-text-secondary: #777777; /* Medium gray for meta-text */
+  --token-text-muted: #999999; /* Light gray */
+
+  --token-border: #e2e2e2; /* Clean, subtle boundaries */
+
+  --token-success: #00b368; /* RG-style green */
+  --token-danger: #e64b3a;
+  --token-info: #0077c2;
+
+  --color-text: var(--token-text-primary);
+
+  /* Shadows: Flatter, very subtle dropshadows typical of document layouts */
+  --token-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --token-shadow-md:
+    0 2px 4px -1px rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  --token-shadow-lg:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dark {
+  /* ===== Dark Mode ===== */
+  /* Maintained for compatibility, mapped to darker RG tones */
+  --token-primary: #33d6c8;
+  --token-primary-hover: #5ce0d4;
+
+  --token-secondary: #94a3b8;
+  --token-secondary-hover: #cbd5e1;
+
+  --token-accent: #fbbf24;
+
+  --token-background: #121212;
+  --token-surface: #1e1e1e;
+  --token-surface-hover: #2a2a2a;
+
+  --token-text-primary: #f6f6f6;
+  --token-text-secondary: #a0a0a0;
+  --token-text-muted: #777777;
+
+  --token-border: #333333;
+
+  --token-success: #34d399;
+  --token-danger: #f87171;
+  --token-info: #60a5fa;
+
+  --token-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --token-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --token-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== Base Resets ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+button,
+select,
+input,
+textarea {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out both;
+}
+
+/* ===== Merged Global Components (from app.css) ===== */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 4px; /* Flatter, academic look instead of pills */
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-badge.accepted {
+  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  border-color: color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+.status-badge.active {
+  color: var(--color-success);
+  background: color-mix(in srgb, var(--color-success) 10%, transparent);
+  border-color: color-mix(in srgb, var(--color-success) 20%, transparent);
+}
+
+.status-badge.completed {
+  color: var(--color-text-secondary);
+  background: var(--color-surface-hover);
+  border-color: var(--color-border);
 }

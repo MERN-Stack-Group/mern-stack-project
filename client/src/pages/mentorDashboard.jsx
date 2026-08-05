@@ -3,41 +3,78 @@ import IncomingRequestsTable from "../components/IncomingRequestsTable";
 import MentorshipProgramCard from "../components/MentorshipProgramCard";
 import CompletedProgramCard from "../components/CompletedProgramCard";
 import CreatePostForm from "../components/CreatePostForm";
-import ReviewCard from "../components/ReviewCard"; // <-- Make sure you have this file created
+import ReviewCard from "../components/ReviewCard";
 import { useAuth } from "../hooks/AuthContext";
-import { getMyMentorships, progressMentorshipStage, deleteMentorship, createMentorship } from "../api/mentorshipApi";
+import {
+  getMyMentorships,
+  progressMentorshipStage,
+  deleteMentorship,
+  createMentorship,
+  removeStudentFromMentorship,
+} from "../api/mentorshipApi";
+import {
+  getPendingRequests,
+  acceptRequest,
+  rejectRequest,
+} from "../api/mentorshipRequestApi";
+import { getMentorReviews } from "../api/reviewApi";
+import {
+  createOpportunity,
+  getActiveOpportunities,
+  getDeletedOpportunities,
+  deleteOpportunity,
+} from "../api/opportunityApi";
 
 // Helper component for the Opportunities section
 const OpportunityCard = ({ opp, onDelete }) => (
-  <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow mb-4">
-    <div className="flex justify-between items-start mb-3">
-      <div>
-        <h3 className="text-lg font-bold text-gray-900">{opp.title}</h3>
-        <p className="text-xs text-gray-500 mt-1">Date: {opp.date}</p>
+  <div className="bg-surface rounded border border-border p-6 shadow-sm hover:border-primary transition-colors mb-5 relative group">
+    <div className="flex justify-between items-start mb-4 gap-4">
+      <div className="flex-1 min-w-0">
+        <h3 className="text-xl font-bold text-text-primary group-hover:text-primary transition-colors break-words">
+          {opp.title}
+        </h3>
+        <p className="text-sm font-semibold text-text-secondary mt-1">
+          {opp.companyName} • {opp.location} • {opp.opportunityType}
+        </p>
+        <p className="text-sm text-primary mt-1 font-bold">
+          {opp.applicationEmail}
+        </p>
       </div>
-      <div className="flex flex-col items-end gap-2">
+      <div className="flex flex-col items-end gap-2.5">
         <span
-          className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
-            opp.status === "posted"
-              ? "bg-blue-50 text-blue-700 border border-blue-200"
-              : "bg-gray-100 text-gray-600 border border-gray-200"
+          className={`px-2.5 py-1 rounded text-[11px] font-bold uppercase tracking-widest shadow-sm ${
+            opp.status === "active"
+              ? "bg-surface text-primary border border-primary"
+              : "bg-surface-hover text-text-secondary border border-border"
           }`}
         >
           {opp.status}
         </span>
-        {opp.status === "posted" && (
+        {opp.status === "active" && (
           <button
             onClick={() => onDelete(opp.id)}
-            className="text-xs font-semibold text-red-600 hover:text-red-800 transition-colors"
+            className="text-xs font-bold text-danger hover:text-danger/80 transition-colors cursor-pointer focus:outline-none"
           >
             Remove Posting
           </button>
         )}
       </div>
     </div>
-    <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded border border-gray-100">
+    <p className="text-sm text-text-secondary bg-surface-hover p-4 rounded border border-border leading-relaxed">
       {opp.description}
     </p>
+    {opp.tags && opp.tags.length > 0 && (
+      <div className="mt-4 flex flex-wrap gap-2">
+        {opp.tags.map((tag, idx) => (
+          <span
+            key={idx}
+            className="px-2.5 py-1 bg-surface-hover text-text-secondary text-[11px] uppercase tracking-widest rounded border border-border font-bold shadow-sm"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
   </div>
 );
 
@@ -58,48 +95,15 @@ function MentorDashboard({
   const [showAddOpportunity, setShowAddOpportunity] = useState(false);
 
   //  STATE: Data
-  const [requests, setRequests] = useState([
-    {
-      id: 1,
-      name: "Maya Lin",
-      program: "Computer Science",
-      topic: "React Development",
-      message: "I need guidance on scalable React.",
-      date: "2 hours ago",
-    },
-  ]);
+  const [requests, setRequests] = useState([]);
 
   const [activePrograms, setActivePrograms] = useState([]);
+  const [allReviews, setAllReviews] = useState([]);
 
-  const [completedPrograms, setCompletedPrograms] = useState([
-    {
-      id: 201,
-      title: "Agile Project Management",
-      duration: "Spring 2025 - Fall 2025",
-      mentees: [{ name: "David Perera", program: "Software Engineering" }],
-      reviews: [
-        { author: "David Perera", rating: 5, description: "Fantastic mentor!" },
-      ],
-    },
-  ]);
+  const [completedPrograms, setCompletedPrograms] = useState([]);
 
-  const [opportunities, setOpportunities] = useState([
-    {
-      id: 1,
-      title: "Frontend Developer Mentorship Fall 2026",
-      status: "posted",
-      date: "Aug 01, 2026",
-      description:
-        "Looking for 2 students passionate about Next.js and Tailwind CSS. Weekly 1-hour code review sessions.",
-    },
-    {
-      id: 2,
-      title: "Backend Architecture 101",
-      status: "deleted",
-      date: "Jan 15, 2026",
-      description: "Focus on Node.js and Microservices design patterns.",
-    },
-  ]);
+  const [opportunities, setOpportunities] = useState([]);
+  const [deletedOpportunities, setDeletedOpportunities] = useState([]);
 
   useEffect(() => {
     const fetchPrograms = async () => {
@@ -117,8 +121,9 @@ function MentorDashboard({
             step: m.stage === "enrollment" ? 0 : 1,
             savedStep: m.stage === "enrollment" ? 0 : 1,
             mentees: (m.students || []).map((s) => ({
+              id: s._id || s,
               name: s.name || s,
-              program: "Student",
+              program: s.degree || "Student",
               message: "",
             })),
             removedMentees: [],
@@ -131,30 +136,107 @@ function MentorDashboard({
             title: m.title,
             duration: `${m.durationInWeeks} Weeks`,
             mentees: (m.students || []).map((s) => ({
+              id: s._id || s,
               name: s.name || s,
-              program: "Student",
+              program: s.degree || "Student",
             })),
             reviews: [], // placeholder until reviews are fetched
           }));
 
         setActivePrograms(myActive);
         setCompletedPrograms(myCompleted);
+
+        // Fetch Reviews
+        if (user?._id) {
+          const fetchedReviews = await getMentorReviews(user._id, token);
+          const mappedReviews = fetchedReviews.map((r) => ({
+            id: r._id,
+            author: r.reviewer?.name || "Unknown Student",
+            programTitle: r.mentorship?.title || "Unknown Program",
+            duration: r.mentorship?.durationInWeeks
+              ? `${r.mentorship.durationInWeeks} Weeks`
+              : "N/A",
+            rating: r.rating,
+            description: r.content,
+            mentorshipId: r.mentorship?._id || r.mentorship,
+          }));
+          setAllReviews(mappedReviews);
+
+          setCompletedPrograms((prev) =>
+            prev.map((prog) => ({
+              ...prog,
+              reviews: mappedReviews.filter(
+                (r) =>
+                  r.mentorshipId === prog.id ||
+                  r.mentorshipId?.toString() === prog.id?.toString(),
+              ),
+            })),
+          );
+        }
       } catch (err) {
-        console.error("Failed to fetch mentorships:", err);
+        console.error("Failed to fetch dashboard data:", err);
       }
     };
     fetchPrograms();
+  }, [token, user]);
+
+  useEffect(() => {
+    const fetchRequests = async () => {
+      if (!token) return;
+      try {
+        const pending = await getPendingRequests(token);
+        const formatted = pending.map((req) => ({
+          id: req._id,
+          requesterId:
+            req.requester?._id ||
+            req.requester?.id ||
+            (typeof req.requester === "string" ? req.requester : ""),
+          name: req.requester?.name || "Unknown Student",
+          program: req.requester?.degree || "Student",
+          topic: req.mentorship?.title || "Mentorship Program",
+          message: req.message,
+          date: new Date(req.createdAt).toLocaleDateString(),
+          rawRequest: req,
+        }));
+        setRequests(formatted);
+      } catch (err) {
+        console.error("Failed to fetch requests:", err);
+      }
+    };
+    fetchRequests();
   }, [token]);
 
-  // DERIVED STATE: Extract all reviews from completed programs
-  const allReviews = completedPrograms.flatMap(
-    (program) =>
-      program.reviews?.map((review) => ({
-        ...review,
-        programTitle: program.title,
-        duration: program.duration,
-      })) || [],
-  );
+  useEffect(() => {
+    const fetchOpportunities = async () => {
+      if (!token) return;
+      try {
+        const activeOpps = await getActiveOpportunities(token);
+        const deletedOpps = await getDeletedOpportunities(token);
+
+        const mapOpp = (opp) => ({
+          id: opp._id,
+          title: opp.title,
+          description: opp.description,
+          companyName: opp.companyName,
+          location: opp.location,
+          opportunityType: opp.opportunityType,
+          applicationEmail: opp.applicationEmail,
+          status: opp.status,
+          tags: opp.tags || [],
+        });
+
+        // The API returns all active opportunities. If you only want the current mentor's, you might need to filter.
+        // Assuming we filter by postedBy
+        setOpportunities(
+          activeOpps.filter((o) => o.postedBy?._id === user?._id).map(mapOpp),
+        );
+        setDeletedOpportunities(deletedOpps.map(mapOpp));
+      } catch (err) {
+        console.error("Failed to fetch opportunities:", err);
+      }
+    };
+    fetchOpportunities();
+  }, [token, user]);
 
   // HANDLERS: Creation & Saving
   const handleCreateMentorship = async (data) => {
@@ -166,7 +248,7 @@ function MentorDashboard({
           description: data.description,
           durationInWeeks: Number(data.durationInWeeks),
         },
-        token
+        token,
       );
 
       const newProgram = {
@@ -187,41 +269,70 @@ function MentorDashboard({
     }
   };
 
-  const handleCreateOpportunity = (data) => {
-    const newOpp = {
-      id: Date.now(),
-      title: data.title,
-      date: data.duration,
-      description: data.description,
-      status: "posted",
-    };
-    setOpportunities([newOpp, ...opportunities]);
-    setShowAddOpportunity(false);
+  const handleCreateOpportunity = async (data) => {
+    if (!token) return;
+    try {
+      const payload = {
+        title: data.title,
+        description: data.description,
+        companyName: data.companyName,
+        opportunityType: data.opportunityType,
+        location: data.location,
+        applicationEmail: data.applicationEmail,
+        tags: data.tags
+          ? data.tags
+              .split(",")
+              .map((t) => t.trim())
+              .filter((t) => t)
+          : [],
+      };
+      const created = await createOpportunity(payload, token);
+
+      const newOpp = {
+        id: created._id,
+        title: created.title,
+        description: created.description,
+        companyName: created.companyName,
+        location: created.location,
+        opportunityType: created.opportunityType,
+        applicationEmail: created.applicationEmail,
+        status: created.status,
+        tags: created.tags || [],
+      };
+      setOpportunities([newOpp, ...opportunities]);
+      setShowAddOpportunity(false);
+    } catch (err) {
+      console.error("Failed to create opportunity:", err);
+      alert(err.message || "Failed to create opportunity");
+    }
   };
 
   // Save progress (both active and completed)
   const handleSaveProgress = async (programId, newStep) => {
     try {
-      const stageName = newStep === 1 ? "active" : newStep === 2 ? "completed" : "enrollment";
+      const stageName =
+        newStep === 1 ? "active" : newStep === 2 ? "completed" : "enrollment";
       if (token) {
         await progressMentorshipStage(programId, stageName, token);
       }
       const programToSave = activePrograms.find((p) => p.id === programId);
       if (!programToSave) return;
-  
+
       if (newStep === 2) {
         const formattedCompletedProgram = {
           id: programToSave.id,
           title: programToSave.title,
           duration: programToSave.duration,
           mentees: programToSave.mentees,
-          reviews: [], 
+          reviews: [],
         };
         setCompletedPrograms([formattedCompletedProgram, ...completedPrograms]);
         setActivePrograms(activePrograms.filter((p) => p.id !== programId));
       } else {
         setActivePrograms((prev) =>
-          prev.map((p) => (p.id === programId ? { ...p, savedStep: newStep } : p))
+          prev.map((p) =>
+            p.id === programId ? { ...p, savedStep: newStep } : p,
+          ),
         );
       }
     } catch (err) {
@@ -242,48 +353,56 @@ function MentorDashboard({
     }
   };
 
-  const handleDeleteOpportunity = (id) => {
-    setOpportunities(
-      opportunities.map((opp) =>
-        opp.id === id ? { ...opp, status: "deleted" } : opp,
-      ),
-    );
+  // HANDLERS: Requests & Active Program Updates
+  const handleAccept = async (request) => {
+    try {
+      if (token) {
+        await acceptRequest(request.id, token);
+      }
+
+      setActivePrograms((prev) => {
+        const updated = [...prev];
+        const programId =
+          request.rawRequest?.mentorship?._id || request.rawRequest?.mentorship;
+        const idx = updated.findIndex((p) => p.id === programId);
+
+        if (idx >= 0) {
+          updated[idx] = {
+            ...updated[idx],
+            mentees: [
+              ...updated[idx].mentees,
+              {
+                id:
+                  request.rawRequest?.requester?._id ||
+                  request.rawRequest?.requester,
+                name: request.name,
+                program: request.program,
+                message: request.message,
+              },
+            ],
+          };
+        }
+        return updated;
+      });
+
+      setRequests(requests.filter((item) => item.id !== request.id));
+      setMentorSubTab("active");
+    } catch (err) {
+      console.error("Failed to accept request:", err);
+      alert(err.message || "Failed to accept request");
+    }
   };
 
-  // HANDLERS: Requests & Active Program Updates
-  const handleAccept = (request) => {
-    setActivePrograms((prev) => {
-      const idx = prev.findIndex((p) => p.title === request.topic);
-      if (idx >= 0) {
-        const updated = [...prev];
-        updated[idx].mentees.push({
-          name: request.name,
-          program: request.program,
-          message: request.message,
-        });
-        return updated;
+  const handleReject = async (requestId) => {
+    try {
+      if (token) {
+        await rejectRequest(requestId, token);
       }
-      return [
-        {
-          id: Date.now(),
-          title: request.topic,
-          duration: "Newly Created",
-          status: "Enrollment",
-          step: 1,
-          mentees: [
-            {
-              name: request.name,
-              program: request.program,
-              message: request.message,
-            },
-          ],
-          removedMentees: [],
-        },
-        ...prev,
-      ];
-    });
-    setRequests(requests.filter((item) => item.id !== request.id));
-    setMentorSubTab("active");
+      setRequests(requests.filter((item) => item.id !== requestId));
+    } catch (err) {
+      console.error("Failed to reject request:", err);
+      alert(err.message || "Failed to reject request");
+    }
   };
 
   const handleUpdateStep = (programId, increment) => {
@@ -302,20 +421,44 @@ function MentorDashboard({
     );
   };
 
-  const handleRemoveStudent = (programId, studentIndex) => {
-    setActivePrograms((prev) =>
-      prev.map((p) => {
-        if (p.id === programId) {
-          const studentToRemove = p.mentees[studentIndex];
-          return {
-            ...p,
-            mentees: p.mentees.filter((_, idx) => idx !== studentIndex),
-            removedMentees: [...(p.removedMentees || []), studentToRemove],
-          };
-        }
-        return p;
-      }),
-    );
+  const handleRemoveStudent = async (programId, studentIndex) => {
+    try {
+      const program = activePrograms.find((p) => p.id === programId);
+      const studentToRemove = program?.mentees[studentIndex];
+
+      if (!studentToRemove || !studentToRemove.id) {
+        console.error("Student ID not found for removal.");
+        return;
+      }
+
+      if (
+        !window.confirm(
+          `Are you sure you want to remove ${studentToRemove.name} from this program?`,
+        )
+      ) {
+        return;
+      }
+
+      if (token) {
+        await removeStudentFromMentorship(programId, studentToRemove.id, token);
+      }
+
+      setActivePrograms((prev) =>
+        prev.map((p) => {
+          if (p.id === programId) {
+            return {
+              ...p,
+              mentees: p.mentees.filter((_, idx) => idx !== studentIndex),
+              removedMentees: [...(p.removedMentees || []), studentToRemove],
+            };
+          }
+          return p;
+        }),
+      );
+    } catch (err) {
+      console.error("Failed to remove student:", err);
+      alert(err.message || "Failed to remove student");
+    }
   };
 
   const handleUndoRemove = (programId) => {
@@ -336,17 +479,17 @@ function MentorDashboard({
 
   // RENDERERS
   const renderMentorshipSection = () => (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mt-6 min-h-[500px]">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 mb-6">
+    <div className="bg-surface rounded shadow-sm border border-border p-8 mt-6 min-h-[500px]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border mb-6">
         <div className="flex gap-6 overflow-x-auto">
           {["requests", "active", "history", "reviews"].map((tab) => (
             <button
               key={tab}
               onClick={() => setMentorSubTab(tab)}
-              className={`pb-3 font-semibold text-sm capitalize transition-colors whitespace-nowrap ${
+              className={`pb-3 font-semibold text-sm capitalize transition-colors whitespace-nowrap cursor-pointer focus:outline-none ${
                 mentorSubTab === tab
-                  ? "border-b-2 border-blue-600 text-blue-600"
-                  : "text-gray-500 hover:text-gray-900"
+                  ? "border-b-2 border-primary text-primary"
+                  : "text-text-secondary hover:text-text-primary"
               }`}
             >
               {tab === "requests"
@@ -363,7 +506,7 @@ function MentorDashboard({
         {mentorSubTab === "active" && !showAddMentorship && (
           <button
             onClick={() => setShowAddMentorship(true)}
-            className="mb-3 sm:mb-0 px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition shadow-sm whitespace-nowrap"
+            className="mb-3 sm:mb-0 px-4 py-2 bg-primary text-white text-sm font-medium rounded hover:bg-primary-hover transition-colors whitespace-nowrap cursor-pointer focus:outline-none"
           >
             + Create Program
           </button>
@@ -383,16 +526,15 @@ function MentorDashboard({
           <IncomingRequestsTable
             requests={requests}
             onAccept={handleAccept}
-            onReject={(id) => setRequests(requests.filter((r) => r.id !== id))}
+            onReject={handleReject}
           />
         </div>
       )}
 
       {mentorSubTab === "active" && (
-
-<div className="animate-fadeIn space-y-6">
+        <div className="animate-fadeIn space-y-6">
           {activePrograms.length === 0 && !showAddMentorship ? (
-            <p className="text-gray-500 italic">
+            <p className="text-text-secondary italic">
               No active mentorship programs right now.
             </p>
           ) : (
@@ -415,7 +557,7 @@ function MentorDashboard({
       {mentorSubTab === "history" && (
         <div className="animate-fadeIn space-y-6">
           {completedPrograms.length === 0 ? (
-            <p className="text-gray-500 italic">
+            <p className="text-text-secondary italic">
               You have no completed mentorship programs yet.
             </p>
           ) : (
@@ -430,7 +572,7 @@ function MentorDashboard({
       {mentorSubTab === "reviews" && (
         <div className="animate-fadeIn">
           {allReviews.length === 0 ? (
-            <p className="text-gray-500 italic">
+            <p className="text-text-secondary italic">
               No reviews have been submitted for your programs yet.
             </p>
           ) : (
@@ -452,30 +594,49 @@ function MentorDashboard({
     </div>
   );
 
+  const handleDeleteOpportunity = async (oppId) => {
+    if (!window.confirm("Are you sure you want to remove this posting?"))
+      return;
+    try {
+      await deleteOpportunity(oppId, token);
+      const oppToMove = opportunities.find((o) => o.id === oppId);
+      if (oppToMove) {
+        setOpportunities(opportunities.filter((o) => o.id !== oppId));
+        setDeletedOpportunities([
+          { ...oppToMove, status: "deleted" },
+          ...deletedOpportunities,
+        ]);
+      }
+    } catch (err) {
+      console.error("Failed to delete opportunity:", err);
+      alert("Failed to remove posting.");
+    }
+  };
+
   const renderOpportunitySection = () => {
-    const posted = opportunities.filter((opp) => opp.status === "posted");
-    const archived = opportunities.filter((opp) => opp.status === "deleted");
+    const posted = opportunities;
+    const archived = deletedOpportunities;
 
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mt-6 min-h-[500px]">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-200 mb-6">
+      <div className="bg-surface rounded shadow-sm border border-border p-8 mt-6 min-h-[500px]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border mb-6">
           <div className="flex gap-6 overflow-x-auto">
             <button
               onClick={() => setOppSubTab("active")}
-              className={`pb-3 font-semibold text-sm transition-colors whitespace-nowrap ${
+              className={`pb-3 font-semibold text-sm transition-colors whitespace-nowrap cursor-pointer focus:outline-none ${
                 oppSubTab === "active"
-                  ? "border-b-2 border-blue-600 text-blue-600"
-                  : "text-gray-500 hover:text-gray-900"
+                  ? "border-b-2 border-primary text-primary"
+                  : "text-text-secondary hover:text-text-primary"
               }`}
             >
               Active Postings
             </button>
             <button
               onClick={() => setOppSubTab("history")}
-              className={`pb-3 font-semibold text-sm transition-colors whitespace-nowrap ${
+              className={`pb-3 font-semibold text-sm transition-colors whitespace-nowrap cursor-pointer focus:outline-none ${
                 oppSubTab === "history"
-                  ? "border-b-2 border-blue-600 text-blue-600"
-                  : "text-gray-500 hover:text-gray-900"
+                  ? "border-b-2 border-primary text-primary"
+                  : "text-text-secondary hover:text-text-primary"
               }`}
             >
               Archived/Deleted
@@ -485,7 +646,7 @@ function MentorDashboard({
           {oppSubTab === "active" && !showAddOpportunity && (
             <button
               onClick={() => setShowAddOpportunity(true)}
-              className="mb-3 sm:mb-0 px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition shadow-sm whitespace-nowrap"
+              className="mb-3 sm:mb-0 px-4 py-2 bg-primary text-white text-sm font-medium rounded hover:bg-primary-hover transition-colors whitespace-nowrap cursor-pointer focus:outline-none"
             >
               + Post Opportunity
             </button>
@@ -503,7 +664,7 @@ function MentorDashboard({
         {oppSubTab === "active" && (
           <div className="animate-fadeIn space-y-4">
             {posted.length === 0 && !showAddOpportunity ? (
-              <p className="text-gray-500 italic">
+              <p className="text-text-secondary italic">
                 No active opportunities posted.
               </p>
             ) : (
@@ -521,7 +682,9 @@ function MentorDashboard({
         {oppSubTab === "history" && (
           <div className="animate-fadeIn space-y-4">
             {archived.length === 0 ? (
-              <p className="text-gray-500 italic">No deleted opportunities.</p>
+              <p className="text-text-secondary italic">
+                No deleted opportunities.
+              </p>
             ) : (
               archived.map((opp) => (
                 <OpportunityCard
@@ -538,36 +701,36 @@ function MentorDashboard({
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 bg-gray-50 min-h-screen">
+    <div className="w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 bg-background min-h-screen">
       <div className="mb-6 flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-900">
+          <h1 className="text-3xl font-extrabold text-text-primary">
             Mentor Dashboard
           </h1>
-          <p className="text-gray-500 mt-2 text-sm">
+          <p className="text-text-secondary mt-2 text-sm">
             Manage incoming requests, track active sessions, and oversee your
             postings.
           </p>
         </div>
       </div>
 
-      <div className="flex space-x-1 bg-gray-200/70 p-1 rounded-lg w-max mb-2">
+      <div className="flex space-x-2 bg-surface-hover p-1 rounded w-max mb-2 border border-border">
         <button
           onClick={() => setActiveMainTab("mentorship")}
-          className={`px-6 py-2.5 text-sm font-semibold rounded-md transition-all ${
+          className={`px-4 py-2 text-sm font-semibold rounded transition-colors cursor-pointer focus:outline-none ${
             activeMainTab === "mentorship"
-              ? "bg-white text-gray-900 shadow-sm"
-              : "text-gray-600 hover:text-gray-900 hover:bg-gray-300/50"
+              ? "bg-surface text-text-primary shadow-sm border border-border"
+              : "text-text-secondary hover:text-text-primary hover:bg-border border border-transparent"
           }`}
         >
           Mentorship Management
         </button>
         <button
           onClick={() => setActiveMainTab("opportunities")}
-          className={`px-6 py-2.5 text-sm font-semibold rounded-md transition-all ${
+          className={`px-4 py-2 text-sm font-semibold rounded transition-colors cursor-pointer focus:outline-none ${
             activeMainTab === "opportunities"
-              ? "bg-white text-gray-900 shadow-sm"
-              : "text-gray-600 hover:text-gray-900 hover:bg-gray-300/50"
+              ? "bg-surface text-text-primary shadow-sm border border-border"
+              : "text-text-secondary hover:text-text-primary hover:bg-border border border-transparent"
           }`}
         >
           Opportunity Management

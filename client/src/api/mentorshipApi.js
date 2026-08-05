@@ -28,6 +28,16 @@ export const getMyMentorships = async (token) => {
   return handleResponse(response);
 };
 
+// Get mentorships for a specific user (alumni or student)
+export const getUserMentorships = async (userId, token) => {
+  const response = await fetch(`${API_URL}/user/${userId}`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return handleResponse(response);
+};
+
 // Get a single mentorship by its MongoDB _id
 export const getMentorshipById = async (mentorshipId, token) => {
   const response = await fetch(`${API_URL}/${mentorshipId}`, {

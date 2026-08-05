@@ -6,6 +6,8 @@ import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Search from "./pages/Search";
 import { Profile } from "./pages/Profile";
+import MentorshipDetail from "./pages/MentorshipDetail";
+import OpportunityDetail from "./pages/OpportunityDetail";
 
 import { Navbar } from "./layouts/Navbar";
 import { AuthProvider } from "./hooks/AuthContext";
@@ -114,6 +116,10 @@ function App() {
             path="/search/opportunites"
             element={<Search categoryType="opportunities" />}
           />
+
+          {/* ---------- Details ---------- */}
+          <Route path="/mentorship/:id" element={<MentorshipDetail />} />
+          <Route path="/opportunity/:id" element={<OpportunityDetail />} />
 
           {/* ---------- 404 ---------- */}
           <Route path="*" element={<Navigate to="/" replace />} />

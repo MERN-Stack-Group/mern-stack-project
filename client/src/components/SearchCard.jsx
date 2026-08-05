@@ -12,9 +12,17 @@ export default function SearchCard({ item }) {
   // Determine the layout style based on whether the item has an image (Mentors/Students)
   const isProfile = Boolean(item.imageUrl);
 
+  // Determine the correct route based on item type
+  let linkPath = "/profile/" + item._id;
+  if (item.itemType === "mentorship") {
+    linkPath = "/mentorship/" + item._id;
+  } else if (item.itemType === "opportunity") {
+    linkPath = "/opportunity/" + item._id;
+  }
+
   return (
     <>
-      <Link to={"/profile/" + item._id}>
+      <Link to={linkPath}>
         <div className="group bg-[#091D14] p-6 rounded-2xl border border-[#133826] hover:border-emerald-500/50 hover:bg-[#0B2519] transition-all duration-300 shadow-md hover:shadow-xl hover:shadow-emerald-900/20 flex flex-col h-full cursor-pointer">
           {isProfile ? (
             // --- PROFILE LAYOUT (Mentors & Students) ---

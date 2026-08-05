@@ -49,3 +49,13 @@ export const rejectRequest = async (requestId, token) => {
 
   return handleResponse(response);
 };
+
+// Get all requests made by the logged-in student
+export const getMyRequests = async (token) => {
+  const response = await fetch(`${API_URL}/my-requests`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return handleResponse(response);
+};

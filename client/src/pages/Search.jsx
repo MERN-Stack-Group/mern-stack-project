@@ -55,6 +55,7 @@ export default function Search({ categoryType = "mentors" }) {
 
     return {
       _id: user._id,
+      itemType: "profile",
       name: user.name,
       imageUrl: user.profileImage || null,
       faculty: user.faculty,
@@ -75,6 +76,7 @@ export default function Search({ categoryType = "mentors" }) {
   const mapMentorshipToCard = (mentorship) => {
     return {
       _id: mentorship._id,
+      itemType: "mentorship",
       name: mentorship.title,
       description: mentorship.description,
       duration: mentorship.durationInWeeks + " weeks",
@@ -86,6 +88,7 @@ export default function Search({ categoryType = "mentors" }) {
   const mapOpportunityToCard = (opportunity) => {
     return {
       _id: opportunity._id,
+      itemType: "opportunity",
       name: opportunity.title,
       company: opportunity.companyName,
       location: opportunity.location,
@@ -161,20 +164,22 @@ export default function Search({ categoryType = "mentors" }) {
         </div>
 
         {/* Faculty Filter */}
-        <div className="mt-6">
-          <select
-            value={faculty}
-            onChange={(e) => setFaculty(e.target.value)}
-            className="w-full p-3.5 rounded-xl bg-[#051811] border border-[#133826] text-emerald-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-300 cursor-pointer appearance-none"
-          >
-            <option value="">All Faculties</option>
-            {faculties.map((f) => (
-              <option key={f} value={f}>
-                {f}
-              </option>
-            ))}
-          </select>
-        </div>
+        {!currentCategory.includes("opportunities") && (
+          <div className="mt-6">
+            <select
+              value={faculty}
+              onChange={(e) => setFaculty(e.target.value)}
+              className="w-full p-3.5 rounded-xl bg-[#051811] border border-[#133826] text-emerald-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-300 cursor-pointer appearance-none"
+            >
+              <option value="">All Faculties</option>
+              {faculties.map((f) => (
+                <option key={f} value={f}>
+                  {f}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         {/* ── TODO: Add mentorship / opportunity-specific filters here ──────
             When mentorships are implemented, add duration / seats filters.

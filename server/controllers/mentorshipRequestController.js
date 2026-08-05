@@ -183,9 +183,23 @@ const rejectRequest = async (req, res) => {
     }
 };
 
+// @desc    Get all requests made by the logged-in student
+// @route   GET /api/mentorship-requests/my-requests
+// @access  Private
+const getMyRequests = async (req, res) => {
+  try {
+    const studentId = req.user._id;
+    const requests = await MentorshipRequest.find({ requester: studentId });
+    res.json(requests);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = { 
     createRequest, 
     acceptRequest,
     getPendingRequests,
-    rejectRequest 
+    rejectRequest,
+    getMyRequests
 };

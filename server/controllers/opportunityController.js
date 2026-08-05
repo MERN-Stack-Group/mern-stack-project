@@ -141,10 +141,31 @@ const deleteOpportunity = async (req, res) => {
   }
 };
 
+// @desc    Get an opportunity by ID
+// @route   GET /api/opportunities/:id
+// @access  Private
+const getOpportunityById = async (req, res) => {
+  try {
+    const opportunity = await Opportunity.findById(req.params.id).populate(
+      "postedBy",
+      "name email profileImage faculty degree"
+    );
+
+    if (!opportunity) {
+      return res.status(404).json({ message: "Opportunity not found" });
+    }
+
+    res.json(opportunity);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createOpportunity,
   getActiveOpportunities,
   getDeletedOpportunities,
   updateOpportunity,
   deleteOpportunity,
+  getOpportunityById,
 };

@@ -6,6 +6,7 @@ const {
   getDeletedOpportunities,
   updateOpportunity,
   deleteOpportunity,
+  getOpportunityById,
 } = require("../controllers/opportunityController");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -18,9 +19,8 @@ router
 router.get("/deleted", protect, getDeletedOpportunities);
 
 // Dynamic Routes
-router
-  .route("/:id")
-  .put(protect, updateOpportunity)
-  .delete(protect, deleteOpportunity);
+router.put("/:id", protect, updateOpportunity);
+router.delete("/:id", protect, deleteOpportunity);
+router.get("/:id", protect, getOpportunityById);
 
 module.exports = router;

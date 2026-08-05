@@ -158,7 +158,10 @@ const getMentorshipsByStage = async (req, res) => {
 // @access  Private
 const getMentorshipById = async (req, res) => {
   try {
-    const mentorship = await Mentorship.findById(req.params.id);
+    const mentorship = await Mentorship.findById(req.params.id).populate(
+      "alumni",
+      "name email profileImage faculty degree"
+    );
 
     if (!mentorship) {
       return res.status(404).json({
@@ -179,13 +182,33 @@ const getAlumniMentorships = async (req, res) => {
   try {
     const mentorships = await Mentorship.find({
       alumni: req.user._id,
-    }).populate("alumni", "name email role faculty");
+    })
+      .populate("alumni", "name email role faculty")
+      .populate("students", "name profileImage faculty degree");
 
     res.json(mentorships);
   } catch (error) {
     res.status(500).json({
       message: error.message,
     });
+  }
+};
+
+// @desc    Get mentorships for a specific user (alumni or student)
+// @route   GET /api/mentorships/user/:userId
+// @access  Private
+const getUserMentorships = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const mentorships = await Mentorship.find({
+      $or: [{ alumni: userId }, { students: userId }],
+    })
+      .populate("alumni", "name email profileImage faculty role")
+      .populate("students", "name profileImage faculty degree role");
+
+    res.json(mentorships);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -197,4 +220,5 @@ module.exports = {
   getMentorshipsByStage,
   getMentorshipById,
   getAlumniMentorships,
+  getUserMentorships,
 };

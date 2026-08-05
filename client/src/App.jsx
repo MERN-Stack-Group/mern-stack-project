@@ -49,6 +49,11 @@ function App() {
             element={<MentorshipModel viewType="completed" />}
           />
 
+          <Route
+            path="/profile/mentorships-reviews"
+            element={<MentorshipModel viewType="reviews" />}
+          />
+
           {/* ---------- Viewing Another User ---------- */}
           <Route
             path="/profile/:userId/mentorships-active"

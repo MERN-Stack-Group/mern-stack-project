@@ -168,7 +168,11 @@ const MentorshipProgramCard = ({
                     </div>
                     {/* Remove Student Button */}
                     <button
-                      onClick={() => onRemoveStudent(idx)}
+                      onClick={() => {
+                        if (window.confirm("Are you sure you want to remove this student from the program?")) {
+                          onRemoveStudent(idx);
+                        }
+                      }}
                       className="absolute top-4 right-4 text-gray-400 hover:text-red-600 p-1 rounded transition-colors focus:outline-none"
                       title="Remove Student"
                     >

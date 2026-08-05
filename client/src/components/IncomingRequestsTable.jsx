@@ -62,7 +62,11 @@ const IncomingRequestsTable = ({ requests = [], onAccept, onReject }) => {
                   Accept
                 </button>
                 <button
-                  onClick={() => onReject(request.id)}
+                  onClick={() => {
+                    if (window.confirm("Are you sure you want to reject this request?")) {
+                      onReject(request.id);
+                    }
+                  }}
                   className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 hover:text-red-600 hover:border-red-300"
                 >
                   Reject

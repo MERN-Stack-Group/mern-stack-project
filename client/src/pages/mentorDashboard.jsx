@@ -5,7 +5,10 @@ import CompletedProgramCard from "../components/CompletedProgramCard";
 import CreatePostForm from "../components/CreatePostForm";
 import ReviewCard from "../components/ReviewCard"; // <-- Make sure you have this file created
 import { useAuth } from "../hooks/AuthContext";
-import { getMyMentorships, progressMentorshipStage, deleteMentorship, createMentorship } from "../api/mentorshipApi";
+import { getMyMentorships, progressMentorshipStage, deleteMentorship, createMentorship, removeStudentFromMentorship } from "../api/mentorshipApi";
+import { getPendingRequests, acceptRequest, rejectRequest } from "../api/mentorshipRequestApi";
+import { getMentorReviews } from "../api/reviewApi";
+import { getActiveOpportunities, getDeletedOpportunities, deleteOpportunity, createOpportunity } from "../api/opportunityApi";
 
 // Helper component for the Opportunities section
 const OpportunityCard = ({ opp, onDelete }) => (
@@ -27,7 +30,11 @@ const OpportunityCard = ({ opp, onDelete }) => (
         </span>
         {opp.status === "posted" && (
           <button
-            onClick={() => onDelete(opp.id)}
+            onClick={() => {
+              if (window.confirm("Are you sure you want to remove this opportunity?")) {
+                onDelete(opp.id);
+              }
+            }}
             className="text-xs font-semibold text-red-600 hover:text-red-800 transition-colors"
           >
             Remove Posting
@@ -58,16 +65,8 @@ function MentorDashboard({
   const [showAddOpportunity, setShowAddOpportunity] = useState(false);
 
   //  STATE: Data
-  const [requests, setRequests] = useState([
-    {
-      id: 1,
-      name: "Maya Lin",
-      program: "Computer Science",
-      topic: "React Development",
-      message: "I need guidance on scalable React.",
-      date: "2 hours ago",
-    },
-  ]);
+  const [requests, setRequests] = useState([]);
+  const [allReviews, setAllReviews] = useState([]);
 
   const [activePrograms, setActivePrograms] = useState([]);
 
@@ -83,26 +82,10 @@ function MentorDashboard({
     },
   ]);
 
-  const [opportunities, setOpportunities] = useState([
-    {
-      id: 1,
-      title: "Frontend Developer Mentorship Fall 2026",
-      status: "posted",
-      date: "Aug 01, 2026",
-      description:
-        "Looking for 2 students passionate about Next.js and Tailwind CSS. Weekly 1-hour code review sessions.",
-    },
-    {
-      id: 2,
-      title: "Backend Architecture 101",
-      status: "deleted",
-      date: "Jan 15, 2026",
-      description: "Focus on Node.js and Microservices design patterns.",
-    },
-  ]);
+  const [opportunities, setOpportunities] = useState([]);
 
   useEffect(() => {
-    const fetchPrograms = async () => {
+    const fetchDashboardData = async () => {
       if (!token) return;
       try {
         const myPrograms = await getMyMentorships(token);
@@ -117,8 +100,9 @@ function MentorDashboard({
             step: m.stage === "enrollment" ? 0 : 1,
             savedStep: m.stage === "enrollment" ? 0 : 1,
             mentees: (m.students || []).map((s) => ({
+              id: s._id || s,
               name: s.name || s,
-              program: "Student",
+              program: s.degree || "Student",
               message: "",
             })),
             removedMentees: [],
@@ -131,30 +115,66 @@ function MentorDashboard({
             title: m.title,
             duration: `${m.durationInWeeks} Weeks`,
             mentees: (m.students || []).map((s) => ({
+              id: s._id || s,
               name: s.name || s,
-              program: "Student",
+              program: s.degree || "Student",
             })),
             reviews: [], // placeholder until reviews are fetched
           }));
 
         setActivePrograms(myActive);
         setCompletedPrograms(myCompleted);
+
+        const pendingReqs = await getPendingRequests(token);
+        const mappedRequests = pendingReqs.map(r => ({
+          id: r._id,
+          mentorshipId: r.mentorship?._id,
+          requesterId: r.requester?._id,
+          name: r.requester?.name || "Student",
+          program: r.requester?.degree || "Student",
+          topic: r.mentorship?.title || "Program",
+          message: r.message || "",
+          date: new Date(r.createdAt).toLocaleDateString(),
+        }));
+        setRequests(mappedRequests);
+
+        if (user?._id) {
+          const fetchedReviews = await getMentorReviews(user._id, token);
+          setAllReviews(fetchedReviews);
+          
+          // Fetch opportunities
+          const activeOpps = await getActiveOpportunities(token);
+          const myActiveOpps = activeOpps.filter(
+            (opp) => opp.postedBy?._id === user._id || opp.postedBy === user._id
+          );
+          const deletedOpps = await getDeletedOpportunities(token);
+          
+          const mappedActiveOpps = myActiveOpps.map((opp) => ({
+            id: opp._id,
+            title: opp.title,
+            status: "posted",
+            date: new Date(opp.createdAt).toLocaleDateString(),
+            description: opp.description,
+          }));
+          
+          const mappedDeletedOpps = deletedOpps.map((opp) => ({
+            id: opp._id,
+            title: opp.title,
+            status: "deleted",
+            date: new Date(opp.createdAt).toLocaleDateString(),
+            description: opp.description,
+          }));
+          
+          setOpportunities([...mappedActiveOpps, ...mappedDeletedOpps]);
+        }
       } catch (err) {
-        console.error("Failed to fetch mentorships:", err);
+        console.error("Failed to fetch dashboard data:", err);
       }
     };
-    fetchPrograms();
-  }, [token]);
+    fetchDashboardData();
+  }, [token, user]);
 
-  // DERIVED STATE: Extract all reviews from completed programs
-  const allReviews = completedPrograms.flatMap(
-    (program) =>
-      program.reviews?.map((review) => ({
-        ...review,
-        programTitle: program.title,
-        duration: program.duration,
-      })) || [],
-  );
+  // Removed derived allReviews
 
   // HANDLERS: Creation & Saving
   const handleCreateMentorship = async (data) => {
@@ -187,16 +207,35 @@ function MentorDashboard({
     }
   };
 
-  const handleCreateOpportunity = (data) => {
-    const newOpp = {
-      id: Date.now(),
-      title: data.title,
-      date: data.duration,
-      description: data.description,
-      status: "posted",
-    };
-    setOpportunities([newOpp, ...opportunities]);
-    setShowAddOpportunity(false);
+  const handleCreateOpportunity = async (data) => {
+    if (!token) return;
+    try {
+      const created = await createOpportunity(
+        {
+          title: data.title,
+          description: data.description,
+          companyName: data.companyName,
+          opportunityType: data.opportunityType,
+          location: data.location,
+          applicationEmail: data.applicationEmail,
+          tags: data.tags ? data.tags.split(',').map(t => t.trim()) : [],
+        },
+        token
+      );
+      
+      const newOpp = {
+        id: created._id,
+        title: created.title,
+        status: "posted",
+        date: new Date(created.createdAt).toLocaleDateString(),
+        description: created.description,
+      };
+      setOpportunities([newOpp, ...opportunities]);
+      setShowAddOpportunity(false);
+    } catch (err) {
+      console.error("Failed to post opportunity:", err);
+      alert(err.message || "Failed to post opportunity");
+    }
   };
 
   // Save progress (both active and completed)
@@ -242,48 +281,64 @@ function MentorDashboard({
     }
   };
 
-  const handleDeleteOpportunity = (id) => {
-    setOpportunities(
-      opportunities.map((opp) =>
-        opp.id === id ? { ...opp, status: "deleted" } : opp,
-      ),
-    );
+  const handleDeleteOpportunity = async (id) => {
+    if (!token) return;
+    try {
+      await deleteOpportunity(id, token);
+      setOpportunities(
+        opportunities.map((opp) =>
+          opp.id === id ? { ...opp, status: "deleted" } : opp,
+        ),
+      );
+    } catch (err) {
+      console.error("Failed to delete opportunity:", err);
+      alert(err.message || "Failed to delete opportunity");
+    }
   };
 
   // HANDLERS: Requests & Active Program Updates
-  const handleAccept = (request) => {
-    setActivePrograms((prev) => {
-      const idx = prev.findIndex((p) => p.title === request.topic);
-      if (idx >= 0) {
-        const updated = [...prev];
-        updated[idx].mentees.push({
-          name: request.name,
-          program: request.program,
-          message: request.message,
-        });
-        return updated;
-      }
-      return [
-        {
-          id: Date.now(),
-          title: request.topic,
-          duration: "Newly Created",
-          status: "Enrollment",
-          step: 1,
-          mentees: [
-            {
-              name: request.name,
-              program: request.program,
-              message: request.message,
-            },
-          ],
-          removedMentees: [],
-        },
-        ...prev,
-      ];
-    });
-    setRequests(requests.filter((item) => item.id !== request.id));
-    setMentorSubTab("active");
+  const handleAccept = async (request) => {
+    if (!token) return;
+    try {
+      await acceptRequest(request.id, token);
+      
+      setActivePrograms((prev) => {
+        const idx = prev.findIndex((p) => p.id === request.mentorshipId);
+        if (idx >= 0) {
+          const updated = [...prev];
+          updated[idx] = {
+            ...updated[idx],
+            mentees: [
+              ...updated[idx].mentees,
+              {
+                id: request.requesterId,
+                name: request.name,
+                program: request.program,
+                message: request.message,
+              }
+            ]
+          };
+          return updated;
+        }
+        return prev;
+      });
+      setRequests(requests.filter((item) => item.id !== request.id));
+      setMentorSubTab("active");
+    } catch (err) {
+      console.error("Failed to accept request", err);
+      alert(err.message || "Failed to accept request");
+    }
+  };
+
+  const handleReject = async (id) => {
+    if (!token) return;
+    try {
+      await rejectRequest(id, token);
+      setRequests(requests.filter((r) => r.id !== id));
+    } catch (err) {
+      console.error("Failed to reject request", err);
+      alert(err.message || "Failed to reject request");
+    }
   };
 
   const handleUpdateStep = (programId, increment) => {
@@ -302,20 +357,34 @@ function MentorDashboard({
     );
   };
 
-  const handleRemoveStudent = (programId, studentIndex) => {
-    setActivePrograms((prev) =>
-      prev.map((p) => {
-        if (p.id === programId) {
-          const studentToRemove = p.mentees[studentIndex];
-          return {
-            ...p,
-            mentees: p.mentees.filter((_, idx) => idx !== studentIndex),
-            removedMentees: [...(p.removedMentees || []), studentToRemove],
-          };
-        }
-        return p;
-      }),
-    );
+  const handleRemoveStudent = async (programId, studentIndex) => {
+    const program = activePrograms.find((p) => p.id === programId);
+    if (!program || !token) return;
+
+    const studentToRemove = program.mentees[studentIndex];
+    if (!studentToRemove) return;
+
+    try {
+      if (studentToRemove.id) {
+        await removeStudentFromMentorship(programId, studentToRemove.id, token);
+      }
+      
+      setActivePrograms((prev) =>
+        prev.map((p) => {
+          if (p.id === programId) {
+            return {
+              ...p,
+              mentees: p.mentees.filter((_, idx) => idx !== studentIndex),
+              removedMentees: [...(p.removedMentees || []), studentToRemove],
+            };
+          }
+          return p;
+        }),
+      );
+    } catch (err) {
+      console.error("Failed to remove student", err);
+      alert(err.message || "Failed to remove student from program");
+    }
   };
 
   const handleUndoRemove = (programId) => {
@@ -383,7 +452,7 @@ function MentorDashboard({
           <IncomingRequestsTable
             requests={requests}
             onAccept={handleAccept}
-            onReject={(id) => setRequests(requests.filter((r) => r.id !== id))}
+            onReject={handleReject}
           />
         </div>
       )}
@@ -437,12 +506,13 @@ function MentorDashboard({
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {allReviews.map((review, idx) => (
                 <ReviewCard
-                  key={idx}
-                  studentName={review.author}
-                  programTitle={review.programTitle}
-                  duration={review.duration}
+                  key={review._id || idx}
+                  reviewerId={review.reviewer?._id}
+                  studentName={review.reviewer?.name || "Anonymous"}
+                  programTitle={review.mentorship?.title || "Program"}
+                  duration={review.mentorship?.durationInWeeks ? review.mentorship.durationInWeeks + " Weeks" : ""}
                   rating={review.rating}
-                  description={review.description}
+                  description={review.content}
                 />
               ))}
             </div>

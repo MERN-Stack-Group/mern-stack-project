@@ -20,12 +20,12 @@ import { useLocation } from "react-router-dom";
 import { useAuth } from "../hooks/AuthContext";
 
 export const Navbar = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleLogout = () => {
-    // TODO: clear tokens/session data if needed before redirect
+    logout();
     navigate("/");
   };
 

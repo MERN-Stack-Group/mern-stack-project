@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const ReviewCard = ({
   studentName,
@@ -6,15 +7,22 @@ const ReviewCard = ({
   duration,
   rating,
   description,
+  reviewerId,
 }) => {
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between h-full">
       <div>
         <div className="flex justify-between items-start mb-2 gap-2">
           <div>
-            <h4 className="text-sm font-bold text-gray-900 line-clamp-1">
-              {studentName}
-            </h4>
+            {reviewerId ? (
+              <Link to={`/profile/${reviewerId}`} className="text-sm font-bold text-blue-600 hover:underline line-clamp-1">
+                {studentName}
+              </Link>
+            ) : (
+              <h4 className="text-sm font-bold text-gray-900 line-clamp-1">
+                {studentName}
+              </h4>
+            )}
             <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">
               {programTitle}
             </p>

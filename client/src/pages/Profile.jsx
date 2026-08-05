@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import banner from "../assets/banner.jpg";
 import TagCard from "../components/TagCard";
 import { useAuth } from "../hooks/AuthContext";
 import { getUserProfileById } from "../api/userApi";
+import { getUserMentorships } from "../api/mentorshipApi";
+import { getMentorReviews } from "../api/reviewApi";
 import EditProfileModal from "../components/EditProfileModal";
 
 export const Profile = () => {
@@ -15,10 +17,15 @@ export const Profile = () => {
   const [otherUserData, setOtherUserData] = useState(null);
   const [isFetchingOther, setIsFetchingOther] = useState(!isOwnProfile);
 
+  const [activeMentorshipsList, setActiveMentorshipsList] = useState([]);
+  const [completedMentorshipsList, setCompletedMentorshipsList] = useState([]);
+  const [mentorReviewsList, setMentorReviewsList] = useState([]);
+
   const displayData = isOwnProfile ? currentUser : otherUserData;
 
   const [isAboutExpanded, setIsAboutExpanded] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   // A state flag indicating whether the text is actually long enough to require truncation.
   const [showSeeMoreBtn, setShowSeeMoreBtn] = useState(false);
@@ -50,6 +57,32 @@ export const Profile = () => {
     fetchUser();
   }, [userId, isOwnProfile, token]);
 
+  useEffect(() => {
+    const fetchMentorships = async () => {
+      if (displayData?._id && token) {
+        try {
+          const data = await getUserMentorships(displayData._id, token);
+          const active = data
+            .filter((m) => m.stage === "active" || m.stage === "enrollment")
+            .slice(0, 2);
+          const completed = data
+            .filter((m) => m.stage === "completed")
+            .slice(0, 2);
+          setActiveMentorshipsList(active);
+          setCompletedMentorshipsList(completed);
+
+          if (displayData.role.includes("alumni")) {
+            const reviews = await getMentorReviews(displayData._id, token);
+            setMentorReviewsList(reviews.slice(0, 2));
+          }
+        } catch (error) {
+          console.error("Failed to fetch profile mentorships:", error);
+        }
+      }
+    };
+    fetchMentorships();
+  }, [displayData?._id, token]);
+
   // This effect evaluates the height of the text block whenever the user data loads or changes.
   // By comparing scrollHeight (total text height) to clientHeight (visible height restricted by line-clamp),
   // it accurately determines if the text overflows the 3-line limit.
@@ -69,7 +102,7 @@ export const Profile = () => {
 
   const completedMentorships = () => {
     if (isOwnProfile) {
-      if (currentUser?.userType === "alumni") {
+      if (currentUser?.role?.includes("alumni")) {
         navigate("/mentor-dashboard/mentorships/history");
       } else {
         navigate("/profile/mentorships-completed");
@@ -81,7 +114,7 @@ export const Profile = () => {
 
   const activeMentorships = () => {
     if (isOwnProfile) {
-      if (currentUser?.userType === "alumni") {
+      if (currentUser?.role?.includes("alumni")) {
         navigate("/mentor-dashboard/mentorships/active");
       } else {
         navigate("/profile/mentorships-active");
@@ -93,7 +126,7 @@ export const Profile = () => {
 
   const viewAllReviews = () => {
     if (isOwnProfile) {
-      if (currentUser?.userType === "alumni") {
+      if (currentUser?.role?.includes("alumni")) {
         navigate("/mentor-dashboard/mentorships/reviews");
       } else {
         navigate("/profile/mentorships-reviews");
@@ -114,28 +147,6 @@ export const Profile = () => {
                 alt="Banner Image"
                 className="w-full h-full object-cover rounded-t-lg"
               />
-
-              {isOwnProfile && (
-                <button
-                  className="absolute top-4 right-4 p-2 bg-white rounded-full text-gray-600 hover:bg-gray-100 hover:text-gray-900 shadow-md transition-colors cursor-pointer"
-                  aria-label="Edit Banner"
-                  title="Edit Banner"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path d="M12 9a3.75 3.75 0 100 7.5A3.75 3.75 0 0012 9z" />
-                    <path
-                      fillRule="evenodd"
-                      d="M9.344 3.071a49.52 49.52 0 015.312 0c.967.052 1.83.585 2.332 1.39l.821 1.317c.24.383.645.643 1.11.71.386.054.77.113 1.152.177 1.432.239 2.429 1.493 2.429 2.909V18a3 3 0 01-3 3h-15a3 3 0 01-3-3V9.574c0-1.416.997-2.67 2.429-2.909.382-.064.766-.123 1.151-.178a1.56 1.56 0 001.11-.71l.822-1.315a2.942 2.942 0 012.332-1.39zM6.75 12.75a5.25 5.25 0 1110.5 0 5.25 5.25 0 01-10.5 0zm12-1.5a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-              )}
             </div>
 
             <div className="absolute top-28 left-6 w-36 h-36 border-4 border-white rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-center z-10 shadow-sm overflow-hidden">
@@ -176,7 +187,10 @@ export const Profile = () => {
                 </p>
                 <p className="text-sm text-gray-500 mt-2">
                   {displayData?.location} •{" "}
-                  <button className="text-blue-600 font-semibold hover:underline">
+                  <button
+                    onClick={() => setIsContactOpen(true)}
+                    className="text-blue-600 font-semibold hover:underline"
+                  >
                     Contact info
                   </button>
                 </p>
@@ -261,33 +275,39 @@ export const Profile = () => {
             </h2>
 
             <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-3 border-b border-gray-200 pb-3">
-                <div className="w-12 h-12 bg-rose-400 rounded-full flex-shrink-0 flex items-center justify-center text-xs text-white font-bold">
-                  IMG
+              {activeMentorshipsList.map((m) => (
+                <div
+                  key={m._id}
+                  className="flex items-center gap-3 border-b border-gray-200 pb-3"
+                >
+                  <div className="w-12 h-12 bg-rose-400 rounded-full flex-shrink-0 flex items-center justify-center text-xs text-white font-bold overflow-hidden">
+                    {displayData?.role?.includes("alumni") ? (
+                      m.title?.charAt(0) || "P"
+                    ) : m.alumni?.profileImage ? (
+                      <img
+                        src={m.alumni.profileImage}
+                        alt={m.alumni.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      m.alumni?.name?.charAt(0) || "M"
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-900 hover:text-blue-700 hover:underline cursor-pointer">
+                      {m.title}
+                    </h3>
+                    <p className="text-xs text-gray-600 line-clamp-2">
+                      {displayData?.role?.includes("alumni")
+                        ? m.description
+                        : m.alumni?.name}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-sm font-bold text-gray-900 hover:text-blue-700 hover:underline cursor-pointer">
-                    John Doe
-                  </h3>
-                  <p className="text-xs text-gray-600 line-clamp-2">
-                    Senior Production Manager at MAS Holdings
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-rose-400 rounded-full flex-shrink-0 flex items-center justify-center text-xs text-white font-bold">
-                  IMG
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-gray-900 hover:text-blue-700 hover:underline cursor-pointer">
-                    Jane Smith
-                  </h3>
-                  <p className="text-xs text-gray-600 line-clamp-2">
-                    Supply Chain & Logistics Specialist
-                  </p>
-                </div>
-              </div>
+              ))}
+              {activeMentorshipsList.length === 0 && (
+                <p className="text-xs text-gray-500">No active mentorships.</p>
+              )}
             </div>
 
             <div className="mt-5 border-t border-gray-200 pt-2">
@@ -306,39 +326,45 @@ export const Profile = () => {
             </h2>
 
             <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-3 border-b border-gray-200 pb-3 opacity-80 hover:opacity-100 transition-opacity">
-                <div className="w-12 h-12 bg-slate-400 rounded-full flex-shrink-0 flex items-center justify-center text-xs text-white font-bold">
-                  IMG
+              {completedMentorshipsList.map((m) => (
+                <div
+                  key={m._id}
+                  className="flex items-center gap-3 border-b border-gray-200 pb-3 opacity-80 hover:opacity-100 transition-opacity"
+                >
+                  <div className="w-12 h-12 bg-slate-400 rounded-full flex-shrink-0 flex items-center justify-center text-xs text-white font-bold overflow-hidden">
+                    {displayData?.role?.includes("alumni") ? (
+                      m.title?.charAt(0) || "P"
+                    ) : m.alumni?.profileImage ? (
+                      <img
+                        src={m.alumni.profileImage}
+                        alt={m.alumni.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      m.alumni?.name?.charAt(0) || "M"
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-900 hover:text-blue-700 hover:underline cursor-pointer">
+                      {m.title}
+                    </h3>
+                    <p className="text-xs text-gray-600 line-clamp-1">
+                      {displayData?.role?.includes("alumni")
+                        ? m.description
+                        : m.alumni?.name}
+                    </p>
+                    <p className="text-[10px] font-semibold text-emerald-600 mt-1 uppercase tracking-wide">
+                      Completed{" "}
+                      {m.durationInWeeks ? `• ${m.durationInWeeks} Weeks` : ""}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-sm font-bold text-gray-900 hover:text-blue-700 hover:underline cursor-pointer">
-                    Dr. Alan Turing
-                  </h3>
-                  <p className="text-xs text-gray-600 line-clamp-1">
-                    Lead Security Architect
-                  </p>
-                  <p className="text-[10px] font-semibold text-emerald-600 mt-1 uppercase tracking-wide">
-                    Completed • Fall 2025
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 opacity-80 hover:opacity-100 transition-opacity">
-                <div className="w-12 h-12 bg-slate-400 rounded-full flex-shrink-0 flex items-center justify-center text-xs text-white font-bold">
-                  IMG
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-gray-900 hover:text-blue-700 hover:underline cursor-pointer">
-                    Sarah Connor
-                  </h3>
-                  <p className="text-xs text-gray-600 line-clamp-1">
-                    Systems Analyst at CyberDyne
-                  </p>
-                  <p className="text-[10px] font-semibold text-emerald-600 mt-1 uppercase tracking-wide">
-                    Completed • Spring 2025
-                  </p>
-                </div>
-              </div>
+              ))}
+              {completedMentorshipsList.length === 0 && (
+                <p className="text-xs text-gray-500">
+                  No completed mentorships.
+                </p>
+              )}
             </div>
 
             <div className="mt-5 border-t border-gray-200 pt-2">
@@ -351,44 +377,44 @@ export const Profile = () => {
             </div>
           </div>
 
-          {displayData?.userType === "alumni" ? (
+          {displayData?.role.includes("alumni") ? (
             <div className="bg-white rounded-lg border border-gray-300 p-5 shadow-sm">
               <h2 className="text-base font-bold text-gray-900 mb-4">
                 Mentee Reviews
               </h2>
 
               <div className="flex flex-col gap-4">
-                <div className="border-b border-gray-200 pb-3">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-bold text-gray-900">
-                      David Perera
-                    </span>
-                    <span className="text-sm font-bold text-yellow-500 tracking-widest">
-                      ★★★★★
-                    </span>
+                {mentorReviewsList.map((review) => (
+                  <div
+                    key={review._id}
+                    className="border-b border-gray-200 pb-3"
+                  >
+                    <div className="flex items-center justify-between mb-1">
+                      {review.reviewer?._id ? (
+                        <Link
+                          to={`/profile/${review.reviewer._id}`}
+                          className="text-xs font-bold text-blue-600 hover:underline"
+                        >
+                          {review.reviewer.name}
+                        </Link>
+                      ) : (
+                        <span className="text-xs font-bold text-gray-900">
+                          {review.reviewer?.name || "Anonymous"}
+                        </span>
+                      )}
+                      <span className="text-sm font-bold text-yellow-500 tracking-widest">
+                        {"★".repeat(review.rating)}
+                        {"☆".repeat(5 - review.rating)}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-700 line-clamp-3 leading-relaxed">
+                      "{review.content}"
+                    </p>
                   </div>
-                  <p className="text-xs text-gray-700 line-clamp-3 leading-relaxed">
-                    "Incredible mentorship experience. The deep dive into Agile
-                    project management and sprint planning completely changed
-                    how I approach software development."
-                  </p>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-bold text-gray-900">
-                      Samantha Lee
-                    </span>
-                    <span className="text-sm font-bold text-yellow-500 tracking-widest">
-                      ★★★★☆
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-700 line-clamp-3 leading-relaxed">
-                    "Very patient and knowledgeable. The guidance on Java
-                    concepts and internship preparation was exactly what I
-                    needed to secure a position."
-                  </p>
-                </div>
+                ))}
+                {mentorReviewsList.length === 0 && (
+                  <p className="text-xs text-gray-500">No reviews found.</p>
+                )}
               </div>
 
               <div className="mt-5 border-t border-gray-200 pt-2">
@@ -409,6 +435,63 @@ export const Profile = () => {
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
       />
+
+      {/* ── Contact Info Modal ── */}
+      {isContactOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-6 relative animate-in fade-in zoom-in duration-200">
+            <button
+              onClick={() => setIsContactOpen(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label="Close"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-5 h-5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
+              {displayData?.name}'s Contact
+            </h2>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
+                    <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-0.5">
+                    Email Address
+                  </p>
+                  <a
+                    href={`mailto:${displayData?.email}`}
+                    className="text-sm font-semibold text-blue-600 hover:underline"
+                  >
+                    {displayData?.email || "No email provided"}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

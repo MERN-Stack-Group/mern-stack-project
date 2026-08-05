@@ -109,7 +109,8 @@ const removeStudent = async (req, res) => {
     }
 
     // Check if student is actually in the array
-    if (!mentorship.students.includes(studentId)) {
+    const isEnrolled = mentorship.students.some((id) => id.toString() === studentId.toString());
+    if (!isEnrolled) {
       return res
         .status(400)
         .json({ message: "Student is not enrolled in this program" });

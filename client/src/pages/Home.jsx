@@ -102,7 +102,7 @@ const alumniData = {
 export default function Home() {
   const { user, loading } = useAuth();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const isStudent = user?.userType === "student";
+  const isStudent = user?.role?.includes("student");
   const content = isStudent ? studentData : alumniData;
   const quotes = content.quotes;
 

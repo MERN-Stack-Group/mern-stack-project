@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const IncomingRequestsTable = ({ requests = [], onAccept, onReject }) => {
   if (!Array.isArray(requests) || requests.length === 0) {
@@ -35,9 +36,11 @@ const IncomingRequestsTable = ({ requests = [], onAccept, onReject }) => {
           {requests.map((request) => (
             <tr key={request.id} className="hover:bg-gray-50">
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="font-semibold text-gray-900">
-                  {request.name}
-                </div>
+                <Link to={`/profile/${request.requesterId}`} className="hover:underline">
+                  <div className="font-semibold text-gray-900 hover:text-blue-700">
+                    {request.name}
+                  </div>
+                </Link>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{request.topic}</div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import ProgressTracker from "./ProgressTracker";
 
 const MentorshipProgramCard = ({
@@ -154,9 +155,11 @@ const MentorshipProgramCard = ({
                           {mentee.name.charAt(0)}
                         </div>
                         <div>
-                          <h4 className="text-sm font-bold text-gray-900">
-                            {mentee.name}
-                          </h4>
+                          <Link to={`/profile/${mentee.id}`} className="hover:underline">
+                            <h4 className="text-sm font-bold text-gray-900 hover:text-blue-700">
+                              {mentee.name}
+                            </h4>
+                          </Link>
                           <p className="text-xs text-gray-500">
                             {mentee.program}
                           </p>

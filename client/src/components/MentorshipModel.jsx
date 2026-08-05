@@ -3,7 +3,7 @@ import { MentorshipCard } from "./MentorshipCard";
 import { useAuth } from "../hooks/AuthContext";
 import { getUserMentorships } from "../api/mentorshipApi";
 import { getMentorReviews } from "../api/reviewApi";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import ReviewCard from "./ReviewCard";
 
 export const MentorshipModel = ({ viewType = "completed" }) => {
@@ -80,13 +80,22 @@ export const MentorshipModel = ({ viewType = "completed" }) => {
 
   return (
     <div className="flex flex-col gap-4 w-full md:w-5/6 ml-0 md:ml-10 mt-5 pr-5">
-      <h2 className="text-xl font-bold text-gray-900">
-        {viewType === "active"
-          ? "Active Mentorships"
-          : viewType === "reviews"
-            ? "Mentorship Reviews"
-            : "Mentorship History"}
-      </h2>
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-xl font-bold text-gray-900">
+          {viewType === "active"
+            ? "Active Mentorships"
+            : viewType === "reviews"
+              ? "Mentorship Reviews"
+              : "Mentorship History"}
+        </h2>
+        <Link
+          to={userId ? `/profile/${userId}` : "/profile"}
+          className="px-4 py-2 bg-gray-100 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-200 transition-colors text-sm font-semibold flex items-center gap-2"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+          Back to Profile
+        </Link>
+      </div>
 
       {loading ? (
         <p className="text-gray-500 italic">Loading...</p>

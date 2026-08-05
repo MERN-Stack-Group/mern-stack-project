@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const CompletedProgramCard = ({
   title,
@@ -63,9 +64,11 @@ const CompletedProgramCard = ({
                       {mentee.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-gray-900">
-                        {mentee.name}
-                      </p>
+                      <Link to={`/profile/${mentee.id}`} className="hover:underline">
+                        <p className="text-sm font-bold text-gray-900 hover:text-blue-700">
+                          {mentee.name}
+                        </p>
+                      </Link>
                       <p className="text-xs text-gray-500">{mentee.program}</p>
                     </div>
                   </div>

@@ -7,6 +7,7 @@ import { getUserProfileById } from "../api/userApi";
 import { getUserMentorships } from "../api/mentorshipApi";
 import { getMentorReviews } from "../api/reviewApi";
 import EditProfileModal from "../components/EditProfileModal";
+import { GraduationCap, Building2, Building2Icon } from "lucide-react";
 
 export const Profile = () => {
   const { user: currentUser, loading: authLoading, token } = useAuth();
@@ -198,7 +199,7 @@ export const Profile = () => {
 
               <div className="flex flex-row items-center md:items-start md:justify-end gap-3 w-full md:w-auto mt-2 md:mt-0">
                 <div className="w-8 h-8 bg-purple-500 flex-shrink-0 flex items-center justify-center text-white text-[10px] rounded shadow-sm">
-                  LOGO
+                  <GraduationCap />
                 </div>
                 <span className="text-sm font-semibold hover:underline hover:text-blue-700 cursor-pointer">
                   {displayData?.faculty}
@@ -213,7 +214,7 @@ export const Profile = () => {
                 </h2>
                 <div className="flex items-start gap-4">
                   <div className="w-14 h-14 bg-slate-100 border border-gray-200 rounded-md flex-shrink-0 flex items-center justify-center text-gray-500 text-xs font-bold shadow-sm">
-                    LOGO
+                    <Building2 />
                   </div>
 
                   <div className="flex flex-col">

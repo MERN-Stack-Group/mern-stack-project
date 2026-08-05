@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/AuthContext";
 import { getMyReviewForMentorship, createReview, updateReview, deleteReview } from "../api/reviewApi";
 
@@ -141,9 +142,11 @@ export const MentorshipCard = ({
                       )}
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-gray-900 hover:text-blue-700 hover:underline cursor-pointer">
-                        {mentee.name}
-                      </h4>
+                      <Link to={`/profile/${mentee._id || mentee.id}`}>
+                        <h4 className="text-sm font-bold text-gray-900 hover:text-blue-700 hover:underline cursor-pointer">
+                          {mentee.name}
+                        </h4>
+                      </Link>
                       <p className="text-xs text-gray-600 line-clamp-1">
                         {mentee.role || "Student"}
                       </p>
@@ -169,9 +172,11 @@ export const MentorshipCard = ({
                   )}
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-gray-900 hover:text-blue-700 hover:underline cursor-pointer">
-                    {mentor.name}
-                  </h4>
+                  <Link to={`/profile/${mentor._id || mentor.id}`}>
+                    <h4 className="text-sm font-bold text-gray-900 hover:text-blue-700 hover:underline cursor-pointer">
+                      {mentor.name}
+                    </h4>
+                  </Link>
                   <p className="text-xs text-gray-600 line-clamp-1">
                     {mentor.role || "Alumni"}
                   </p>

@@ -5,10 +5,25 @@ import CompletedProgramCard from "../components/CompletedProgramCard";
 import CreatePostForm from "../components/CreatePostForm";
 import ReviewCard from "../components/ReviewCard"; // <-- Make sure you have this file created
 import { useAuth } from "../hooks/AuthContext";
-import { getMyMentorships, progressMentorshipStage, deleteMentorship, createMentorship, removeStudentFromMentorship } from "../api/mentorshipApi";
-import { getPendingRequests, acceptRequest, rejectRequest } from "../api/mentorshipRequestApi";
+import {
+  getMyMentorships,
+  progressMentorshipStage,
+  deleteMentorship,
+  createMentorship,
+  removeStudentFromMentorship,
+} from "../api/mentorshipApi";
+import {
+  getPendingRequests,
+  acceptRequest,
+  rejectRequest,
+} from "../api/mentorshipRequestApi";
 import { getMentorReviews } from "../api/reviewApi";
-import { getActiveOpportunities, getDeletedOpportunities, deleteOpportunity, createOpportunity } from "../api/opportunityApi";
+import {
+  getActiveOpportunities,
+  getDeletedOpportunities,
+  deleteOpportunity,
+  createOpportunity,
+} from "../api/opportunityApi";
 
 // Helper component for the Opportunities section
 const OpportunityCard = ({ opp, onDelete }) => (
@@ -31,7 +46,11 @@ const OpportunityCard = ({ opp, onDelete }) => (
         {opp.status === "posted" && (
           <button
             onClick={() => {
-              if (window.confirm("Are you sure you want to remove this opportunity?")) {
+              if (
+                window.confirm(
+                  "Are you sure you want to remove this opportunity?",
+                )
+              ) {
                 onDelete(opp.id);
               }
             }}
@@ -70,17 +89,7 @@ function MentorDashboard({
 
   const [activePrograms, setActivePrograms] = useState([]);
 
-  const [completedPrograms, setCompletedPrograms] = useState([
-    {
-      id: 201,
-      title: "Agile Project Management",
-      duration: "Spring 2025 - Fall 2025",
-      mentees: [{ name: "David Perera", program: "Software Engineering" }],
-      reviews: [
-        { author: "David Perera", rating: 5, description: "Fantastic mentor!" },
-      ],
-    },
-  ]);
+  const [completedPrograms, setCompletedPrograms] = useState([]);
 
   const [opportunities, setOpportunities] = useState([]);
 
@@ -126,7 +135,7 @@ function MentorDashboard({
         setCompletedPrograms(myCompleted);
 
         const pendingReqs = await getPendingRequests(token);
-        const mappedRequests = pendingReqs.map(r => ({
+        const mappedRequests = pendingReqs.map((r) => ({
           id: r._id,
           mentorshipId: r.mentorship?._id,
           requesterId: r.requester?._id,
@@ -141,14 +150,15 @@ function MentorDashboard({
         if (user?._id) {
           const fetchedReviews = await getMentorReviews(user._id, token);
           setAllReviews(fetchedReviews);
-          
+
           // Fetch opportunities
           const activeOpps = await getActiveOpportunities(token);
           const myActiveOpps = activeOpps.filter(
-            (opp) => opp.postedBy?._id === user._id || opp.postedBy === user._id
+            (opp) =>
+              opp.postedBy?._id === user._id || opp.postedBy === user._id,
           );
           const deletedOpps = await getDeletedOpportunities(token);
-          
+
           const mappedActiveOpps = myActiveOpps.map((opp) => ({
             id: opp._id,
             title: opp.title,
@@ -156,7 +166,7 @@ function MentorDashboard({
             date: new Date(opp.createdAt).toLocaleDateString(),
             description: opp.description,
           }));
-          
+
           const mappedDeletedOpps = deletedOpps.map((opp) => ({
             id: opp._id,
             title: opp.title,
@@ -164,7 +174,7 @@ function MentorDashboard({
             date: new Date(opp.createdAt).toLocaleDateString(),
             description: opp.description,
           }));
-          
+
           setOpportunities([...mappedActiveOpps, ...mappedDeletedOpps]);
         }
       } catch (err) {
@@ -186,7 +196,7 @@ function MentorDashboard({
           description: data.description,
           durationInWeeks: Number(data.durationInWeeks),
         },
-        token
+        token,
       );
 
       const newProgram = {
@@ -218,11 +228,11 @@ function MentorDashboard({
           opportunityType: data.opportunityType,
           location: data.location,
           applicationEmail: data.applicationEmail,
-          tags: data.tags ? data.tags.split(',').map(t => t.trim()) : [],
+          tags: data.tags ? data.tags.split(",").map((t) => t.trim()) : [],
         },
-        token
+        token,
       );
-      
+
       const newOpp = {
         id: created._id,
         title: created.title,
@@ -241,26 +251,29 @@ function MentorDashboard({
   // Save progress (both active and completed)
   const handleSaveProgress = async (programId, newStep) => {
     try {
-      const stageName = newStep === 1 ? "active" : newStep === 2 ? "completed" : "enrollment";
+      const stageName =
+        newStep === 1 ? "active" : newStep === 2 ? "completed" : "enrollment";
       if (token) {
         await progressMentorshipStage(programId, stageName, token);
       }
       const programToSave = activePrograms.find((p) => p.id === programId);
       if (!programToSave) return;
-  
+
       if (newStep === 2) {
         const formattedCompletedProgram = {
           id: programToSave.id,
           title: programToSave.title,
           duration: programToSave.duration,
           mentees: programToSave.mentees,
-          reviews: [], 
+          reviews: [],
         };
         setCompletedPrograms([formattedCompletedProgram, ...completedPrograms]);
         setActivePrograms(activePrograms.filter((p) => p.id !== programId));
       } else {
         setActivePrograms((prev) =>
-          prev.map((p) => (p.id === programId ? { ...p, savedStep: newStep } : p))
+          prev.map((p) =>
+            p.id === programId ? { ...p, savedStep: newStep } : p,
+          ),
         );
       }
     } catch (err) {
@@ -301,7 +314,7 @@ function MentorDashboard({
     if (!token) return;
     try {
       await acceptRequest(request.id, token);
-      
+
       setActivePrograms((prev) => {
         const idx = prev.findIndex((p) => p.id === request.mentorshipId);
         if (idx >= 0) {
@@ -315,8 +328,8 @@ function MentorDashboard({
                 name: request.name,
                 program: request.program,
                 message: request.message,
-              }
-            ]
+              },
+            ],
           };
           return updated;
         }
@@ -368,7 +381,7 @@ function MentorDashboard({
       if (studentToRemove.id) {
         await removeStudentFromMentorship(programId, studentToRemove.id, token);
       }
-      
+
       setActivePrograms((prev) =>
         prev.map((p) => {
           if (p.id === programId) {
@@ -458,8 +471,7 @@ function MentorDashboard({
       )}
 
       {mentorSubTab === "active" && (
-
-<div className="animate-fadeIn space-y-6">
+        <div className="animate-fadeIn space-y-6">
           {activePrograms.length === 0 && !showAddMentorship ? (
             <p className="text-gray-500 italic">
               No active mentorship programs right now.
@@ -510,7 +522,11 @@ function MentorDashboard({
                   reviewerId={review.reviewer?._id}
                   studentName={review.reviewer?.name || "Anonymous"}
                   programTitle={review.mentorship?.title || "Program"}
-                  duration={review.mentorship?.durationInWeeks ? review.mentorship.durationInWeeks + " Weeks" : ""}
+                  duration={
+                    review.mentorship?.durationInWeeks
+                      ? review.mentorship.durationInWeeks + " Weeks"
+                      : ""
+                  }
                   rating={review.rating}
                   description={review.content}
                 />

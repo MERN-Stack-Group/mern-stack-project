@@ -122,9 +122,9 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen md:min-h-[80vh] text-center px-4 sm:px-8 pt-8 pb-24 md:pb-8 font-sans bg-slate-50 dark:bg-[#0b0f17] transition-colors duration-500 relative overflow-hidden">
+    <div className="flex flex-col items-center justify-center min-h-screen md:min-h-[80vh] text-center px-4 sm:px-8 pt-8 pb-24 md:pb-8 font-sans bg-slate-300 dark:bg-[#0b0f17] transition-colors duration-500 relative overflow-hidden">
       {/* Background ambient glows */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-sky-400/10 dark:bg-sky-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-sky-400/10 dark:bg-slate-2000/10 rounded-full blur-[100px] pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-400/10 dark:bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none"></div>
 
       <header className="mb-12 relative z-10">
@@ -138,7 +138,7 @@ export default function Home() {
 
       <main className="w-full max-w-4xl relative z-10">
         {/* Quote display container */}
-        <div className="relative w-full h-80 sm:h-64 md:h-56 mx-auto mb-16 bg-white/50 dark:bg-[#111622]/50 backdrop-blur-md rounded-3xl border border-slate-200/50 dark:border-slate-800/50 shadow-xl overflow-hidden flex items-center justify-center p-4 sm:p-8">
+        <div className="relative w-full h-80 sm:h-64 md:h-56 mx-auto mb-16 bg-slate-200/50 dark:bg-[#111622]/50 backdrop-blur-md rounded-3xl border border-slate-200/50 dark:border-slate-800/50 shadow-xl overflow-hidden flex items-center justify-center p-4 sm:p-8">
           {quotes.map((quote, index) => (
             <div
               key={index}
@@ -162,7 +162,7 @@ export default function Home() {
 
         <Link
           to={content.to}
-          className="inline-flex items-center justify-center bg-sky-600 text-white py-4 px-12 text-lg font-bold uppercase tracking-wider rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-sky-500 shadow-[0_0_20px_rgba(14,165,233,0.3)] hover:shadow-[0_0_30px_rgba(14,165,233,0.5)]"
+          className="inline-flex items-center justify-center bg-sky-600 text-white py-4 px-12 text-lg font-bold uppercase tracking-wider rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-slate-2000 shadow-[0_0_20px_rgba(14,165,233,0.3)] hover:shadow-[0_0_30px_rgba(14,165,233,0.5)]"
         >
           {content.cta}
         </Link>

@@ -129,13 +129,13 @@ export const Profile = () => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row gap-6 p-4 pb-24 md:p-[4vh] w-full min-h-screen bg-slate-50 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 justify-center font-sans transition-colors duration-300">
+      <div className="flex flex-col md:flex-row gap-6 p-4 pb-24 md:p-[4vh] w-full min-h-screen bg-slate-300 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 justify-center font-sans transition-colors duration-300">
         {/* Main Column */}
         <div className="flex flex-col gap-6 w-full md:w-2/3 lg:w-3/4 max-w-4xl">
           {/* Header Card */}
-          <div className="relative bg-white dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 overflow-visible pb-6 shadow-sm dark:shadow-xl">
+          <div className="relative bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 overflow-visible pb-6 shadow-sm dark:shadow-xl">
             {/* Banner Image */}
-            <div className="relative h-48 w-full bg-slate-200 dark:bg-slate-900 rounded-t-3xl overflow-hidden">
+            <div className="relative h-48 w-full bg-slate-300 dark:bg-slate-900 rounded-t-3xl overflow-hidden">
               <img
                 src={banner}
                 alt="Banner Image"
@@ -145,7 +145,7 @@ export const Profile = () => {
             </div>
 
             {/* Profile Avatar */}
-            <div className="absolute top-28 left-6 w-36 h-36 border-4 border-white dark:border-[#111622] rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-white font-bold text-center z-10 shadow-lg overflow-hidden">
+            <div className="absolute top-28 left-6 w-36 h-36 border-4 border-white dark:border-[#111622] rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-white font-bold text-center z-10 shadow-lg overflow-hidden">
               <button className="w-full h-full rounded-full overflow-hidden hover:opacity-90 transition-opacity">
                 <img
                   src={displayData?.profileImage}
@@ -160,7 +160,7 @@ export const Profile = () => {
               {isOwnProfile && (
                 <button
                   onClick={() => setIsEditOpen(true)}
-                  className="absolute top-4 right-4 md:right-5 p-2.5 rounded-xl bg-slate-100 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition cursor-pointer"
+                  className="absolute top-4 right-4 md:right-5 p-2.5 rounded-xl bg-slate-200 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition cursor-pointer"
                   aria-label="Edit Profile"
                   title="Edit Profile"
                 >
@@ -204,7 +204,7 @@ export const Profile = () => {
                   Current Employer
                 </h2>
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-slate-100 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800 rounded-xl flex-shrink-0 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                  <div className="w-12 h-12 bg-slate-200 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800 rounded-xl flex-shrink-0 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                     <Building2 size={22} />
                   </div>
 
@@ -225,7 +225,7 @@ export const Profile = () => {
           </div>
 
           {/* About Section Card */}
-          <div className="bg-white dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm dark:shadow-xl text-left">
+          <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm dark:shadow-xl text-left">
             <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
               About
             </h2>
@@ -263,7 +263,7 @@ export const Profile = () => {
         {/* Sidebar Column */}
         <div className="flex flex-col gap-6 w-full md:w-1/3 lg:w-1/4 text-left">
           {/* Active Mentorships Sidebar Card */}
-          <div className="bg-white dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm dark:shadow-xl">
+          <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm dark:shadow-xl">
             <h2 className="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-wide">
               Active Mentorships
             </h2>
@@ -315,7 +315,7 @@ export const Profile = () => {
           </div>
 
           {/* Completed Mentorships Sidebar Card */}
-          <div className="bg-white dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm dark:shadow-xl">
+          <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm dark:shadow-xl">
             <h2 className="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-wide">
               Completed Mentorships
             </h2>
@@ -374,7 +374,7 @@ export const Profile = () => {
 
           {/* Mentee Reviews (Alumni only) */}
           {displayData?.role?.includes("alumni") && (
-            <div className="bg-white dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm dark:shadow-xl">
+            <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm dark:shadow-xl">
               <h2 className="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-wide">
                 Mentee Reviews
               </h2>
@@ -435,7 +435,7 @@ export const Profile = () => {
       {/* Contact Info Modal */}
       {isContactOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-[#111622] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-sm p-6 relative text-left">
+          <div className="bg-slate-200 dark:bg-[#111622] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-sm p-6 relative text-left">
             <button
               onClick={() => setIsContactOpen(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white transition cursor-pointer"
@@ -448,7 +448,7 @@ export const Profile = () => {
             </h2>
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-sky-50 dark:bg-sky-950 border border-sky-200 dark:border-sky-800/50 flex items-center justify-center text-sky-600 dark:text-sky-400 flex-shrink-0">
+                <div className="w-9 h-9 rounded-xl bg-slate-200 dark:bg-sky-950 border border-sky-200 dark:border-sky-800/50 flex items-center justify-center text-sky-600 dark:text-sky-400 flex-shrink-0">
                   <Mail size={18} />
                 </div>
                 <div>

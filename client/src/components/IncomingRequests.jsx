@@ -10,7 +10,7 @@ const IncomingRequestsTable = ({ requests, onAccept, onReject }) => {
   }
 
   return (
-    <div className="overflow-x-auto bg-white border border-gray-200 rounded-lg shadow-sm">
+    <div className="overflow-x-auto bg-slate-200 border border-gray-200 rounded-lg shadow-sm">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
@@ -31,7 +31,7 @@ const IncomingRequestsTable = ({ requests, onAccept, onReject }) => {
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="bg-slate-200 divide-y divide-gray-200">
           {requests.map((request) => (
             <tr key={request.id} className="hover:bg-gray-50">
               <td className="px-6 py-4 whitespace-nowrap">
@@ -63,7 +63,7 @@ const IncomingRequestsTable = ({ requests, onAccept, onReject }) => {
                 </button>
                 <button
                   onClick={() => onReject(request.id)}
-                  className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 hover:text-red-600 hover:border-red-300"
+                  className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded shadow-sm text-gray-700 bg-slate-200 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 hover:text-red-600 hover:border-red-300"
                 >
                   Reject
                 </button>

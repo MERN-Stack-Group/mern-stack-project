@@ -26,7 +26,7 @@ const MentorshipProgramCard = ({
   const hasUnsavedChanges = step !== savedStep;
 
   return (
-    <div className="bg-white dark:bg-[#111622] rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm dark:shadow-xl mb-6 transition-colors">
+    <div className="bg-slate-300 dark:bg-[#111622] rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm dark:shadow-xl mb-6 transition-colors">
       {/* Program Header */}
       <div className="flex justify-between items-start mb-2">
         <div>
@@ -38,7 +38,7 @@ const MentorshipProgramCard = ({
             className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border ${
               step === 2
                 ? "bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50"
-                : "bg-sky-50 dark:bg-sky-950/80 text-sky-600 dark:text-sky-400 border-sky-200 dark:border-sky-800/50"
+                : "bg-slate-200 dark:bg-sky-950/80 text-sky-600 dark:text-sky-400 border-sky-200 dark:border-sky-800/50"
             }`}
           >
             {status}
@@ -73,14 +73,14 @@ const MentorshipProgramCard = ({
         <button
           onClick={onPrevStep}
           disabled={step <= savedStep}
-          className="px-3.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-slate-200 dark:hover:bg-[#1f2838] disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
+          className="px-3.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-slate-300 dark:hover:bg-[#1f2838] disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
         >
           &larr; Previous Step
         </button>
         <button
           onClick={onNextStep}
           disabled={step === 2 || hasUnsavedChanges}
-          className="px-3.5 py-1.5 text-xs font-semibold text-white bg-sky-600 border border-transparent rounded-xl hover:bg-sky-500 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer shadow-md shadow-sky-600/20"
+          className="px-3.5 py-1.5 text-xs font-semibold text-white bg-sky-600 border border-transparent rounded-xl hover:bg-slate-2000 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer shadow-md shadow-sky-600/20"
         >
           Next Step &rarr;
         </button>
@@ -144,7 +144,7 @@ const MentorshipProgramCard = ({
                 {mentees.map((mentee, idx) => (
                   <div
                     key={idx}
-                    className="p-4 bg-slate-50 dark:bg-[#161d2b] rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between relative group"
+                    className="p-4 bg-slate-300 dark:bg-[#161d2b] rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between relative group"
                   >
                     <div>
                       <div className="flex items-center gap-3 mb-2">

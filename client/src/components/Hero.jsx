@@ -31,7 +31,7 @@ function Hero() {
           <div className="flex flex-col sm:flex-row flex-wrap items-center gap-4 pt-2">
             <Link
               to="/signup"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-500 text-white font-medium px-6 py-3 rounded-xl transition duration-200 shadow-lg shadow-sky-600/20"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-sky-600 hover:bg-slate-2000 text-white font-medium px-6 py-3 rounded-xl transition duration-200 shadow-lg shadow-sky-600/20"
             >
               Get Started
               <ArrowRight size={18} />
@@ -39,7 +39,7 @@ function Hero() {
 
             <Link
               to="/signin"
-              className="w-full sm:w-auto inline-flex items-center justify-center bg-white dark:bg-[#161c27] hover:bg-slate-100 dark:hover:bg-[#1f2838] border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-medium px-6 py-3 rounded-xl transition duration-200 shadow-sm"
+              className="w-full sm:w-auto inline-flex items-center justify-center bg-slate-200 dark:bg-[#161c27] hover:bg-slate-200 dark:hover:bg-[#1f2838] border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-medium px-6 py-3 rounded-xl transition duration-200 shadow-sm"
             >
               Sign In to Your Account
             </Link>
@@ -66,7 +66,7 @@ function Hero() {
 
         {/* Right Image Container */}
         <div className="lg:col-span-5 relative">
-          <div className="relative rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-2xl bg-white dark:bg-slate-900 aspect-[4/3] lg:aspect-[4/3]">
+          <div className="relative rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-2xl bg-slate-200 dark:bg-slate-900 aspect-[4/3] lg:aspect-[4/3]">
             <img
               src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
               alt="Students collaborating"
@@ -78,7 +78,7 @@ function Hero() {
       </div>
 
       {/* Metrics Banner */}
-      <div className="mt-16 bg-white dark:bg-[#111622] border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 md:p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center shadow-md dark:shadow-none">
+      <div className="mt-16 bg-slate-200 dark:bg-[#111622] border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 md:p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center shadow-md dark:shadow-none">
         <div className="space-y-1 md:border-r border-slate-200 dark:border-slate-800/80 last:border-r-0">
           <div className="text-2xl md:text-3xl font-bold text-sky-600 dark:text-sky-400 flex items-center justify-center gap-2">
             <span className="text-slate-400 text-lg">👥</span> 1,200+

@@ -27,7 +27,7 @@ import {
 } from "../api/opportunityApi";
 
 const OpportunityCard = ({ opp, onDelete }) => (
-  <div className="bg-white dark:bg-[#111622] rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm dark:shadow-xl transition-all mb-4 text-left">
+  <div className="bg-slate-300 dark:bg-[#111622] rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm dark:shadow-xl transition-all mb-4 text-left">
     <div className="flex justify-between items-start mb-3">
       <div>
         <h3 className="text-base font-bold text-slate-900 dark:text-white">{opp.title}</h3>
@@ -37,8 +37,8 @@ const OpportunityCard = ({ opp, onDelete }) => (
         <span
           className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border ${
             opp.status === "posted"
-              ? "bg-sky-50 dark:bg-sky-950/80 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800/50"
-              : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700"
+              ? "bg-slate-200 dark:bg-sky-950/80 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800/50"
+              : "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700"
           }`}
         >
           {opp.status}
@@ -62,7 +62,7 @@ const OpportunityCard = ({ opp, onDelete }) => (
         )}
       </div>
     </div>
-    <p className="text-xs text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-[#161d2b] p-3.5 rounded-xl border border-slate-200 dark:border-slate-800/80 leading-relaxed">
+    <p className="text-xs text-slate-700 dark:text-slate-300 bg-slate-300 dark:bg-[#161d2b] p-3.5 rounded-xl border border-slate-200 dark:border-slate-800/80 leading-relaxed">
       {opp.description}
     </p>
   </div>
@@ -406,7 +406,7 @@ function MentorDashboard({
   };
 
   const renderMentorshipSection = () => (
-    <div className="bg-white dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-6 mt-6 min-h-[500px] shadow-sm dark:shadow-xl text-left transition-colors">
+    <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-6 mt-6 min-h-[500px] shadow-sm dark:shadow-xl text-left transition-colors">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/90 mb-6">
         <div className="flex gap-6 overflow-x-auto">
           {["requests", "active", "history", "reviews"].map((tab) => (
@@ -432,7 +432,7 @@ function MentorDashboard({
         {mentorSubTab === "active" && !showAddMentorship && (
           <button
             onClick={() => setShowAddMentorship(true)}
-            className="mb-3 sm:mb-0 px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl transition shadow-md shadow-sky-600/20 whitespace-nowrap cursor-pointer"
+            className="mb-3 sm:mb-0 px-4 py-2 bg-sky-600 hover:bg-slate-2000 text-white text-xs font-bold rounded-xl transition shadow-md shadow-sky-600/20 whitespace-nowrap cursor-pointer"
           >
             + Create Program
           </button>
@@ -529,7 +529,7 @@ function MentorDashboard({
     const archived = opportunities.filter((opp) => opp.status === "deleted");
 
     return (
-      <div className="bg-white dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-6 mt-6 min-h-[500px] shadow-sm dark:shadow-xl text-left transition-colors">
+      <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-6 mt-6 min-h-[500px] shadow-sm dark:shadow-xl text-left transition-colors">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/90 mb-6">
           <div className="flex gap-6 overflow-x-auto">
             <button
@@ -556,7 +556,7 @@ function MentorDashboard({
           {oppSubTab === "active" && !showAddOpportunity && (
             <button
               onClick={() => setShowAddOpportunity(true)}
-              className="mb-3 sm:mb-0 px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded-xl transition shadow-md shadow-sky-600/20 whitespace-nowrap cursor-pointer"
+              className="mb-3 sm:mb-0 px-4 py-2 bg-sky-600 hover:bg-slate-2000 text-white text-xs font-bold rounded-xl transition shadow-md shadow-sky-600/20 whitespace-nowrap cursor-pointer"
             >
               + Post Opportunity
             </button>
@@ -609,7 +609,7 @@ function MentorDashboard({
   };
 
   return (
-    <div className="w-full bg-slate-50 dark:bg-[#0b0f17] min-h-screen text-slate-900 dark:text-slate-100 font-sans p-4 pb-24 sm:p-6 lg:p-8 transition-colors duration-300">
+    <div className="w-full bg-slate-300 dark:bg-[#0b0f17] min-h-screen text-slate-900 dark:text-slate-100 font-sans p-4 pb-24 sm:p-6 lg:p-8 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-2 text-left">
           <div>
@@ -622,13 +622,13 @@ function MentorDashboard({
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 sm:space-x-2 bg-transparent sm:bg-white sm:dark:bg-[#111622] sm:border border-slate-200 dark:border-slate-800 p-0 sm:p-1.5 rounded-2xl w-full sm:w-max mb-6 sm:mb-2 shadow-none sm:shadow-sm">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 sm:space-x-2 bg-transparent sm:bg-slate-200 sm:dark:bg-[#111622] sm:border border-slate-200 dark:border-slate-800 p-0 sm:p-1.5 rounded-2xl w-full sm:w-max mb-6 sm:mb-2 shadow-none sm:shadow-sm">
           <button
             onClick={() => setActiveMainTab("mentorship")}
             className={`w-full sm:w-auto px-5 py-3 sm:py-2 text-sm sm:text-xs font-semibold rounded-xl transition-all cursor-pointer border sm:border-transparent ${
               activeMainTab === "mentorship"
-                ? "bg-white sm:bg-slate-100 dark:bg-[#172338] border-sky-500/50 sm:border-sky-500/50 text-sky-700 dark:text-sky-300 shadow-sm"
-                : "bg-white sm:bg-transparent border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                ? "bg-slate-200 sm:bg-slate-200 dark:bg-[#172338] border-sky-500/50 sm:border-sky-500/50 text-sky-700 dark:text-sky-300 shadow-sm"
+                : "bg-slate-200 sm:bg-transparent border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
             }`}
           >
             Mentorship Management
@@ -637,8 +637,8 @@ function MentorDashboard({
             onClick={() => setActiveMainTab("opportunities")}
             className={`w-full sm:w-auto px-5 py-3 sm:py-2 text-sm sm:text-xs font-semibold rounded-xl transition-all cursor-pointer border sm:border-transparent ${
               activeMainTab === "opportunities"
-                ? "bg-white sm:bg-slate-100 dark:bg-[#172338] border-sky-500/50 sm:border-sky-500/50 text-sky-700 dark:text-sky-300 shadow-sm"
-                : "bg-white sm:bg-transparent border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                ? "bg-slate-200 sm:bg-slate-200 dark:bg-[#172338] border-sky-500/50 sm:border-sky-500/50 text-sky-700 dark:text-sky-300 shadow-sm"
+                : "bg-slate-200 sm:bg-transparent border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
             }`}
           >
             Opportunity Management

@@ -4,16 +4,16 @@ import { Link } from "react-router-dom";
 const IncomingRequestsTable = ({ requests = [], onAccept, onReject }) => {
   if (!Array.isArray(requests) || requests.length === 0) {
     return (
-      <div className="bg-white dark:bg-[#111622] border border-slate-200 dark:border-slate-800 rounded-2xl p-8 text-center text-slate-600 dark:text-slate-400 text-sm transition-colors">
+      <div className="bg-slate-200 dark:bg-[#111622] border border-slate-200 dark:border-slate-800 rounded-2xl p-8 text-center text-slate-600 dark:text-slate-400 text-sm transition-colors">
         No pending mentorship requests at the moment.
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto bg-white dark:bg-[#111622] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-xl transition-colors">
+    <div className="overflow-x-auto bg-slate-200 dark:bg-[#111622] border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm dark:shadow-xl transition-colors">
       <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800/80">
-        <thead className="bg-slate-50 dark:bg-[#161d2b]">
+        <thead className="bg-slate-300 dark:bg-[#161d2b]">
           <tr>
             <th className="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               Mentee
@@ -32,9 +32,9 @@ const IncomingRequestsTable = ({ requests = [], onAccept, onReject }) => {
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white dark:bg-[#111622] divide-y divide-slate-200 dark:divide-slate-800/80">
+        <tbody className="bg-slate-200 dark:bg-[#111622] divide-y divide-slate-200 dark:divide-slate-800/80">
           {requests.map((request) => (
-            <tr key={request.id} className="hover:bg-slate-50 dark:hover:bg-[#161d2b]/60 transition">
+            <tr key={request.id} className="hover:bg-slate-300 dark:hover:bg-[#161d2b]/60 transition">
               <td className="px-6 py-4 whitespace-nowrap">
                 <Link to={`/profile/${request.requesterId}`} className="hover:underline">
                   <div className="font-semibold text-slate-900 dark:text-white hover:text-sky-600 dark:hover:text-sky-400 transition">
@@ -70,7 +70,7 @@ const IncomingRequestsTable = ({ requests = [], onAccept, onReject }) => {
                       onReject(request.id);
                     }
                   }}
-                  className="inline-flex items-center px-3.5 py-1.5 border border-slate-300 dark:border-slate-700 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 bg-white dark:bg-[#161d2b] hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-red-600 dark:hover:text-red-400 transition cursor-pointer"
+                  className="inline-flex items-center px-3.5 py-1.5 border border-slate-300 dark:border-slate-700 text-xs font-semibold rounded-xl text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-[#161d2b] hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-red-600 dark:hover:text-red-400 transition cursor-pointer"
                 >
                   Reject
                 </button>

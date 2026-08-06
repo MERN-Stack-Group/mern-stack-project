@@ -14,13 +14,13 @@ function InfoSection() {
       {/* Cards Row: Student Bank & Alumni Bank */}
       <div className="grid md:grid-cols-2 gap-6">
         {/* Current Students Card */}
-        <div className="bg-white dark:bg-[#111622] border border-slate-200 dark:border-slate-800 rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden group shadow-md dark:shadow-none">
+        <div className="bg-slate-200 dark:bg-[#111622] border border-slate-200 dark:border-slate-800 rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden group shadow-md dark:shadow-none">
           <div>
             <div className="flex items-center justify-between mb-6">
-              <div className="w-12 h-12 rounded-xl bg-sky-50 dark:bg-sky-950/80 border border-sky-200 dark:border-sky-800/50 flex items-center justify-center text-sky-600 dark:text-sky-400">
+              <div className="w-12 h-12 rounded-xl bg-slate-200 dark:bg-sky-950/80 border border-sky-200 dark:border-sky-800/50 flex items-center justify-center text-sky-600 dark:text-sky-400">
                 <GraduationCap size={24} />
               </div>
-              <span className="text-[11px] font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase bg-slate-100 dark:bg-slate-800/60 px-3 py-1 rounded-md border border-slate-200 dark:border-slate-700/50">
+              <span className="text-[11px] font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase bg-slate-200 dark:bg-slate-800/60 px-3 py-1 rounded-md border border-slate-200 dark:border-slate-700/50">
                 STUDENT BANK
               </span>
             </div>
@@ -38,7 +38,7 @@ function InfoSection() {
               {["#MachineLearning", "#SoftwareEngineering", "#Internships", "#Research"].map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-[#17202e] border border-slate-200 dark:border-slate-800 px-3 py-1 rounded-lg"
+                  className="text-xs text-slate-600 dark:text-slate-400 bg-slate-200 dark:bg-[#17202e] border border-slate-200 dark:border-slate-800 px-3 py-1 rounded-lg"
                 >
                   {tag}
                 </span>
@@ -48,7 +48,7 @@ function InfoSection() {
 
           <Link
             to="/search/mentors"
-            className="w-full bg-slate-100 dark:bg-[#161c27] hover:bg-slate-200 dark:hover:bg-[#1f2838] border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition duration-200 text-sm"
+            className="w-full bg-slate-200 dark:bg-[#161c27] hover:bg-slate-300 dark:hover:bg-[#1f2838] border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition duration-200 text-sm"
           >
             Find a Mentor
             <ArrowUpRight size={16} />
@@ -56,13 +56,13 @@ function InfoSection() {
         </div>
 
         {/* Seniors & Alumni Card */}
-        <div className="bg-white dark:bg-[#111622] border border-slate-200 dark:border-slate-800 rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden group shadow-md dark:shadow-none">
+        <div className="bg-slate-200 dark:bg-[#111622] border border-slate-200 dark:border-slate-800 rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden group shadow-md dark:shadow-none">
           <div>
             <div className="flex items-center justify-between mb-6">
               <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-200 dark:border-emerald-800/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                 <Network size={24} />
               </div>
-              <span className="text-[11px] font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase bg-slate-100 dark:bg-slate-800/60 px-3 py-1 rounded-md border border-slate-200 dark:border-slate-700/50">
+              <span className="text-[11px] font-semibold tracking-wider text-slate-500 dark:text-slate-400 uppercase bg-slate-200 dark:bg-slate-800/60 px-3 py-1 rounded-md border border-slate-200 dark:border-slate-700/50">
                 ALUMNI BANK
               </span>
             </div>
@@ -80,7 +80,7 @@ function InfoSection() {
               {["#Mentorship", "#IndustryInsights", "#Referrals", "#PeerReview"].map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-[#17202e] border border-slate-200 dark:border-slate-800 px-3 py-1 rounded-lg"
+                  className="text-xs text-slate-600 dark:text-slate-400 bg-slate-200 dark:bg-[#17202e] border border-slate-200 dark:border-slate-800 px-3 py-1 rounded-lg"
                 >
                   {tag}
                 </span>
@@ -90,7 +90,7 @@ function InfoSection() {
 
           <Link
             to="/signup"
-            className="w-full bg-slate-100 dark:bg-[#161c27] hover:bg-slate-200 dark:hover:bg-[#1f2838] border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition duration-200 text-sm"
+            className="w-full bg-slate-200 dark:bg-[#161c27] hover:bg-slate-300 dark:hover:bg-[#1f2838] border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition duration-200 text-sm"
           >
             Become a Mentor
             <ArrowUpRight size={16} />
@@ -103,7 +103,7 @@ function InfoSection() {
         <FeatureCard
           icon={<ShieldCheck size={22} />}
           iconColor="text-sky-600 dark:text-sky-400"
-          iconBg="bg-sky-50 dark:bg-sky-950/50 border-sky-200 dark:border-sky-800/40"
+          iconBg="bg-slate-200 dark:bg-sky-950/50 border-sky-200 dark:border-sky-800/40"
           title="Verified Alumni Credentials"
           text="Admin-verified university profiles ensure authentic connections and trusted academic credentials."
         />
@@ -128,7 +128,7 @@ function InfoSection() {
 
 function FeatureCard({ icon, iconColor, iconBg, title, text }) {
   return (
-    <div className="bg-white dark:bg-[#111622] border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm dark:shadow-none">
+    <div className="bg-slate-200 dark:bg-[#111622] border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm dark:shadow-none">
       <div className={`w-10 h-10 rounded-xl border flex items-center justify-center mb-4 ${iconBg} ${iconColor}`}>
         {icon}
       </div>

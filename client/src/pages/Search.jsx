@@ -147,13 +147,13 @@ export default function Search({ categoryType = "mentors" }) {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 p-6 pb-24 md:p-10 font-sans antialiased transition-colors duration-300">
+    <div className="min-h-screen bg-slate-300 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 p-6 pb-24 md:p-10 font-sans antialiased transition-colors duration-300">
       <h1 className="text-4xl font-bold text-center text-slate-900 dark:text-white mb-10 tracking-tight">
         Search {displayTitle}
       </h1>
 
       <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center gap-3 bg-white dark:bg-[#111622] p-2.5 rounded-3xl md:rounded-full border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl hover:shadow-sky-500/5 transition-all duration-300">
+        <div className="flex flex-col md:flex-row items-center gap-3 bg-slate-200 dark:bg-[#111622] p-2.5 rounded-3xl md:rounded-full border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl hover:shadow-sky-500/5 transition-all duration-300">
           {/* Search Bar */}
           <div className="relative w-full flex-1 group">
             <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-sky-500 transition-colors">
@@ -163,13 +163,13 @@ export default function Search({ categoryType = "mentors" }) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={`Search ${currentCategory}...`}
-              className="w-full pl-12 pr-4 py-3 bg-slate-50 md:bg-transparent dark:bg-[#0b0f17] md:dark:bg-transparent rounded-2xl md:rounded-full text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none transition-colors"
+              className="w-full pl-12 pr-4 py-3 bg-slate-300 md:bg-transparent dark:bg-[#0b0f17] md:dark:bg-transparent rounded-2xl md:rounded-full text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none transition-colors"
             />
           </div>
 
           {/* Divider (Desktop) */}
           {!currentCategory.includes("opportunities") && (
-            <div className="hidden md:block w-px h-8 bg-slate-200 dark:bg-slate-800 mx-2"></div>
+            <div className="hidden md:block w-px h-8 bg-slate-300 dark:bg-slate-800 mx-2"></div>
           )}
 
           {/* Faculty Filter */}
@@ -178,13 +178,13 @@ export default function Search({ categoryType = "mentors" }) {
               <select
                 value={faculty}
                 onChange={(e) => setFaculty(e.target.value)}
-                className="w-full pl-4 pr-10 py-3 bg-slate-50 md:bg-transparent dark:bg-[#0b0f17] md:dark:bg-transparent rounded-2xl md:rounded-full text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer appearance-none transition-colors"
+                className="w-full pl-4 pr-10 py-3 bg-slate-300 md:bg-transparent dark:bg-[#0b0f17] md:dark:bg-transparent rounded-2xl md:rounded-full text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer appearance-none transition-colors"
               >
-                <option value="" className="bg-white dark:bg-[#111622] text-slate-900 dark:text-slate-100">
+                <option value="" className="bg-slate-200 dark:bg-[#111622] text-slate-900 dark:text-slate-100">
                   All Faculties
                 </option>
                 {faculties.map((f) => (
-                  <option key={f} value={f} className="bg-white dark:bg-[#111622] text-slate-900 dark:text-slate-100">
+                  <option key={f} value={f} className="bg-slate-200 dark:bg-[#111622] text-slate-900 dark:text-slate-100">
                     {f}
                   </option>
                 ))}
@@ -199,7 +199,7 @@ export default function Search({ categoryType = "mentors" }) {
           )}
 
           {/* Search Button (Desktop) */}
-          <button className="hidden md:flex items-center justify-center bg-sky-600 hover:bg-sky-500 text-white p-3.5 rounded-full transition-colors mr-1 shadow-md shadow-sky-600/20">
+          <button className="hidden md:flex items-center justify-center bg-sky-600 hover:bg-slate-2000 text-white p-3.5 rounded-full transition-colors mr-1 shadow-md shadow-sky-600/20">
             <SearchIcon size={18} />
           </button>
         </div>
@@ -209,17 +209,17 @@ export default function Search({ categoryType = "mentors" }) {
       {loading && (
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="bg-white dark:bg-[#111622] p-6 rounded-2xl border border-slate-200 dark:border-slate-800 h-[180px] animate-pulse flex flex-col gap-4">
+            <div key={i} className="bg-slate-200 dark:bg-[#111622] p-6 rounded-2xl border border-slate-200 dark:border-slate-800 h-[180px] animate-pulse flex flex-col gap-4">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-slate-200 dark:bg-slate-800"></div>
+                <div className="w-16 h-16 rounded-full bg-slate-300 dark:bg-slate-800"></div>
                 <div className="flex-1 space-y-3">
-                  <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-3/4"></div>
-                  <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-1/2"></div>
+                  <div className="h-4 bg-slate-300 dark:bg-slate-800 rounded w-3/4"></div>
+                  <div className="h-3 bg-slate-300 dark:bg-slate-800 rounded w-1/2"></div>
                 </div>
               </div>
               <div className="mt-auto flex gap-2">
-                 <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded w-20"></div>
-                 <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded w-16"></div>
+                 <div className="h-6 bg-slate-300 dark:bg-slate-800 rounded w-20"></div>
+                 <div className="h-6 bg-slate-300 dark:bg-slate-800 rounded w-16"></div>
               </div>
             </div>
           ))}
@@ -246,7 +246,7 @@ export default function Search({ categoryType = "mentors" }) {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-center">
-              <div className="w-24 h-24 bg-slate-100 dark:bg-[#111622] border border-slate-200 dark:border-slate-800 rounded-full flex items-center justify-center mb-6 shadow-inner">
+              <div className="w-24 h-24 bg-slate-200 dark:bg-[#111622] border border-slate-200 dark:border-slate-800 rounded-full flex items-center justify-center mb-6 shadow-inner">
                 <SearchIcon size={40} className="text-slate-400 dark:text-slate-600" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No results found</h3>

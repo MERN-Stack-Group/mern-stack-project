@@ -10,7 +10,7 @@ const ReviewCard = ({
   reviewerId,
 }) => {
   return (
-    <div className="bg-white dark:bg-[#111622] border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm dark:shadow-xl flex flex-col justify-between h-full transition-colors">
+    <div className="bg-slate-200 dark:bg-[#111622] border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm dark:shadow-xl flex flex-col justify-between h-full transition-colors">
       <div>
         <div className="flex justify-between items-start mb-2 gap-2">
           <div>

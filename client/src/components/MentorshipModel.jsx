@@ -79,7 +79,7 @@ export const MentorshipModel = ({ viewType = "completed" }) => {
   const data = viewType === "active" ? activeMentorships : completedMentorships;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 p-4 pb-24 md:p-10 font-sans antialiased transition-colors duration-300">
+    <div className="min-h-screen bg-slate-300 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 p-4 pb-24 md:p-10 font-sans antialiased transition-colors duration-300">
       <div className="max-w-5xl mx-auto flex flex-col gap-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
           <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
@@ -91,7 +91,7 @@ export const MentorshipModel = ({ viewType = "completed" }) => {
           </h2>
           <Link
             to={userId ? `/profile/${userId}` : "/profile"}
-            className="w-max px-4 py-2 bg-white dark:bg-[#111622] border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-50 dark:hover:bg-[#161d2b] hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5 transition-all duration-300 text-sm font-semibold flex items-center gap-2 shadow-sm hover:shadow-md"
+            className="w-max px-4 py-2 bg-slate-200 dark:bg-[#111622] border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-300 dark:hover:bg-[#161d2b] hover:border-slate-300 dark:hover:border-slate-700 hover:-translate-y-0.5 transition-all duration-300 text-sm font-semibold flex items-center gap-2 shadow-sm hover:shadow-md"
           >
             <svg className="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
             Back to Profile

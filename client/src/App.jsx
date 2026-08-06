@@ -16,6 +16,7 @@ import PendingApproval from "./pages/PendingApproval";
 import { MentorshipModel } from "./components/MentorshipModel";
 import ProtectedRoot from "./pages/ProtectedRoot";
 import LoadingScreen from "./components/LoadingScreen";
+import Footer from "./components/Footer";
 
 /**
  * Main Application Router
@@ -128,6 +129,7 @@ function App() {
             {/* ---------- testing ---------- */}
             <Route path="/loadingScreen" element={<LoadingScreen />} />
           </Routes>
+          <Footer />
         </BrowserRouter>
       </AuthProvider>
     </ThemeProvider>

@@ -175,21 +175,21 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 
       {/* Drawer Panel */}
       <div
-        className={`fixed top-0 right-0 h-full w-full max-w-lg bg-[#111622] text-slate-100 z-[1001] flex flex-col shadow-2xl border-l border-slate-800 transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-full max-w-lg bg-slate-100 dark:bg-[#111622] text-slate-900 dark:text-slate-100 z-[1001] flex flex-col shadow-2xl border-l border-slate-300 dark:border-slate-800 transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Drawer Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-slate-800/90 bg-[#0d121c]">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-slate-300 dark:border-slate-800/90 bg-slate-200 dark:bg-[#0d121c]">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-sky-950/80 border border-sky-800/50 flex items-center justify-center text-sky-400">
+            <div className="w-9 h-9 rounded-xl bg-sky-100 dark:bg-sky-950/80 border border-sky-300 dark:border-sky-800/50 flex items-center justify-center text-sky-600 dark:text-sky-400">
               <Pencil size={18} />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white leading-none">
+              <h2 className="text-base font-bold text-slate-900 dark:text-white leading-none">
                 Edit Profile
               </h2>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 Changes update your profile instantly
               </p>
             </div>
@@ -197,7 +197,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-xl bg-[#161d2b] border border-slate-800 text-slate-400 hover:text-white transition flex items-center justify-center cursor-pointer"
+            className="w-8 h-8 rounded-xl bg-slate-200 dark:bg-[#161d2b] border border-slate-300 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition flex items-center justify-center cursor-pointer"
             aria-label="Close"
           >
             <X size={16} />
@@ -217,7 +217,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 <img
                   src={imagePreview || user?.profileImage}
                   alt="Profile"
-                  className="w-20 h-20 rounded-full object-cover border-2 border-slate-700"
+                  className="w-20 h-20 rounded-full object-cover border-2 border-slate-300 dark:border-slate-700"
                 />
                 {imageUploading && (
                   <div className="absolute inset-0 rounded-full bg-black/50 flex items-center justify-center">
@@ -239,16 +239,16 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={imageUploading}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#161d2b] border border-slate-800 hover:bg-[#1f2838] text-xs font-semibold text-slate-200 rounded-xl transition cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-200 dark:bg-[#161d2b] border border-slate-300 dark:border-slate-800 hover:bg-slate-300 dark:hover:bg-[#1f2838] text-xs font-semibold text-slate-700 dark:text-slate-200 rounded-xl transition cursor-pointer"
                 >
                   <Upload size={14} />
                   {imageUploading ? "Uploading…" : "Change Photo"}
                 </button>
-                <p className="text-[11px] text-slate-400">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   JPG or PNG &mdash; uploaded instantly on select
                 </p>
                 {imageError && (
-                  <p className="text-xs text-red-400 mt-1">{imageError}</p>
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1">{imageError}</p>
                 )}
               </div>
             </div>
@@ -294,7 +294,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 onChange={handleChange}
                 placeholder="Tell others about yourself, your interests, and goals..."
                 rows={4}
-                className="w-full px-3.5 py-2.5 bg-[#161d2b] border border-slate-800/90 rounded-xl text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition resize-y font-sans leading-relaxed"
+                className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#161d2b] border border-slate-300 dark:border-slate-800/90 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition resize-y font-sans leading-relaxed"
               />
             </Field>
           </Section>
@@ -311,12 +311,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   }
                   onKeyDown={handleTagKeyDown}
                   placeholder="e.g. React, Python… (Press Enter)"
-                  className="flex-1 px-3.5 py-2.5 bg-[#161d2b] border border-slate-800/90 rounded-xl text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition"
+                  className="flex-1 px-3.5 py-2.5 bg-slate-50 dark:bg-[#161d2b] border border-slate-300 dark:border-slate-800/90 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition"
                 />
                 <button
                   type="button"
                   onClick={addTag}
-                  className="px-4 py-2.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold rounded-xl transition cursor-pointer"
+                  className="px-4 py-2.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-xl transition cursor-pointer"
                 >
                   Add
                 </button>
@@ -328,13 +328,13 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                 {form.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#17202e] border border-slate-800 text-slate-300 rounded-lg text-xs font-medium"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-200 dark:bg-[#17202e] border border-slate-300 dark:border-slate-800 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-medium"
                   >
                     {tag}
                     <button
                       type="button"
                       onClick={() => removeTag(tag)}
-                      className="text-slate-400 hover:text-white transition cursor-pointer"
+                      className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition cursor-pointer"
                       aria-label={`Remove ${tag}`}
                     >
                       &times;
@@ -377,24 +377,24 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 
           {/* Messages */}
           {error && (
-            <div className="p-3 bg-red-500/10 border border-red-500/40 text-red-400 rounded-xl text-xs text-center">
+            <div className="p-3 bg-red-500/10 border border-red-500/40 text-red-600 dark:text-red-400 rounded-xl text-xs text-center">
               {error}
             </div>
           )}
 
           {success && (
-            <div className="p-3 bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 rounded-xl text-xs text-center">
+            <div className="p-3 bg-emerald-500/10 border border-emerald-500/40 text-emerald-600 dark:text-emerald-400 rounded-xl text-xs text-center">
               Profile updated successfully!
             </div>
           )}
         </form>
 
         {/* Footer Actions */}
-        <div className="p-4 px-6 border-t border-slate-800/90 bg-[#0d121c] flex gap-3">
+        <div className="p-4 px-6 border-t border-slate-300 dark:border-slate-800/90 bg-slate-200 dark:bg-[#0d121c] flex gap-3">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 py-2.5 bg-[#161d2b] border border-slate-800 hover:bg-[#1f2838] text-slate-300 text-xs font-semibold rounded-xl transition cursor-pointer"
+            className="flex-1 py-2.5 bg-slate-100 dark:bg-[#161d2b] border border-slate-300 dark:border-slate-800 hover:bg-slate-200 dark:hover:bg-[#1f2838] text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl transition cursor-pointer"
           >
             Cancel
           </button>
@@ -402,7 +402,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
             type="submit"
             form="edit-profile-form"
             disabled={saving}
-            className="flex-[2] py-2.5 bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold rounded-xl transition shadow-lg shadow-sky-600/20 cursor-pointer disabled:opacity-50"
+            className="flex-[2] py-2.5 bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold rounded-xl transition shadow-lg shadow-sky-600/20 cursor-pointer disabled:opacity-50"
           >
             {saving ? "Saving…" : "Save Changes"}
           </button>
@@ -414,7 +414,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
 
 const Section = ({ title, children }) => (
   <div className="space-y-3">
-    <h3 className="text-[11px] font-bold tracking-wider uppercase text-slate-400 pb-2 border-b border-slate-800/80">
+    <h3 className="text-[11px] font-bold tracking-wider uppercase text-slate-500 dark:text-slate-400 pb-2 border-b border-slate-300 dark:border-slate-800/80">
       {title}
     </h3>
     <div className="space-y-3">{children}</div>
@@ -423,9 +423,9 @@ const Section = ({ title, children }) => (
 
 const Field = ({ label, required, children }) => (
   <label className="block space-y-1">
-    <span className="text-xs font-medium text-slate-400">
+    <span className="text-xs font-medium text-slate-700 dark:text-slate-400">
       {label}
-      {required && <span className="text-red-400 ml-0.5">*</span>}
+      {required && <span className="text-red-500 dark:text-red-400 ml-0.5">*</span>}
     </span>
     {children}
   </label>
@@ -434,7 +434,7 @@ const Field = ({ label, required, children }) => (
 const Input = ({ ...props }) => (
   <input
     {...props}
-    className="w-full px-3.5 py-2.5 bg-[#161d2b] border border-slate-800/90 rounded-xl text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition"
+    className="w-full px-3.5 py-2.5 bg-slate-50 dark:bg-[#161d2b] border border-slate-300 dark:border-slate-800/90 rounded-xl text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition"
   />
 );
 

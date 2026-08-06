@@ -34,7 +34,7 @@ const CreatePostForm = ({ type, onSubmit, onCancel }) => {
 
   return (
     <div className="bg-[#111622] rounded-2xl border border-sky-900/50 p-6 shadow-xl mb-6 relative overflow-hidden text-left">
-      <div className="absolute top-0 left-0 w-1 h-full bg-sky-500"></div>
+      <div className="absolute top-0 left-0 w-1 h-full bg-slate-2000"></div>
       <h3 className="text-lg font-bold text-white mb-4">
         {isMentorship
           ? "Create New Mentorship Program"
@@ -200,7 +200,7 @@ const CreatePostForm = ({ type, onSubmit, onCancel }) => {
           </button>
           <button
             type="submit"
-            className="px-4 py-2 text-xs font-semibold text-white bg-sky-600 rounded-xl hover:bg-sky-500 shadow-md shadow-sky-600/20 transition cursor-pointer"
+            className="px-4 py-2 text-xs font-semibold text-white bg-sky-600 rounded-xl hover:bg-slate-2000 shadow-md shadow-sky-600/20 transition cursor-pointer"
           >
             {isMentorship ? "Create Program" : "Post Opportunity"}
           </button>

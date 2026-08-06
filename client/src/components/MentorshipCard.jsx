@@ -89,7 +89,7 @@ export const MentorshipCard = ({
   };
 
   return (
-    <div className="bg-white dark:bg-[#111622] rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-sm dark:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-sky-500/10 mb-5 text-left group">
+    <div className="bg-slate-200 dark:bg-[#111622] rounded-2xl border border-slate-200 dark:border-slate-800/80 p-6 shadow-sm dark:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-sky-500/10 mb-5 text-left group">
       {/* Header section grouping the core program identifiers and dynamic status badge */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-2 sm:gap-4">
         <div>
@@ -103,8 +103,8 @@ export const MentorshipCard = ({
         <span
           className={`px-3.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider w-max sm:self-start border transition-colors ${
             isCompleted
-              ? "bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/50"
-              : "bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800/50 shadow-[0_0_15px_rgba(14,165,233,0.15)] dark:shadow-[0_0_15px_rgba(14,165,233,0.1)]"
+              ? "bg-slate-200 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/50"
+              : "bg-slate-200 dark:bg-sky-950/40 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800/50 shadow-[0_0_15px_rgba(14,165,233,0.15)] dark:shadow-[0_0_15px_rgba(14,165,233,0.1)]"
           }`}
         >
           {status}
@@ -113,7 +113,7 @@ export const MentorshipCard = ({
 
       <div className="mb-6 relative">
         <div className="absolute inset-0 bg-gradient-to-r from-sky-500/5 to-transparent dark:from-sky-500/10 rounded-xl pointer-events-none"></div>
-        <p className="text-sm text-slate-700 dark:text-slate-300 bg-slate-50/80 dark:bg-[#161d2b]/80 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800/60 leading-relaxed relative z-10 backdrop-blur-sm">
+        <p className="text-sm text-slate-700 dark:text-slate-300 bg-slate-300/80 dark:bg-[#161d2b]/80 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800/60 leading-relaxed relative z-10 backdrop-blur-sm">
           {introduction}
         </p>
       </div>
@@ -197,7 +197,7 @@ export const MentorshipCard = ({
         {!isMentorView && isOwnProfile && isCompleted && !showForm && !myReview && (
           <button
             onClick={handleOpenForm}
-            className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white text-sm font-semibold rounded-xl transition shadow-md shadow-sky-600/20 whitespace-nowrap cursor-pointer"
+            className="px-4 py-2 bg-sky-600 hover:bg-slate-2000 text-white text-sm font-semibold rounded-xl transition shadow-md shadow-sky-600/20 whitespace-nowrap cursor-pointer"
           >
             Add Review
           </button>
@@ -207,7 +207,7 @@ export const MentorshipCard = ({
       {/* Renders the single review if it exists */}
       {myReview && !showForm && (
         <div className="mt-5 flex flex-col gap-3">
-            <div className="bg-slate-50 dark:bg-[#161d2b] rounded-xl p-4 border border-slate-200 dark:border-slate-800">
+            <div className="bg-slate-300 dark:bg-[#161d2b] rounded-xl p-4 border border-slate-200 dark:border-slate-800">
               <div className="flex justify-between items-start mb-2">
                 <div className="text-sm font-bold text-amber-400">
                   {/* Generates solid and empty stars based on the numerical rating value */}
@@ -241,7 +241,7 @@ export const MentorshipCard = ({
 
       {/* Inline form toggled by the showForm state, adapting its header text based on context (edit vs new) */}
       {showForm && (
-        <div className="mt-5 bg-slate-50 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800 rounded-xl p-5">
+        <div className="mt-5 bg-slate-300 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800 rounded-xl p-5">
           <h3 className="text-md font-bold text-slate-900 dark:text-white mb-4">
             {isEditing ? "Edit Review" : "Leave a Review"}
           </h3>
@@ -251,7 +251,7 @@ export const MentorshipCard = ({
               Rating (Stars)
             </label>
             <select
-              className="w-full border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm bg-white dark:bg-[#111622] text-slate-900 dark:text-white focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"
+              className="w-full border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm bg-slate-200 dark:bg-[#111622] text-slate-900 dark:text-white focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"
               value={reviewData.rating}
               onChange={(e) =>
                 setReviewData({ ...reviewData, rating: Number(e.target.value) })
@@ -270,7 +270,7 @@ export const MentorshipCard = ({
               Description
             </label>
             <textarea
-              className="w-full border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm bg-white dark:bg-[#111622] text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"
+              className="w-full border border-slate-300 dark:border-slate-700 rounded-xl p-3 text-sm bg-slate-200 dark:bg-[#111622] text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all"
               rows="3"
               value={reviewData.description}
               onChange={(e) =>
@@ -283,13 +283,13 @@ export const MentorshipCard = ({
           <div className="flex justify-end gap-3 mt-4">
             <button
               onClick={() => setShowForm(false)}
-              className="px-4 py-2 text-sm text-slate-700 dark:text-slate-300 bg-white dark:bg-[#111622] border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl font-semibold transition-colors cursor-pointer"
+              className="px-4 py-2 text-sm text-slate-700 dark:text-slate-300 bg-slate-200 dark:bg-[#111622] border border-slate-300 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl font-semibold transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               onClick={handleSubmitReview}
-              className="px-4 py-2 text-sm bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-bold transition-colors shadow-md shadow-sky-600/20 cursor-pointer"
+              className="px-4 py-2 text-sm bg-sky-600 hover:bg-slate-2000 text-white rounded-xl font-bold transition-colors shadow-md shadow-sky-600/20 cursor-pointer"
             >
               {isEditing ? "Update" : "Submit"}
             </button>

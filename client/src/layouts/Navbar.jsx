@@ -36,7 +36,7 @@ export const Navbar = () => {
   }
 
   if (loading)
-    return <div className="h-16 bg-white dark:bg-[#080b11] w-full"></div>;
+    return <div className="h-16 bg-slate-200 dark:bg-[#080b11] w-full"></div>;
 
   const navLinks = user
     ? [
@@ -62,8 +62,8 @@ export const Navbar = () => {
   return (
     <>
       {/* Desktop Nav */}
-      <nav className="bg-white/90 dark:bg-[#0b0f17]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 px-6 py-3.5 sticky top-0 z-50 w-full transition-colors">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <nav className="bg-slate-200/90 dark:bg-[#0b0f17]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 px-6 py-3.5 sticky top-0 z-50 w-full transition-colors">
+        <div className="max-w-7xl mx-auto flex items-center justify-between relative">
           {/* Logo */}
           <Link to="/" className="flex items-center group">
             <img
@@ -73,8 +73,8 @@ export const Navbar = () => {
             />
           </Link>
 
-          {/* Nav Actions */}
-          <div className="flex items-center gap-4">
+          {/* Centered Nav Links (Desktop) */}
+          <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-6">
             {navLinks.map((link, index) => {
               const Icon = link.icon;
               if (link.isButton) {
@@ -82,9 +82,9 @@ export const Navbar = () => {
                   <Link
                     key={index}
                     to={link.to}
-                    className="hidden md:inline-flex items-center gap-1.5 bg-sky-600 hover:bg-sky-500 text-white font-medium px-4 py-2 rounded-xl text-xs transition duration-200 shadow-md shadow-sky-600/20"
+                    className="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition duration-200 shadow-md shadow-sky-600/20"
                   >
-                    <Icon size={14} />
+                    <Icon size={18} />
                     {link.label}
                   </Link>
                 );
@@ -95,44 +95,47 @@ export const Navbar = () => {
                   key={index}
                   to={link.to}
                   className={({ isActive }) =>
-                    `hidden md:inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg transition-colors ${
+                    `inline-flex items-center gap-2 text-sm font-bold px-4 py-2.5 rounded-xl transition-colors ${
                       isActive
-                        ? "text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/40"
-                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/40"
+                        ? "text-sky-600 dark:text-sky-400 bg-slate-200 dark:bg-sky-950/40"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800/40"
                     }`
                   }
                 >
-                  <Icon size={14} />
+                  <Icon size={18} />
                   {link.label}
                 </NavLink>
               );
             })}
+          </div>
 
+          {/* Right Actions */}
+          <div className="flex items-center gap-3">
             {/* Theme Toggle Button */}
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-xl text-amber-500 dark:text-amber-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition cursor-pointer"
+              className="p-2.5 rounded-xl text-amber-500 dark:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 transition cursor-pointer"
               title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
             >
-              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </button>
 
             {user && (
-              <div className="flex items-center gap-2 border-l border-slate-200 dark:border-slate-800 pl-4 ml-1">
+              <div className="flex items-center gap-2 border-l border-slate-300 dark:border-slate-800 pl-4 ml-1">
                 <Link
                   to="/profile"
-                  className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition"
+                  className="p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-800/60 transition"
                   title="Profile"
                 >
-                  <UserCircle size={20} />
+                  <UserCircle size={22} />
                 </Link>
 
                 <button
-                  className="p-2 rounded-xl text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition cursor-pointer"
+                  className="p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 transition cursor-pointer"
                   title="Logout"
                   onClick={handleLogout}
                 >
-                  <LogOut size={20} />
+                  <LogOut size={22} />
                 </button>
               </div>
             )}
@@ -141,7 +144,7 @@ export const Navbar = () => {
       </nav>
 
       {/* Mobile Nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full bg-white dark:bg-[#0b0f17] border-t border-slate-200 dark:border-slate-800 z-50 flex justify-around items-center h-14 px-2">
+      <nav className="md:hidden fixed bottom-0 left-0 w-full bg-slate-200 dark:bg-[#0b0f17] border-t border-slate-200 dark:border-slate-800 z-50 flex justify-around items-center h-14 px-2">
         {navLinks.map((link, index) => {
           const Icon = link.icon;
           return (

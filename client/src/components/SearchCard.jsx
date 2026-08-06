@@ -23,7 +23,7 @@ export default function SearchCard({ item }) {
   return (
     <>
       <Link to={linkPath}>
-        <div className="group bg-white dark:bg-[#111622] p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-sky-500/50 hover:bg-slate-50 dark:hover:bg-[#161d2b] transition-all duration-300 shadow-sm dark:shadow-md hover:shadow-xl dark:hover:shadow-sky-900/20 hover:-translate-y-1 flex flex-col h-full cursor-pointer">
+        <div className="group bg-slate-200 dark:bg-[#111622] p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-sky-500/50 hover:bg-slate-300 dark:hover:bg-[#161d2b] transition-all duration-300 shadow-sm dark:shadow-md hover:shadow-xl dark:hover:shadow-sky-900/20 hover:-translate-y-1 flex flex-col h-full cursor-pointer">
           {isProfile ? (
             // --- PROFILE LAYOUT (Mentors & Students) ---
             <div className="flex items-start gap-4 mb-4">
@@ -73,7 +73,7 @@ export default function SearchCard({ item }) {
               <div className="flex flex-wrap gap-x-5 gap-y-2 mt-4">
                 {item.postedBy && (
                   <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300 text-sm">
-                    <div className="w-6 h-6 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[10px] font-bold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                    <div className="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-[10px] font-bold text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
                       {item.postedBy?.charAt(0)}
                     </div>
                     <span>{item.postedBy}</span>
@@ -109,17 +109,17 @@ export default function SearchCard({ item }) {
           {/* --- SHARED TAGS (Pushed to the bottom) --- */}
           <div className="mt-auto pt-5 flex flex-wrap gap-2 border-t border-slate-200 dark:border-slate-800/80">
             {item.faculty && (
-              <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-medium border border-slate-200 dark:border-slate-700">
+              <span className="px-2.5 py-1 rounded-md bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-medium border border-slate-200 dark:border-slate-700">
                 {item.faculty}
               </span>
             )}
             {item.industry && (
-              <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-medium border border-slate-200 dark:border-slate-700">
+              <span className="px-2.5 py-1 rounded-md bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-medium border border-slate-200 dark:border-slate-700">
                 {item.industry}
               </span>
             )}
             {item.type && (
-              <span className="px-2.5 py-1 rounded-md bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 text-xs font-medium border border-sky-200 dark:border-sky-800/50">
+              <span className="px-2.5 py-1 rounded-md bg-slate-200 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 text-xs font-medium border border-sky-200 dark:border-sky-800/50">
                 {item.type}
               </span>
             )}

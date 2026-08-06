@@ -8,13 +8,13 @@ import { getActiveOpportunities } from "../api/opportunityApi";
 
 // categoryType prop expects: "mentors", "students", "mentorships", or "opportunities"
 export default function Search({ categoryType = "mentors" }) {
-  const { token } = useAuth();
+  const { token, loading: authLoading } = useAuth();
 
   const [faculty, setFaculty] = useState("");
   const [search, setSearch] = useState("");
 
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   // Normalise the incoming prop to a canonical category name
@@ -127,8 +127,8 @@ export default function Search({ categoryType = "mentors" }) {
       }
     };
 
-    if (token) fetchData();
-  }, [currentCategory, token]);
+    if (token && !authLoading) fetchData();
+  }, [currentCategory, token, authLoading]);
 
   //  Client-side filtering on the fetched results
   const filtered = results.filter((item) => {

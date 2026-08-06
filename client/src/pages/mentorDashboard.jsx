@@ -4,6 +4,7 @@ import MentorshipProgramCard from "../components/MentorshipProgramCard";
 import CompletedProgramCard from "../components/CompletedProgramCard";
 import CreatePostForm from "../components/CreatePostForm";
 import ReviewCard from "../components/ReviewCard";
+import LoadingScreen from "../components/LoadingScreen";
 import { X } from "lucide-react";
 import { useAuth } from "../hooks/AuthContext";
 import {
@@ -73,7 +74,7 @@ function MentorDashboard({
   mentorSub = "requests",
   oppSub = "active",
 }) {
-  const { user, token } = useAuth();
+  const { user, token, loading: authLoading } = useAuth();
 
   const [activeMainTab, setActiveMainTab] = useState(mainTab);
   const [mentorSubTab, setMentorSubTab] = useState(mentorSub);
@@ -81,6 +82,7 @@ function MentorDashboard({
 
   const [showAddMentorship, setShowAddMentorship] = useState(false);
   const [showAddOpportunity, setShowAddOpportunity] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [requests, setRequests] = useState([]);
   const [allReviews, setAllReviews] = useState([]);
@@ -90,7 +92,7 @@ function MentorDashboard({
 
   useEffect(() => {
     const fetchDashboardData = async () => {
-      if (!token) return;
+      if (!token || authLoading) return;
       try {
         const myPrograms = await getMyMentorships(token);
 
@@ -173,10 +175,12 @@ function MentorDashboard({
         }
       } catch (err) {
         console.error("Failed to fetch dashboard data:", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchDashboardData();
-  }, [token, user]);
+  }, [token, user, authLoading]);
 
   const handleCreateMentorship = async (data) => {
     if (!token) return;
@@ -608,8 +612,12 @@ function MentorDashboard({
     );
   };
 
+  if (loading || authLoading) {
+    return <LoadingScreen fullScreen={true} message="Loading Dashboard..." />;
+  }
+
   return (
-    <div className="w-full bg-slate-300 dark:bg-[#0b0f17] min-h-screen text-slate-900 dark:text-slate-100 font-sans p-4 pb-24 sm:p-6 lg:p-8 transition-colors duration-300">
+    <div className="min-h-screen bg-slate-300 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 p-4 pb-24 md:p-10 font-sans antialiased transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-2 text-left">
           <div>

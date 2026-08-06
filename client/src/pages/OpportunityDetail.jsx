@@ -7,7 +7,7 @@ import LoadingScreen from "../components/LoadingScreen";
 
 export default function OpportunityDetail() {
   const { id } = useParams();
-  const { token } = useAuth();
+  const { token, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   const [opportunity, setOpportunity] = useState(null);
@@ -25,8 +25,8 @@ export default function OpportunityDetail() {
         setLoading(false);
       }
     };
-    if (token) fetchOpportunity();
-  }, [id, token]);
+    if (token && !authLoading) fetchOpportunity();
+  }, [id, token, authLoading]);
 
   if (loading) {
     return <LoadingScreen fullScreen={true} message="Loading Opportunity..." />;

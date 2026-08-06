@@ -11,7 +11,7 @@ import LoadingScreen from "../components/LoadingScreen";
 
 export default function MentorshipDetail() {
   const { id } = useParams();
-  const { token, user } = useAuth();
+  const { token, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   const [mentorship, setMentorship] = useState(null);
@@ -39,8 +39,8 @@ export default function MentorshipDetail() {
         setLoading(false);
       }
     };
-    if (token) fetchData();
-  }, [id, token, user]);
+    if (token && !authLoading) fetchData();
+  }, [id, token, user, authLoading]);
 
   if (loading) {
     return <LoadingScreen fullScreen={true} message="Loading Mentorship..." />;

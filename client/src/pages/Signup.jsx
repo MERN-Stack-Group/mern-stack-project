@@ -40,9 +40,20 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
 
     if (!role) {
       setMessage("Please select a role to continue.");
+      return;
+    }
+
+    const password = formData.password || "";
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/;
+    
+    if (!passwordRegex.test(password)) {
+      setMessage(
+        "Password must be 8-16 characters, including a lowercase letter, uppercase letter, number, and symbol."
+      );
       return;
     }
 
@@ -261,9 +272,9 @@ function Signup() {
             {message && (
               <p
                 className={`text-center text-xs pt-1 ${
-                  message.includes("Please select")
-                    ? "text-red-500 dark:text-red-400"
-                    : "text-emerald-600 dark:text-emerald-400"
+                  message === "Registration successful! Redirecting..."
+                    ? "text-emerald-600 dark:text-emerald-400"
+                    : "text-red-500 dark:text-red-400"
                 }`}
               >
                 {message}
@@ -272,7 +283,7 @@ function Signup() {
 
             <button
               type="submit"
-              className="w-full bg-sky-600 hover:bg-slate-2000 text-white font-medium py-3 rounded-xl transition duration-200 shadow-lg shadow-sky-600/20 text-sm mt-2 cursor-pointer"
+              className="w-full bg-sky-600 hover:bg-sky-700 text-white font-medium py-3 rounded-xl transition duration-200 shadow-lg shadow-sky-600/20 text-sm mt-2 cursor-pointer"
             >
               Sign Up
             </button>

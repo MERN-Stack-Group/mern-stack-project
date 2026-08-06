@@ -63,7 +63,7 @@ export const Navbar = () => {
     <>
       {/* Desktop Nav */}
       <nav className="bg-slate-200/90 dark:bg-[#0b0f17]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 px-6 py-3.5 sticky top-0 z-50 w-full transition-colors">
-        <div className="max-w-7xl mx-auto flex items-center justify-between relative">
+        <div className="max-w-7xl mx-auto flex items-center justify-between w-full">
           {/* Logo */}
           <Link to="/" className="flex items-center group">
             <img
@@ -74,7 +74,7 @@ export const Navbar = () => {
           </Link>
 
           {/* Centered Nav Links (Desktop) */}
-          <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-6">
+          <div className="hidden lg:flex flex-1 items-center justify-center gap-6">
             {navLinks.map((link, index) => {
               const Icon = link.icon;
               if (link.isButton) {
@@ -144,7 +144,7 @@ export const Navbar = () => {
       </nav>
 
       {/* Mobile Nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full bg-slate-200 dark:bg-[#0b0f17] border-t border-slate-200 dark:border-slate-800 z-50 flex justify-around items-center h-14 px-2">
+      <nav className="lg:hidden fixed bottom-0 left-0 w-full bg-slate-200 dark:bg-[#0b0f17] border-t border-slate-200 dark:border-slate-800 z-50 flex justify-around items-center h-14 px-2">
         {navLinks.map((link, index) => {
           const Icon = link.icon;
           return (

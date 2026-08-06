@@ -44,7 +44,6 @@ const IncomingRequestsTable = ({ requests = [], onAccept, onReject }) => {
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm font-medium text-slate-800 dark:text-slate-200">{request.topic}</div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{request.program}</div>
               </td>
               <td className="px-6 py-4">
                 <div

@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { getMentorshipById } from "../api/mentorshipApi";
-import { getMyRequests, createMentorshipRequest } from "../api/mentorshipRequestApi";
+import {
+  getMyRequests,
+  createMentorshipRequest,
+} from "../api/mentorshipRequestApi";
 import { useAuth } from "../hooks/AuthContext";
 import { ArrowLeft, Clock, GraduationCap, Info, Send } from "lucide-react";
 import LoadingScreen from "../components/LoadingScreen";
@@ -24,7 +27,9 @@ export default function MentorshipDetail() {
       try {
         const [mentorshipData, requestsData] = await Promise.all([
           getMentorshipById(id, token),
-          user?.role?.includes("student") ? getMyRequests(token) : Promise.resolve([])
+          user?.role?.includes("student")
+            ? getMyRequests(token)
+            : Promise.resolve([]),
         ]);
         setMentorship(mentorshipData);
         setMyRequests(requestsData);
@@ -85,23 +90,36 @@ export default function MentorshipDetail() {
             <div className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
               <Clock className="text-slate-400 dark:text-slate-500" size={24} />
               <div>
-                <p className="text-xs text-sky-600 dark:text-sky-400 font-semibold uppercase tracking-wider">Duration</p>
-                <p className="font-medium text-lg text-slate-900 dark:text-white">{mentorship.durationInWeeks} Weeks</p>
+                <p className="text-xs text-sky-600 dark:text-sky-400 font-semibold uppercase tracking-wider">
+                  Duration
+                </p>
+                <p className="font-medium text-lg text-slate-900 dark:text-white">
+                  {mentorship.durationInWeeks} Weeks
+                </p>
               </div>
             </div>
             {mentorship.startDate && (
               <div className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
-                <Info className="text-slate-400 dark:text-slate-500" size={24} />
+                <Info
+                  className="text-slate-400 dark:text-slate-500"
+                  size={24}
+                />
                 <div>
-                  <p className="text-xs text-sky-600 dark:text-sky-400 font-semibold uppercase tracking-wider">Started</p>
-                  <p className="font-medium text-lg text-slate-900 dark:text-white">{new Date(mentorship.startDate).toLocaleDateString()}</p>
+                  <p className="text-xs text-sky-600 dark:text-sky-400 font-semibold uppercase tracking-wider">
+                    Started
+                  </p>
+                  <p className="font-medium text-lg text-slate-900 dark:text-white">
+                    {new Date(mentorship.startDate).toLocaleDateString()}
+                  </p>
                 </div>
               </div>
             )}
           </div>
 
           <div className="mb-10">
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">About the Program</h2>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
+              About the Program
+            </h2>
             <div className="text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap bg-slate-50 dark:bg-[#0b0f17] p-6 rounded-2xl border border-slate-200 dark:border-slate-800">
               {mentorship.description}
             </div>
@@ -109,7 +127,9 @@ export default function MentorshipDetail() {
 
           {alumni && (
             <div className="mb-10">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Hosted by Mentor</h2>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
+                Hosted by Mentor
+              </h2>
               <Link to={`/profile/${alumni._id}`}>
                 <div className="flex items-center gap-5 p-5 bg-slate-50 dark:bg-[#0b0f17] rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-sky-500/50 transition-colors cursor-pointer group">
                   {alumni.profileImage ? (
@@ -138,14 +158,20 @@ export default function MentorshipDetail() {
 
           {user?.role?.includes("student") && (
             <div className="border-t border-slate-200 dark:border-slate-800 pt-8">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Apply for Mentorship</h2>
-              
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
+                Apply for Mentorship
+              </h2>
+
               {(() => {
                 // Find if there is a pending request
-                const pendingRequest = myRequests.find(r => r.mentorship === id && r.status === "pending");
+                const pendingRequest = myRequests.find(
+                  (r) => r.mentorship === id && r.status === "pending",
+                );
                 // Find if there are any previous requests (rejected or accepted but student was removed)
-                const previousRequest = myRequests.find(r => r.mentorship === id && r.status !== "pending");
-                
+                const previousRequest = myRequests.find(
+                  (r) => r.mentorship === id && r.status !== "pending",
+                );
+
                 const isEnrolled = mentorship.students.includes(user._id);
 
                 if (isEnrolled) {
@@ -160,7 +186,10 @@ export default function MentorshipDetail() {
                   return (
                     <div className="p-4 bg-sky-50 dark:bg-sky-900/20 border border-sky-200 dark:border-sky-500/30 rounded-xl">
                       <p className="text-sky-600 dark:text-sky-400 font-medium">
-                        Request Status: <span className="uppercase tracking-wider font-bold ml-2 text-sky-500 dark:text-sky-300">PENDING</span>
+                        Request Status:{" "}
+                        <span className="uppercase tracking-wider font-bold ml-2 text-sky-500 dark:text-sky-300">
+                          PENDING
+                        </span>
                       </p>
                       <p className="text-slate-600 dark:text-slate-400 text-sm mt-2">
                         Your message: "{pendingRequest.message}"
@@ -172,18 +201,23 @@ export default function MentorshipDetail() {
                 if (mentorship.stage !== "enrollment") {
                   return (
                     <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-500/30 text-red-600 dark:text-red-400 rounded-xl font-medium">
-                      This program is currently {mentorship.stage} and not accepting new students.
+                      This program is currently {mentorship.stage} and not
+                      accepting new students.
                     </div>
                   );
                 }
 
                 return (
-                  <form 
+                  <form
                     onSubmit={async (e) => {
                       e.preventDefault();
                       setIsSending(true);
                       try {
-                        const newReq = await createMentorshipRequest(id, message, token);
+                        const newReq = await createMentorshipRequest(
+                          id,
+                          message,
+                          token,
+                        );
                         setMyRequests([...myRequests, newReq]);
                         setMessage(""); // Clear message on success
                       } catch (err) {
@@ -196,11 +230,17 @@ export default function MentorshipDetail() {
                   >
                     {previousRequest && (
                       <div className="p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-500/30 text-orange-600 dark:text-orange-400 rounded-xl text-sm mb-2">
-                        <strong>Note:</strong> You previously applied to this program (Status: {previousRequest.status.toUpperCase()}). You may submit a new request below to appeal.
+                        <strong>Note:</strong> You previously applied to this
+                        program (Status: {previousRequest.status.toUpperCase()}
+                        ). You may submit a new request below to appeal.
                       </div>
                     )}
                     <textarea
-                      placeholder={previousRequest ? "Write your appeal request here..." : "Why do you want to join this program? Introduce yourself!"}
+                      placeholder={
+                        previousRequest
+                          ? "Write your appeal request here..."
+                          : "Why do you want to join this program? Introduce yourself!"
+                      }
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       required
@@ -211,7 +251,8 @@ export default function MentorshipDetail() {
                       disabled={isSending}
                       className="self-end flex items-center gap-2 px-6 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-sm transition-colors shadow-lg shadow-sky-600/20 disabled:opacity-50"
                     >
-                      <Send size={18} /> {isSending ? "Sending..." : "Send Request"}
+                      <Send size={18} />{" "}
+                      {isSending ? "Sending..." : "Send Request"}
                     </button>
                   </form>
                 );

@@ -28,6 +28,36 @@ export const getMyReviews = async (token) => {
   return handleResponse(response);
 };
 
+// Get reviews for a specific mentor
+export const getMentorReviews = async (mentorId, token) => {
+  const response = await fetch(`${API_URL}/mentor/${mentorId}`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return handleResponse(response);
+};
+
+// Get the logged-in user's review for a specific mentorship
+export const getMyReviewForMentorship = async (mentorshipId, token) => {
+  const response = await fetch(`${API_URL}/mentorship/${mentorshipId}/my-review`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return handleResponse(response);
+};
+
+// Get all reviews for a specific mentorship
+export const getMentorshipReviews = async (mentorshipId, token) => {
+  const response = await fetch(`${API_URL}/mentorship/${mentorshipId}`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return handleResponse(response);
+};
+
 // Get a single review by its MongoDB _id
 export const getReviewById = async (reviewId, token) => {
   const response = await fetch(`${API_URL}/${reviewId}`, {

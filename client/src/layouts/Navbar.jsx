@@ -66,7 +66,7 @@ export const Navbar = () => {
             <img
               src={logoImg}
               alt="GradBridge Logo"
-              className="h-9 w-auto object-contain hover:scale-105 transition"
+              className="h-12 w-auto object-contain hover:scale-105 transition"
             />
           </Link>
 

@@ -1,120 +1,136 @@
 import MentorDashboard from "./pages/MentorDashboard";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
 
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Search from "./pages/Search";
 import { Profile } from "./pages/Profile";
+import MentorshipDetail from "./pages/MentorshipDetail";
+import OpportunityDetail from "./pages/OpportunityDetail";
 
 import { Navbar } from "./layouts/Navbar";
 import { AuthProvider } from "./hooks/AuthContext";
+import { ThemeProvider } from "./hooks/ThemeContext";
 import PendingApproval from "./pages/PendingApproval";
 
 import { MentorshipModel } from "./components/MentorshipModel";
-
 import ProtectedRoot from "./pages/ProtectedRoot";
+import LoadingScreen from "./components/LoadingScreen";
 
 /**
  * Main Application Router
- * Defines core routing, auth state, and view rendering.
+ * Defines core routing, auth state, theme provider, and view rendering.
  */
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Navbar />
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Navbar />
 
-        <Routes>
-          {/* ---------- Protected Home ---------- */}
-          <Route path="/" element={<ProtectedRoot />} />
+          <Routes>
+            {/* ---------- Protected Home ---------- */}
+            <Route path="/" element={<ProtectedRoot />} />
 
-          {/* ---------- Authentication ---------- */}
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/pending-approval" element={<PendingApproval />} />
+            {/* ---------- Authentication ---------- */}
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/pending-approval" element={<PendingApproval />} />
 
-          {/* ---------- Profiles ---------- */}
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/:userId" element={<Profile />} />
+            {/* ---------- Profiles ---------- */}
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile/:userId" element={<Profile />} />
 
-          {/* ---------- Student Mentorships ---------- */}
-          <Route
-            path="/profile/mentorships-active"
-            element={<MentorshipModel viewType="active" />}
-          />
+            {/* ---------- Student Mentorships ---------- */}
+            <Route
+              path="/profile/mentorships-active"
+              element={<MentorshipModel viewType="active" />}
+            />
 
-          <Route
-            path="/profile/mentorships-completed"
-            element={<MentorshipModel viewType="completed" />}
-          />
+            <Route
+              path="/profile/mentorships-completed"
+              element={<MentorshipModel viewType="completed" />}
+            />
 
-          {/* ---------- Viewing Another User ---------- */}
-          <Route
-            path="/profile/:userId/mentorships-active"
-            element={<MentorshipModel viewType="active" />}
-          />
+            <Route
+              path="/profile/mentorships-reviews"
+              element={<MentorshipModel viewType="reviews" />}
+            />
 
-          <Route
-            path="/profile/:userId/mentorships-completed"
-            element={<MentorshipModel viewType="completed" />}
-          />
+            {/* ---------- Viewing Another User ---------- */}
+            <Route
+              path="/profile/:userId/mentorships-active"
+              element={<MentorshipModel viewType="active" />}
+            />
 
-          <Route
-            path="/profile/:userId/mentorships-reviews"
-            element={<MentorshipModel viewType="reviews" />}
-          />
+            <Route
+              path="/profile/:userId/mentorships-completed"
+              element={<MentorshipModel viewType="completed" />}
+            />
 
-          {/* ---------- Mentor Dashboard ---------- */}
-          <Route path="/mentor-dashboard" element={<MentorDashboard />} />
+            <Route
+              path="/profile/:userId/mentorships-reviews"
+              element={<MentorshipModel viewType="reviews" />}
+            />
 
-          <Route
-            path="/mentor-dashboard/mentorships/active"
-            element={
-              <MentorDashboard mainTab="mentorship" mentorSub="active" />
-            }
-          />
+            {/* ---------- Mentor Dashboard ---------- */}
+            <Route path="/mentor-dashboard" element={<MentorDashboard />} />
 
-          <Route
-            path="/mentor-dashboard/mentorships/history"
-            element={
-              <MentorDashboard mainTab="mentorship" mentorSub="history" />
-            }
-          />
+            <Route
+              path="/mentor-dashboard/mentorships/active"
+              element={
+                <MentorDashboard mainTab="mentorship" mentorSub="active" />
+              }
+            />
 
-          <Route
-            path="/mentor-dashboard/mentorships/reviews"
-            element={
-              <MentorDashboard mainTab="mentorship" mentorSub="reviews" />
-            }
-          />
+            <Route
+              path="/mentor-dashboard/mentorships/history"
+              element={
+                <MentorDashboard mainTab="mentorship" mentorSub="history" />
+              }
+            />
 
-          {/* ---------- Search ---------- */}
-          <Route
-            path="/search/mentors"
-            element={<Search categoryType="mentors" />}
-          />
+            <Route
+              path="/mentor-dashboard/mentorships/reviews"
+              element={
+                <MentorDashboard mainTab="mentorship" mentorSub="reviews" />
+              }
+            />
 
-          <Route
-            path="/search/students"
-            element={<Search categoryType="students" />}
-          />
+            {/* ---------- Search ---------- */}
+            <Route
+              path="/search/mentors"
+              element={<Search categoryType="mentors" />}
+            />
 
-          <Route
-            path="/search/mentorships"
-            element={<Search categoryType="mentorships" />}
-          />
+            <Route
+              path="/search/students"
+              element={<Search categoryType="students" />}
+            />
 
-          <Route
-            path="/search/opportunites"
-            element={<Search categoryType="opportunities" />}
-          />
+            <Route
+              path="/search/mentorships"
+              element={<Search categoryType="mentorships" />}
+            />
 
-          {/* ---------- 404 ---------- */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+            <Route
+              path="/search/opportunites"
+              element={<Search categoryType="opportunities" />}
+            />
+
+            {/* ---------- Details ---------- */}
+            <Route path="/mentorship/:id" element={<MentorshipDetail />} />
+            <Route path="/opportunity/:id" element={<OpportunityDetail />} />
+
+            {/* ---------- 404 ---------- */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+
+            {/* ---------- testing ---------- */}
+            <Route path="/loadingScreen" element={<LoadingScreen />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

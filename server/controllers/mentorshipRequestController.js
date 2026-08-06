@@ -16,7 +16,7 @@ const createRequest = async (req, res) => {
       return res.status(404).json({ message: "Program not found" });
     }
 
-    if (!["posted", "enrollment"].includes(mentorshipProgram.stage)) {
+    if (!["enrollment"].includes(mentorshipProgram.stage)) {
       return res.status(400).json({
         message: `Cannot apply. This program is currently ${mentorshipProgram.stage}`,
       });
@@ -130,7 +130,7 @@ const getPendingRequests = async (req, res) => {
       status: "pending", // Hardcoded to only fetch actionable requests
     })
       .populate("requester", "name email profileImage degree")
-      .populate("mentorship", "durationInWeeks");
+      .populate("mentorship", "durationInWeeks title");
 
     res.json(pendingRequests);
   } catch (error) {
@@ -183,9 +183,23 @@ const rejectRequest = async (req, res) => {
     }
 };
 
+// @desc    Get all requests made by the logged-in student
+// @route   GET /api/mentorship-requests/my-requests
+// @access  Private
+const getMyRequests = async (req, res) => {
+  try {
+    const studentId = req.user._id;
+    const requests = await MentorshipRequest.find({ requester: studentId });
+    res.json(requests);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = { 
     createRequest, 
     acceptRequest,
     getPendingRequests,
-    rejectRequest 
+    rejectRequest,
+    getMyRequests
 };

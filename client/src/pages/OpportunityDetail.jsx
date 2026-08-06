@@ -49,7 +49,7 @@ export default function OpportunityDetail() {
   const postedBy = opportunity.postedBy;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 p-6 md:p-10 font-sans antialiased transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 p-6 pb-24 md:p-10 font-sans antialiased transition-colors duration-300">
       <div className="max-w-4xl mx-auto">
         <button
           onClick={() => navigate(-1)}
@@ -58,7 +58,7 @@ export default function OpportunityDetail() {
           <ArrowLeft size={16} className="text-sky-500" /> Back to Search
         </button>
 
-        <div className="bg-white dark:bg-[#111622] p-8 md:p-10 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl">
+        <div className="bg-white dark:bg-[#111622] p-5 sm:p-8 md:p-10 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl">
           <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
             <div>
               <div className="flex flex-wrap gap-2 mb-4">
@@ -71,7 +71,7 @@ export default function OpportunityDetail() {
                   </span>
                 ))}
               </div>
-              <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight">
                 {opportunity.title}
               </h1>
             </div>
@@ -83,7 +83,7 @@ export default function OpportunityDetail() {
             </a>
           </div>
 
-          <div className="flex flex-wrap gap-x-10 gap-y-6 mb-10 border-y border-slate-200 dark:border-slate-800 py-6">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-x-10 gap-y-6 mb-10 border-y border-slate-200 dark:border-slate-800 py-6">
             <div className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
               <Building className="text-slate-400 dark:text-slate-500" size={24} />
               <div>

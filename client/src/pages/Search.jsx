@@ -147,7 +147,7 @@ export default function Search({ categoryType = "mentors" }) {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 p-6 md:p-10 font-sans antialiased transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 p-6 pb-24 md:p-10 font-sans antialiased transition-colors duration-300">
       <h1 className="text-4xl font-bold text-center text-slate-900 dark:text-white mb-10 tracking-tight">
         Search {displayTitle}
       </h1>

@@ -122,7 +122,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] text-center p-8 font-sans bg-slate-50 dark:bg-[#0b0f17] transition-colors duration-500 relative overflow-hidden">
+    <div className="flex flex-col items-center justify-center min-h-screen md:min-h-[80vh] text-center px-4 sm:px-8 pt-8 pb-24 md:pb-8 font-sans bg-slate-50 dark:bg-[#0b0f17] transition-colors duration-500 relative overflow-hidden">
       {/* Background ambient glows */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-sky-400/10 dark:bg-sky-500/10 rounded-full blur-[100px] pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-400/10 dark:bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none"></div>
@@ -138,7 +138,7 @@ export default function Home() {
 
       <main className="w-full max-w-4xl relative z-10">
         {/* Quote display container */}
-        <div className="relative w-full h-56 mx-auto mb-16 bg-white/50 dark:bg-[#111622]/50 backdrop-blur-md rounded-3xl border border-slate-200/50 dark:border-slate-800/50 shadow-xl overflow-hidden flex items-center justify-center p-8">
+        <div className="relative w-full h-80 sm:h-64 md:h-56 mx-auto mb-16 bg-white/50 dark:bg-[#111622]/50 backdrop-blur-md rounded-3xl border border-slate-200/50 dark:border-slate-800/50 shadow-xl overflow-hidden flex items-center justify-center p-4 sm:p-8">
           {quotes.map((quote, index) => (
             <div
               key={index}
@@ -148,7 +148,7 @@ export default function Home() {
                   : "opacity-0 z-0 pointer-events-none scale-95 translate-y-4"
               }`}
             >
-              <blockquote className="text-2xl md:text-3xl font-semibold italic text-slate-800 dark:text-slate-200 mb-6 drop-shadow-md leading-relaxed">
+              <blockquote className="text-xl md:text-3xl font-semibold italic text-slate-800 dark:text-slate-200 mb-6 drop-shadow-md leading-relaxed">
                 "{quote.text}"
               </blockquote>
               <cite className="text-sm font-bold uppercase text-sky-600 dark:text-sky-400 not-italic tracking-widest flex items-center gap-2">

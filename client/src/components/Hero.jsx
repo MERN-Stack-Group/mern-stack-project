@@ -15,7 +15,7 @@ function Hero() {
           </div>
 
           {/* Heading */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
             Connect with real alumni who have{" "}
             <span className="text-sky-600 dark:text-sky-400 font-extrabold">
               been in your shoes
@@ -28,10 +28,10 @@ function Hero() {
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap items-center gap-4 pt-2">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center gap-4 pt-2">
             <Link
               to="/signup"
-              className="inline-flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-500 text-white font-medium px-6 py-3 rounded-xl transition duration-200 shadow-lg shadow-sky-600/20"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-500 text-white font-medium px-6 py-3 rounded-xl transition duration-200 shadow-lg shadow-sky-600/20"
             >
               Get Started
               <ArrowRight size={18} />
@@ -39,7 +39,7 @@ function Hero() {
 
             <Link
               to="/signin"
-              className="inline-flex items-center justify-center bg-white dark:bg-[#161c27] hover:bg-slate-100 dark:hover:bg-[#1f2838] border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-medium px-6 py-3 rounded-xl transition duration-200 shadow-sm"
+              className="w-full sm:w-auto inline-flex items-center justify-center bg-white dark:bg-[#161c27] hover:bg-slate-100 dark:hover:bg-[#1f2838] border border-slate-300 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-medium px-6 py-3 rounded-xl transition duration-200 shadow-sm"
             >
               Sign In to Your Account
             </Link>
@@ -78,7 +78,7 @@ function Hero() {
       </div>
 
       {/* Metrics Banner */}
-      <div className="mt-16 bg-white dark:bg-[#111622] border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 md:p-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center shadow-md dark:shadow-none">
+      <div className="mt-16 bg-white dark:bg-[#111622] border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 md:p-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center shadow-md dark:shadow-none">
         <div className="space-y-1 md:border-r border-slate-200 dark:border-slate-800/80 last:border-r-0">
           <div className="text-2xl md:text-3xl font-bold text-sky-600 dark:text-sky-400 flex items-center justify-center gap-2">
             <span className="text-slate-400 text-lg">👥</span> 1,200+

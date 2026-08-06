@@ -4,6 +4,7 @@ import MentorshipProgramCard from "../components/MentorshipProgramCard";
 import CompletedProgramCard from "../components/CompletedProgramCard";
 import CreatePostForm from "../components/CreatePostForm";
 import ReviewCard from "../components/ReviewCard";
+import { X } from "lucide-react";
 import { useAuth } from "../hooks/AuthContext";
 import {
   getMyMentorships,
@@ -53,9 +54,10 @@ const OpportunityCard = ({ opp, onDelete }) => (
                 onDelete(opp.id);
               }
             }}
-            className="text-xs font-semibold text-red-600 dark:text-red-400 hover:underline transition cursor-pointer"
+            title="Remove Posting"
+            className="p-1.5 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-lg transition shadow-sm cursor-pointer"
           >
-            Remove Posting
+            <X size={16} />
           </button>
         )}
       </div>
@@ -607,7 +609,7 @@ function MentorDashboard({
   };
 
   return (
-    <div className="w-full bg-slate-50 dark:bg-[#0b0f17] min-h-screen text-slate-900 dark:text-slate-100 font-sans p-4 sm:p-6 lg:p-8 transition-colors duration-300">
+    <div className="w-full bg-slate-50 dark:bg-[#0b0f17] min-h-screen text-slate-900 dark:text-slate-100 font-sans p-4 pb-24 sm:p-6 lg:p-8 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-2 text-left">
           <div>
@@ -620,23 +622,23 @@ function MentorDashboard({
           </div>
         </div>
 
-        <div className="flex space-x-2 bg-white dark:bg-[#111622] border border-slate-200 dark:border-slate-800 p-1.5 rounded-2xl w-max mb-2 shadow-sm dark:shadow-none">
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 sm:space-x-2 bg-transparent sm:bg-white sm:dark:bg-[#111622] sm:border border-slate-200 dark:border-slate-800 p-0 sm:p-1.5 rounded-2xl w-full sm:w-max mb-6 sm:mb-2 shadow-none sm:shadow-sm">
           <button
             onClick={() => setActiveMainTab("mentorship")}
-            className={`px-5 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+            className={`w-full sm:w-auto px-5 py-3 sm:py-2 text-sm sm:text-xs font-semibold rounded-xl transition-all cursor-pointer border sm:border-transparent ${
               activeMainTab === "mentorship"
-                ? "bg-slate-100 dark:bg-[#172338] border border-sky-500/50 text-sky-700 dark:text-sky-300 shadow-sm"
-                : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                ? "bg-white sm:bg-slate-100 dark:bg-[#172338] border-sky-500/50 sm:border-sky-500/50 text-sky-700 dark:text-sky-300 shadow-sm"
+                : "bg-white sm:bg-transparent border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
             }`}
           >
             Mentorship Management
           </button>
           <button
             onClick={() => setActiveMainTab("opportunities")}
-            className={`px-5 py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+            className={`w-full sm:w-auto px-5 py-3 sm:py-2 text-sm sm:text-xs font-semibold rounded-xl transition-all cursor-pointer border sm:border-transparent ${
               activeMainTab === "opportunities"
-                ? "bg-slate-100 dark:bg-[#172338] border border-sky-500/50 text-sky-700 dark:text-sky-300 shadow-sm"
-                : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                ? "bg-white sm:bg-slate-100 dark:bg-[#172338] border-sky-500/50 sm:border-sky-500/50 text-sky-700 dark:text-sky-300 shadow-sm"
+                : "bg-white sm:bg-transparent border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
             }`}
           >
             Opportunity Management

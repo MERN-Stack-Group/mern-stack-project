@@ -23,8 +23,10 @@ export const Navbar = () => {
   const location = useLocation();
 
   const handleLogout = () => {
-    logout();
-    navigate("/");
+    if (window.confirm("Are you sure you want to logout?")) {
+      logout();
+      navigate("/");
+    }
   };
 
   const hideOnRoutes = ["/signin", "/signup"];
@@ -33,7 +35,8 @@ export const Navbar = () => {
     return null;
   }
 
-  if (loading) return <div className="h-16 bg-white dark:bg-[#080b11] w-full"></div>;
+  if (loading)
+    return <div className="h-16 bg-white dark:bg-[#080b11] w-full"></div>;
 
   const navLinks = user
     ? [
@@ -79,7 +82,7 @@ export const Navbar = () => {
                   <Link
                     key={index}
                     to={link.to}
-                    className="inline-flex items-center gap-1.5 bg-sky-600 hover:bg-sky-500 text-white font-medium px-4 py-2 rounded-xl text-xs transition duration-200 shadow-md shadow-sky-600/20"
+                    className="hidden md:inline-flex items-center gap-1.5 bg-sky-600 hover:bg-sky-500 text-white font-medium px-4 py-2 rounded-xl text-xs transition duration-200 shadow-md shadow-sky-600/20"
                   >
                     <Icon size={14} />
                     {link.label}
@@ -92,7 +95,7 @@ export const Navbar = () => {
                   key={index}
                   to={link.to}
                   className={({ isActive }) =>
-                    `inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg transition-colors ${
+                    `hidden md:inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg transition-colors ${
                       isActive
                         ? "text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/40"
                         : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/40"
@@ -146,10 +149,17 @@ export const Navbar = () => {
               key={index}
               to={link.to}
               className={({ isActive }) =>
-                isActive ? "text-sky-600 dark:text-sky-400" : "text-slate-500 dark:text-slate-400"
+                `flex flex-col items-center justify-center gap-1 ${
+                  isActive
+                    ? "text-sky-600 dark:text-sky-400"
+                    : "text-slate-500 dark:text-slate-400"
+                }`
               }
             >
               <Icon size={20} />
+              <span className="text-[10px] font-medium leading-none">
+                {link.label}
+              </span>
             </NavLink>
           );
         })}

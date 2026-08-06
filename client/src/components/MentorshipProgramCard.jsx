@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ProgressTracker from "./ProgressTracker";
-import { ChevronDown, Trash2 } from "lucide-react";
+import { ChevronDown, Trash2, X } from "lucide-react";
 
 const MentorshipProgramCard = ({
   program,
@@ -54,9 +54,10 @@ const MentorshipProgramCard = ({
                   onDelete(program.id);
                 }
               }}
-              className="text-xs font-semibold text-red-400 hover:text-red-300 transition cursor-pointer"
+              title="Remove Mentorship"
+              className="p-1.5 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/50 hover:bg-red-100 dark:hover:bg-red-900/50 rounded-lg transition shadow-sm cursor-pointer"
             >
-              Remove Mentorship
+              <X size={16} />
             </button>
           )}
         </div>

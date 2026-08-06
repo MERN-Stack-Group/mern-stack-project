@@ -129,7 +129,7 @@ export const Profile = () => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row gap-6 p-4 md:p-[4vh] w-full min-h-screen bg-slate-50 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 justify-center font-sans transition-colors duration-300">
+      <div className="flex flex-col md:flex-row gap-6 p-4 pb-24 md:p-[4vh] w-full min-h-screen bg-slate-50 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 justify-center font-sans transition-colors duration-300">
         {/* Main Column */}
         <div className="flex flex-col gap-6 w-full md:w-2/3 lg:w-3/4 max-w-4xl">
           {/* Header Card */}

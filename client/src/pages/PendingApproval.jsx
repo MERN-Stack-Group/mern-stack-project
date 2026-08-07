@@ -101,7 +101,7 @@ function PendingApproval() {
           <div
             onClick={() => setSelectedView("pending")}
             className={`p-6 rounded-xl shadow cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${
-              darkMode ? "bg-gray-800" : "bg-white"
+              darkMode ? "bg-gray-800" : "bg-slate-200"
             } ${selectedView === "pending" ? "ring-2 ring-purple-600" : ""}`}
           >
             <h3 className="text-lg font-semibold mb-2">Pending Requests</h3>
@@ -112,7 +112,7 @@ function PendingApproval() {
           <div
             onClick={() => setSelectedView("approved")}
             className={`p-6 rounded-xl shadow cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${
-              darkMode ? "bg-gray-800" : "bg-white"
+              darkMode ? "bg-gray-800" : "bg-slate-200"
             } ${selectedView === "approved" ? "ring-2 ring-purple-600" : ""}`}
           >
             <h3 className="text-lg font-semibold mb-2">Approved</h3>
@@ -125,7 +125,7 @@ function PendingApproval() {
           <div
             onClick={() => setSelectedView("rejected")}
             className={`p-6 rounded-xl shadow cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${
-              darkMode ? "bg-gray-800" : "bg-white"
+              darkMode ? "bg-gray-800" : "bg-slate-200"
             } ${selectedView === "rejected" ? "ring-2 ring-purple-600" : ""}`}
           >
             <h3 className="text-lg font-semibold mb-2">Rejected</h3>
@@ -138,7 +138,7 @@ function PendingApproval() {
         {/* Alumni Table */}
         <section
           className={`p-6 rounded-xl shadow ${
-            darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-800"
+            darkMode ? "bg-gray-800 text-white" : "bg-slate-200 text-gray-800"
           }`}
         >
           <h2 className="text-xl font-bold mb-5">

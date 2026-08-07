@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SelectList from "../components/SelectList";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { registerUser } from "../api/userApi";
+import logoImg from "../assets/gradbridge_logo.png";
 
 /**
  * Signup Component
- * Handles new user registration, role selection, and persists
- * the mock user data to local storage for authentication.
+ * Fully compatible with theme toggling (Light & Dark mode)
  */
 function Signup() {
   const navigate = useNavigate();
@@ -17,7 +17,6 @@ function Signup() {
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // Dynamically update form data based on input name attributes
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -41,9 +40,20 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
 
     if (!role) {
       setMessage("Please select a role to continue.");
+      return;
+    }
+
+    const password = formData.password || "";
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,16}$/;
+    
+    if (!passwordRegex.test(password)) {
+      setMessage(
+        "Password must be 8-16 characters, including a lowercase letter, uppercase letter, number, and symbol."
+      );
       return;
     }
 
@@ -55,11 +65,8 @@ function Signup() {
 
         ...(role === "alumni" && {
           name: `${formData.firstName || ""} ${formData.lastName || ""}`.trim(),
-
           faculty: formData.faculty,
-
           degree: formData.degree,
-
           alumniProfile: {
             NIC: formData.nic,
           },
@@ -67,11 +74,8 @@ function Signup() {
       };
 
       const data = await registerUser(submissionData);
-
       localStorage.setItem("token", data.token);
-
       localStorage.setItem("user", JSON.stringify(data));
-
       setMessage("Registration successful! Redirecting...");
 
       setTimeout(() => {
@@ -84,199 +88,217 @@ function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0f0d0b] py-10 px-4">
-      <div className="bg-[#24201D] w-full max-w-lg p-8 rounded-2xl shadow-xl border border-stone-800">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#F5F1EA] text-center">
-            GradBridge
-          </h1>
-          <h2 className="text-md text-center mt-1 text-[#B8B0A8]">
-            Student Mentorship & Alumni Network
-          </h2>
-        </div>
+    <div className="min-h-screen bg-slate-300 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 flex flex-col justify-between p-4 md:p-8 font-sans relative transition-colors duration-300">
+      {/* Top Left Back Button */}
+      <div className="absolute top-6 left-6">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-200 dark:bg-[#111622] hover:bg-slate-300 dark:hover:bg-[#161d2b] border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-semibold shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5"
+        >
+          <ArrowLeft size={16} className="text-sky-500" />
+          Back to Home
+        </Link>
+      </div>
 
-        <p className="text-lg font-semibold text-[#F5F1EA] mb-4">
-          Create Account
-        </p>
-
-        {/* Role Selection Tabs */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium text-stone-400 mb-2">
-            I am joining as an:
-          </label>
-          <div className="flex gap-3">
-            <button
-              type="button"
-              className={`flex-1 p-2.5 rounded-lg font-medium transition duration-200 ${
-                role === "student"
-                  ? "bg-[#7E8C54] text-white shadow-md"
-                  : "bg-[#312C28] text-[#B8B0A8] hover:bg-[#3f3833]"
-              }`}
-              onClick={() => setRole("student")}
-            >
-              Student
-            </button>
-            <button
-              type="button"
-              className={`flex-1 p-2.5 rounded-lg font-medium transition duration-200 ${
-                role === "alumni"
-                  ? "bg-[#7E8C54] text-white shadow-md"
-                  : "bg-[#312C28] text-[#B8B0A8] hover:bg-[#3f3833]"
-              }`}
-              onClick={() => setRole("alumni")}
-            >
-              Alumni
-            </button>
-          </div>
-        </div>
-
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          {/* Conditional rendering for Alumni-specific fields */}
-          {role === "alumni" && (
-            <>
-              <div className="flex gap-3">
-                <div className="flex-1 flex flex-col gap-1">
-                  <label htmlFor="firstName" className="text-sm text-stone-400">
-                    First Name
-                  </label>
-                  <input
-                    id="firstName"
-                    name="firstName"
-                    required
-                    className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
-                    placeholder="e.g. John"
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="flex-1 flex flex-col gap-1">
-                  <label htmlFor="lastName" className="text-sm text-stone-400">
-                    Last Name
-                  </label>
-                  <input
-                    id="lastName"
-                    name="lastName"
-                    required
-                    className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
-                    placeholder="e.g. Doe"
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label htmlFor="nic" className="text-sm text-stone-400">
-                  National Identity Card (NIC)
-                </label>
-                <input
-                  id="nic"
-                  name="nic"
-                  required
-                  className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
-                  placeholder="e.g. 199912345678"
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="text-sm text-stone-400">Faculty</label>
-                <SelectList
-                  options={faculties}
-                  handleChange={handleChange}
-                  name="faculty"
-                  placeholder="Select your faculty..."
-                  required
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label htmlFor="degree" className="text-sm text-stone-400">
-                  Degree{" "}
-                </label>
-                <input
-                  id="degree"
-                  name="degree"
-                  required
-                  className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
-                  placeholder="e.g. Bachelor of Science in ..."
-                  onChange={handleChange}
-                />
-              </div>
-            </>
-          )}
-
-          {/* Standard fields shown for all roles */}
-          <div className="flex flex-col gap-1 mt-2">
-            <label htmlFor="email" className="text-sm text-stone-400">
-              Email Address
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className="bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
-              placeholder="e.g. johndoe@example.com"
-              onChange={handleChange}
+      {/* Main Centered Card Container */}
+      <div className="flex-1 flex items-center justify-center py-12">
+        <div className="bg-slate-200 dark:bg-[#111622] w-full max-w-md p-8 rounded-2xl border border-slate-200 dark:border-sky-900/40 shadow-xl dark:shadow-2xl space-y-6 transition-colors">
+          {/* Logo Image Header only */}
+          <div className="flex flex-col items-center justify-center space-y-2">
+            <img
+              src={logoImg}
+              alt="GradBridge Logo"
+              className="h-14 w-auto object-contain"
             />
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Student Mentorship & Alumni Network
+            </p>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="password" className="text-sm text-stone-400">
-              Password
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white text-left pt-2">
+            Create Account
+          </h2>
+
+          {/* Role Selection Tabs */}
+          <div className="space-y-1.5 text-left">
+            <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+              I am joining as an:
             </label>
-
-            <div className="relative w-full">
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                required
-                className="w-full bg-[#312C28] border border-[#4A433E] text-stone-100 p-2.5 pr-10 rounded-lg placeholder:text-stone-600 focus:outline-none focus:border-[#7E8C54] focus:ring-1 focus:ring-[#7E8C54] transition"
-                placeholder="••••••••"
-                onChange={handleChange}
-              />
-
+            <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-200 transition-colors"
-                title={showPassword ? "Hide password" : "Show password"}
+                className={`py-2.5 rounded-xl text-xs font-medium transition duration-200 border ${
+                  role === "student"
+                    ? "bg-slate-200 dark:bg-[#172338] border-sky-500 text-sky-700 dark:text-sky-300 shadow-sm"
+                    : "bg-slate-300 dark:bg-[#161d2b] border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-[#1f2838]"
+                }`}
+                onClick={() => setRole("student")}
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                Student
+              </button>
+              <button
+                type="button"
+                className={`py-2.5 rounded-xl text-xs font-medium transition duration-200 border ${
+                  role === "alumni"
+                    ? "bg-slate-200 dark:bg-[#172338] border-sky-500 text-sky-700 dark:text-sky-300 shadow-sm"
+                    : "bg-slate-300 dark:bg-[#161d2b] border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-[#1f2838]"
+                }`}
+                onClick={() => setRole("alumni")}
+              >
+                Alumni
               </button>
             </div>
           </div>
 
-          {message && (
-            <p
-              className={`text-center mt-2 ${
-                message.includes("Please select")
-                  ? "text-red-400"
-                  : "text-[#7E8C54]"
-              }`}
+          <form className="space-y-4 text-left" onSubmit={handleSubmit}>
+            {/* Conditional fields for Alumni */}
+            {role === "alumni" && (
+              <>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label htmlFor="firstName" className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                      First Name
+                    </label>
+                    <input
+                      id="firstName"
+                      name="firstName"
+                      required
+                      className="w-full bg-slate-300 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800/90 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 rounded-xl text-sm placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition"
+                      placeholder="e.g. John"
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label htmlFor="lastName" className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                      Last Name
+                    </label>
+                    <input
+                      id="lastName"
+                      name="lastName"
+                      required
+                      className="w-full bg-slate-300 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800/90 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 rounded-xl text-sm placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition"
+                      placeholder="e.g. Doe"
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label htmlFor="nic" className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                    National Identity Card (NIC)
+                  </label>
+                  <input
+                    id="nic"
+                    name="nic"
+                    required
+                    className="w-full bg-slate-300 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800/90 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 rounded-xl text-sm placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition"
+                    placeholder="e.g. 199912345678"
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-slate-600 dark:text-slate-400">Faculty</label>
+                  <SelectList
+                    options={faculties}
+                    handleChange={handleChange}
+                    name="faculty"
+                    placeholder="Select your faculty..."
+                    required
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label htmlFor="degree" className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                    Degree
+                  </label>
+                  <input
+                    id="degree"
+                    name="degree"
+                    required
+                    className="w-full bg-slate-300 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800/90 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 rounded-xl text-sm placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition"
+                    placeholder="e.g. Bachelor of Science in ..."
+                    onChange={handleChange}
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Standard Email field */}
+            <div className="space-y-1">
+              <label htmlFor="email" className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                Email Address
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                className="w-full bg-slate-300 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800/90 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 rounded-xl text-sm placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition"
+                placeholder="e.g. johndoe@example.com"
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Standard Password field */}
+            <div className="space-y-1">
+              <label htmlFor="password" className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                Password
+              </label>
+
+              <div className="relative w-full">
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  className="w-full bg-slate-300 dark:bg-[#161d2b] border border-slate-200 dark:border-slate-800/90 text-slate-900 dark:text-slate-100 px-3.5 py-2.5 pr-10 rounded-xl text-sm placeholder:text-slate-400 dark:placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition"
+                  placeholder="••••••••"
+                  onChange={handleChange}
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+                  title={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+
+            {message && (
+              <p
+                className={`text-center text-xs pt-1 ${
+                  message === "Registration successful! Redirecting..."
+                    ? "text-emerald-600 dark:text-emerald-400"
+                    : "text-red-500 dark:text-red-400"
+                }`}
+              >
+                {message}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              className="w-full bg-sky-600 hover:bg-sky-700 text-white font-medium py-3 rounded-xl transition duration-200 shadow-lg shadow-sky-600/20 text-sm mt-2 cursor-pointer"
             >
-              {message}
+              Sign Up
+            </button>
+
+            <p className="text-center text-slate-600 dark:text-slate-400 text-xs pt-2">
+              Already have an account?{" "}
+              <Link
+                to="/signin"
+                className="text-sky-600 dark:text-sky-400 font-medium hover:underline"
+              >
+                Sign In
+              </Link>
             </p>
-          )}
-
-          <button
-            type="submit"
-            className="bg-[#7E8C54] hover:bg-[#8E9E84] text-white font-medium p-3 rounded-lg mt-4 transition duration-200"
-          >
-            Sign Up
-          </button>
-
-          <p className="text-center text-[#B8B0A8] mt-4 text-sm">
-            Already have an account?
-            <Link
-              to="/signin"
-              className="text-[#7E8C54] ml-2 font-medium hover:underline"
-            >
-              Sign In
-            </Link>
-          </p>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

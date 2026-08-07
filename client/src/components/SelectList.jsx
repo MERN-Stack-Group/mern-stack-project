@@ -61,7 +61,7 @@ export default function SelectList({
         name={name}
         value={inputValue}
         placeholder={placeholder}
-        className="w-full bg-[#312C28] border border-[#4A433E] text-stone-100 p-2 rounded-lg placeholder:text-stone-500 focus:outline-none focus:border-stone-400"
+        className="w-full bg-slate-200 dark:bg-[#111622] border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 p-2 rounded-lg placeholder:text-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-colors"
         onChange={(e) => {
           setInputValue(e.target.value);
           setIsOpen(true);
@@ -103,15 +103,15 @@ export default function SelectList({
 
       {/* Pop-down Menu */}
       {isOpen && (
-        <ul className="absolute left-0 w-full mt-2 overflow-auto border rounded-lg shadow-lg top-full max-h-60 bg-[#312C28] border-[#4A433E] z-50">
+        <ul className="absolute left-0 w-full mt-2 overflow-auto border border-slate-200 dark:border-slate-800 rounded-lg shadow-lg top-full max-h-60 bg-slate-200 dark:bg-[#111622] z-50">
           {filteredFaculties.length > 0 ? (
             filteredFaculties.map((option, index) => (
               <li
                 key={option}
-                className={`p-2 cursor-pointer text-stone-100 hover:bg-[#4A433E] transition-colors ${
+                className={`p-2 cursor-pointer text-slate-700 dark:text-slate-300 transition-colors ${
                   index === highlightedIndex
-                    ? "bg-[#4A433E]"
-                    : "hover:bg-[#4A433E]"
+                    ? "bg-slate-200 dark:bg-[#161d2b]"
+                    : "hover:bg-slate-300 dark:hover:bg-[#161d2b]"
                 }`}
                 onMouseDown={(e) => {
                   e.preventDefault(); // Stops input from losing focus before click registers
@@ -123,7 +123,7 @@ export default function SelectList({
               </li>
             ))
           ) : (
-            <li className="p-2 italic text-stone-500">No matching options</li>
+            <li className="p-2 italic text-slate-500 dark:text-slate-400">No matching options</li>
           )}
         </ul>
       )}

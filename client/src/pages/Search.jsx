@@ -8,13 +8,13 @@ import { getActiveOpportunities } from "../api/opportunityApi";
 
 // categoryType prop expects: "mentors", "students", "mentorships", or "opportunities"
 export default function Search({ categoryType = "mentors" }) {
-  const { token } = useAuth();
+  const { token, loading: authLoading } = useAuth();
 
   const [faculty, setFaculty] = useState("");
   const [search, setSearch] = useState("");
 
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   // Normalise the incoming prop to a canonical category name
@@ -55,6 +55,7 @@ export default function Search({ categoryType = "mentors" }) {
 
     return {
       _id: user._id,
+      itemType: "profile",
       name: user.name,
       imageUrl: user.profileImage || null,
       faculty: user.faculty,
@@ -75,6 +76,7 @@ export default function Search({ categoryType = "mentors" }) {
   const mapMentorshipToCard = (mentorship) => {
     return {
       _id: mentorship._id,
+      itemType: "mentorship",
       name: mentorship.title,
       description: mentorship.description,
       duration: mentorship.durationInWeeks + " weeks",
@@ -86,6 +88,7 @@ export default function Search({ categoryType = "mentors" }) {
   const mapOpportunityToCard = (opportunity) => {
     return {
       _id: opportunity._id,
+      itemType: "opportunity",
       name: opportunity.title,
       company: opportunity.companyName,
       location: opportunity.location,
@@ -124,8 +127,8 @@ export default function Search({ categoryType = "mentors" }) {
       }
     };
 
-    if (token) fetchData();
-  }, [currentCategory, token]);
+    if (token && !authLoading) fetchData();
+  }, [currentCategory, token, authLoading]);
 
   //  Client-side filtering on the fetched results
   const filtered = results.filter((item) => {
@@ -133,7 +136,10 @@ export default function Search({ categoryType = "mentors" }) {
       ?.toLowerCase()
       .includes(search.toLowerCase());
 
+    //a bandaid fix for filter faculty being applied to opportunties
+    //forces the faculty filter to not apply to opportunties
     const matchesFaculty =
+      currentCategory.includes("opportunities") ||
       faculty === "" ||
       (item.faculty ?? "").toLowerCase() === faculty.toLowerCase();
 
@@ -141,63 +147,112 @@ export default function Search({ categoryType = "mentors" }) {
   });
 
   return (
-    <div className="min-h-screen bg-[#051811] text-emerald-50 p-6 md:p-10 font-sans antialiased">
-      <h1 className="text-4xl font-bold text-center text-emerald-400 mb-10 tracking-tight">
+    <div className="min-h-screen bg-slate-300 dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 p-6 pb-24 md:p-10 font-sans antialiased transition-colors duration-300">
+      <h1 className="text-4xl font-bold text-center text-slate-900 dark:text-white mb-10 tracking-tight">
         Search {displayTitle}
       </h1>
 
-      <div className="max-w-4xl mx-auto bg-[#091D14] p-6 md:p-8 rounded-2xl border border-[#133826] shadow-xl">
-        {/* Search Bar */}
-        <div className="relative w-full group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-emerald-600 group-focus-within:text-emerald-400 transition-colors">
-            <SearchIcon size={20} />
+      <div className="max-w-4xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center gap-3 bg-slate-200 dark:bg-[#111622] p-2.5 rounded-3xl md:rounded-full border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl hover:shadow-sky-500/5 transition-all duration-300">
+          {/* Search Bar */}
+          <div className="relative w-full flex-1 group">
+            <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-sky-500 transition-colors">
+              <SearchIcon size={20} />
+            </div>
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={`Search ${currentCategory}...`}
+              className="w-full pl-12 pr-4 py-3 bg-slate-300 md:bg-transparent dark:bg-[#0b0f17] md:dark:bg-transparent rounded-2xl md:rounded-full text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none transition-colors"
+            />
           </div>
-          <input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={`Search ${currentCategory}...`}
-            className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-[#051811] border border-[#133826] text-emerald-50 placeholder-emerald-700 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-300 shadow-inner"
-          />
-        </div>
 
-        {/* Faculty Filter */}
-        <div className="mt-6">
-          <select
-            value={faculty}
-            onChange={(e) => setFaculty(e.target.value)}
-            className="w-full p-3.5 rounded-xl bg-[#051811] border border-[#133826] text-emerald-100 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all duration-300 cursor-pointer appearance-none"
-          >
-            <option value="">All Faculties</option>
-            {faculties.map((f) => (
-              <option key={f} value={f}>
-                {f}
-              </option>
-            ))}
-          </select>
-        </div>
+          {/* Divider (Desktop) */}
+          {!currentCategory.includes("opportunities") && (
+            <div className="hidden md:block w-px h-8 bg-slate-300 dark:bg-slate-800 mx-2"></div>
+          )}
 
-        {/* ── TODO: Add mentorship / opportunity-specific filters here ──────
-            When mentorships are implemented, add duration / seats filters.
-            When opportunities are implemented, add location / type filters.
-        ───────────────────────────────────────────────────────────────────── */}
+          {/* Faculty Filter */}
+          {!currentCategory.includes("opportunities") && (
+            <div className="w-full md:w-64 relative flex-shrink-0">
+              <select
+                value={faculty}
+                onChange={(e) => setFaculty(e.target.value)}
+                className="w-full pl-4 pr-10 py-3 bg-slate-300 md:bg-transparent dark:bg-[#0b0f17] md:dark:bg-transparent rounded-2xl md:rounded-full text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer appearance-none transition-colors"
+              >
+                <option value="" className="bg-slate-200 dark:bg-[#111622] text-slate-900 dark:text-slate-100">
+                  All Faculties
+                </option>
+                {faculties.map((f) => (
+                  <option key={f} value={f} className="bg-slate-200 dark:bg-[#111622] text-slate-900 dark:text-slate-100">
+                    {f}
+                  </option>
+                ))}
+              </select>
+              {/* Custom Dropdown Arrow */}
+              <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-slate-400">
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                  <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                </svg>
+              </div>
+            </div>
+          )}
+
+          {/* Search Button (Desktop) */}
+          <button className="hidden md:flex items-center justify-center bg-sky-600 hover:bg-slate-2000 text-white p-3.5 rounded-full transition-colors mr-1 shadow-md shadow-sky-600/20">
+            <SearchIcon size={18} />
+          </button>
+        </div>
       </div>
 
-      {/* Status messages */}
+      {/* Status messages & Loaders */}
       {loading && (
-        <p className="text-center text-emerald-500 mt-10 animate-pulse">
-          Loading {currentCategory}…
-        </p>
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="bg-slate-200 dark:bg-[#111622] p-6 rounded-2xl border border-slate-200 dark:border-slate-800 h-[180px] animate-pulse flex flex-col gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-slate-300 dark:bg-slate-800"></div>
+                <div className="flex-1 space-y-3">
+                  <div className="h-4 bg-slate-300 dark:bg-slate-800 rounded w-3/4"></div>
+                  <div className="h-3 bg-slate-300 dark:bg-slate-800 rounded w-1/2"></div>
+                </div>
+              </div>
+              <div className="mt-auto flex gap-2">
+                 <div className="h-6 bg-slate-300 dark:bg-slate-800 rounded w-20"></div>
+                 <div className="h-6 bg-slate-300 dark:bg-slate-800 rounded w-16"></div>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
-      {error && <p className="text-center text-red-400 mt-10">{error}</p>}
+      
+      {error && (
+        <div className="flex flex-col items-center justify-center mt-20 text-center">
+           <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 text-red-500 rounded-full flex items-center justify-center mb-4">
+             <span className="text-3xl font-bold">!</span>
+           </div>
+           <p className="text-red-500 font-medium">{error}</p>
+        </div>
+      )}
 
       {/* Results Grid */}
       {!loading && !error && (
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+        <div className="max-w-6xl mx-auto mt-12">
           {filtered.length > 0 ? (
-            filtered.map((item) => <SearchCard key={item._id} item={item} />)
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filtered.map((item) => (
+                <SearchCard key={item._id} item={item} />
+              ))}
+            </div>
           ) : (
-            <div className="col-span-full text-center text-emerald-700 py-10">
-              No results found matching your criteria.
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="w-24 h-24 bg-slate-200 dark:bg-[#111622] border border-slate-200 dark:border-slate-800 rounded-full flex items-center justify-center mb-6 shadow-inner">
+                <SearchIcon size={40} className="text-slate-400 dark:text-slate-600" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">No results found</h3>
+              <p className="text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+                We couldn't find anything matching "{search}". Try adjusting your filters or search terms.
+              </p>
             </div>
           )}
         </div>

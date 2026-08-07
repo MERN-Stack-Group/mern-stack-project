@@ -1,52 +1,50 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import {
-  Search,
-  UserCircle,
-  LogOut,
-  Home,
-  LogIn,
-  Zap,
-  icons,
   Compass,
   Users,
   Briefcase,
-  Bookmark,
   GraduationCap,
   LayoutDashboard,
+  UserCircle,
+  LogOut,
+  LogIn,
+  Zap,
+  Sun,
+  Moon,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-
 import { useAuth } from "../hooks/AuthContext";
+import { useTheme } from "../hooks/ThemeContext";
+import logoImg from "../assets/gradbridge_logo.png";
 
 export const Navbar = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
+  const { darkMode, setDarkMode } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleLogout = () => {
-    // TODO: clear tokens/session data if needed before redirect
-    navigate("/");
+    if (window.confirm("Are you sure you want to logout?")) {
+      logout();
+      navigate("/");
+    }
   };
 
   const hideOnRoutes = ["/signin", "/signup"];
 
-  // hide nav entirely on auth pages
   if (hideOnRoutes.includes(location.pathname)) {
     return null;
   }
 
-  // empty placeholder to prevent layout shift while checking auth
-  if (loading) return <div className="h-16 bg-[#4A044E] w-full"></div>;
+  if (loading)
+    return <div className="h-16 bg-slate-200 dark:bg-[#080b11] w-full"></div>;
 
-  // build route config based on user role
   const navLinks = user
     ? [
         { label: "Mentors", to: "/search/mentors", icon: Compass },
         { label: "Mentorships", to: "/search/mentorships", icon: Users },
         { label: "Opportunities", to: "/search/opportunites", icon: Briefcase },
         { label: "Students", to: "/search/students", icon: GraduationCap },
-        ...(user?.role.includes("alumni")
+        ...(user?.role?.includes("alumni")
           ? [
               {
                 label: "Dashboard",
@@ -57,33 +55,50 @@ export const Navbar = () => {
           : []),
       ]
     : [
-        { label: "Sign In", to: "/signin", icon: LogIn },
-        { label: "Get Started", to: "/signup", icon: Zap },
+        { label: "Sign In", to: "/signin", icon: LogIn, isButton: false },
+        { label: "Get Started", to: "/signup", icon: Zap, isButton: true },
       ];
 
   return (
     <>
-      {/* --- Desktop Nav --- */}
-      <nav className="bg-[#4A044E] px-4 md:px-6 py-3 md:py-4 shadow-md w-full sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link to="/" className="flex-shrink-0">
-            <span className="text-xl font-bold text-white tracking-widest cursor-pointer">
-              LOGO
-            </span>
+      {/* Desktop Nav */}
+      <nav className="bg-slate-200/90 dark:bg-[#0b0f17]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 px-6 py-3.5 sticky top-0 z-50 w-full transition-colors">
+        <div className="max-w-7xl mx-auto flex items-center justify-between w-full">
+          {/* Logo */}
+          <Link to="/" className="flex items-center group">
+            <img
+              src={logoImg}
+              alt="GradBridge Logo"
+              className="h-12 w-auto object-contain hover:scale-105 transition"
+            />
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          {/* Centered Nav Links (Desktop) */}
+          <div className="hidden lg:flex flex-1 items-center justify-center gap-6">
             {navLinks.map((link, index) => {
               const Icon = link.icon;
+              if (link.isButton) {
+                return (
+                  <Link
+                    key={index}
+                    to={link.to}
+                    className="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition duration-200 shadow-md shadow-sky-600/20"
+                  >
+                    <Icon size={18} />
+                    {link.label}
+                  </Link>
+                );
+              }
+
               return (
                 <NavLink
                   key={index}
                   to={link.to}
                   className={({ isActive }) =>
-                    `flex items-center gap-2 pb-1 border-b-2 transition-colors ${
+                    `inline-flex items-center gap-2 text-sm font-bold px-4 py-2.5 rounded-xl transition-colors ${
                       isActive
-                        ? "text-white border-white font-semibold"
-                        : "text-purple-200 border-transparent hover:text-white"
+                        ? "text-sky-600 dark:text-sky-400 bg-slate-200 dark:bg-sky-950/40"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800/40"
                     }`
                   }
                 >
@@ -94,36 +109,60 @@ export const Navbar = () => {
             })}
           </div>
 
-          {user && (
-            <div className="flex items-center gap-2 md:gap-4 md:border-l md:border-purple-800 md:pl-6">
-              <Link
-                to="/profile"
-                className="p-2 rounded-full text-purple-200 hover:bg-[#6B116E] hover:text-white transition-colors"
-                title="Profile"
-              >
-                <UserCircle size={24} strokeWidth={2} />
-              </Link>
+          {/* Right Actions */}
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle Button */}
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="p-2.5 rounded-xl text-amber-500 dark:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 transition cursor-pointer"
+              title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
 
-              <button
-                className="p-2 rounded-full text-purple-200 hover:bg-[#6B116E] hover:text-white transition-colors"
-                title="Logout"
-                onClick={handleLogout}
-              >
-                <LogOut size={24} strokeWidth={2} />
-              </button>
-            </div>
-          )}
+            {user && (
+              <div className="flex items-center gap-2 border-l border-slate-300 dark:border-slate-800 pl-4 ml-1">
+                <Link
+                  to="/profile"
+                  className="p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-800/60 transition"
+                  title="Profile"
+                >
+                  <UserCircle size={22} />
+                </Link>
+
+                <button
+                  className="p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 transition cursor-pointer"
+                  title="Logout"
+                  onClick={handleLogout}
+                >
+                  <LogOut size={22} />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
 
-      {/* --- Mobile Bottom Nav --- */}
-      <nav className="md:hidden fixed bottom-0 left-0 w-full bg-[#4A044E] shadow-[0_-4px_10px_rgba(0,0,0,0.2)] z-50 flex justify-around items-center h-16 px-2 border-t border-[#6B116E]">
+      {/* Mobile Nav */}
+      <nav className="lg:hidden fixed bottom-0 left-0 w-full bg-slate-200 dark:bg-[#0b0f17] border-t border-slate-200 dark:border-slate-800 z-50 flex justify-around items-center h-14 px-2">
         {navLinks.map((link, index) => {
           const Icon = link.icon;
-
           return (
-            <NavLink key={index} to={link.to} className="text-purple-200">
-              <Icon size={22} />
+            <NavLink
+              key={index}
+              to={link.to}
+              className={({ isActive }) =>
+                `flex flex-col items-center justify-center gap-1 ${
+                  isActive
+                    ? "text-sky-600 dark:text-sky-400"
+                    : "text-slate-500 dark:text-slate-400"
+                }`
+              }
+            >
+              <Icon size={20} />
+              <span className="text-[10px] font-medium leading-none">
+                {link.label}
+              </span>
             </NavLink>
           );
         })}

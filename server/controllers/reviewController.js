@@ -54,9 +54,44 @@ const getMentorReviews = async (req, res) => {
         const reviews = await Review.find({ mentor: mentorId })
             .sort({ createdAt: -1 })
             .populate('reviewer', 'name profileImage') // Get student details
-            .populate('mentorship', 'durationInWeeks'); // Get context about the program
+            .populate('mentorship', 'title durationInWeeks'); // Get context about the program
 
         res.json(reviews);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Get all reviews for a specific mentorship
+// @route   GET /api/reviews/mentorship/:mentorshipId
+// @access  Public
+const getMentorshipReviews = async (req, res) => {
+    try {
+        const mentorshipId = req.params.mentorshipId;
+        const reviews = await Review.find({ mentorship: mentorshipId })
+            .sort({ createdAt: -1 })
+            .populate('reviewer', 'name profileImage');
+        
+        res.json(reviews);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Get the logged-in user's review for a specific mentorship
+// @route   GET /api/reviews/mentorship/:mentorshipId/my-review
+// @access  Private
+const getMyReviewForMentorship = async (req, res) => {
+    try {
+        const mentorshipId = req.params.mentorshipId;
+        const reviewerId = req.user._id;
+
+        const review = await Review.findOne({
+            mentorship: mentorshipId,
+            reviewer: reviewerId,
+        });
+
+        res.json(review || null);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -119,6 +154,8 @@ const deleteReview = async (req, res) => {
 module.exports = { 
     createReview, 
     getMentorReviews,
+    getMentorshipReviews,
+    getMyReviewForMentorship,
     updateReview,
     deleteReview
 };

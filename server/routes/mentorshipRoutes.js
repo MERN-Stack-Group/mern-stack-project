@@ -9,8 +9,12 @@ const {
   getMentorshipById,
   getAlumniMentorships,
   getUserMentorships,
+  getAllMentorshipsAdmin,
 } = require("../controllers/mentorshipController");
 const { protect } = require("../middleware/authMiddleware");
+
+// GET /api/mentorships/admin/all
+router.get("/admin/all", getAllMentorshipsAdmin);
 
 // GET /api/mentorships            all mentorships
 // GET /api/mentorships?stage=...  filtered by stage

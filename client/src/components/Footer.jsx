@@ -4,7 +4,15 @@ import logoImg from "../assets/gradbridge_logo.png";
 
 function Footer() {
   const location = useLocation();
-  const hiddenRoutes = ["/signin", "/signup", "/pending-approval"];
+  const hiddenRoutes = [
+    "/signin",
+    "/signup",
+    "/pending-approval",
+    "/admin-login",
+    "/account-management",
+    "/mentorship-monitor",
+    "/admin-dashboard",
+  ];
 
   if (hiddenRoutes.includes(location.pathname)) {
     return null;

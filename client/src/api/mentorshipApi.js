@@ -18,6 +18,14 @@ export const getMentorships = async (token, stage = "enrollment") => {
   return handleResponse(response);
 };
 
+// Admin route to get all mentorships unprotected
+export const getAllMentorshipsAdmin = async () => {
+  const response = await fetch(`${API_URL}/admin/all`, {
+    method: "GET",
+  });
+  return handleResponse(response);
+};
+
 // Get mentorships belonging to the logged-in alumni
 export const getMyMentorships = async (token) => {
   const response = await fetch(`${API_URL}/alumni/my-programs`, {

@@ -48,6 +48,9 @@ function AccountManagement() {
   const [roleFilter, setRoleFilter] = useState("All");
 
   const toggleSuspendUser = async (id, currentStatus) => {
+    const action = currentStatus === "Active" ? "suspend" : "reactivate";
+    if (!window.confirm(`Are you sure you want to ${action} this user?`)) return;
+    
     try {
       if (currentStatus === "Active") {
         await suspendAlumniRequest(id);
@@ -87,93 +90,79 @@ function AccountManagement() {
 
   return (
   <div className="flex">
-
     <AdminSidebar />
+    <div className="flex-1 min-h-screen bg-[#0b0f17] text-slate-200 p-10">
 
-    <div className="flex-1 min-h-screen bg-gray-100 p-10">
-
-      <h1 className="text-3xl font-bold text-gray-800 mb-2">
+      <h1 className="text-3xl font-bold text-white mb-2">
         Account Management
       </h1>
 
-      <p className="text-gray-600 mb-6">
+      <p className="text-slate-400 mb-6">
         Manage user accounts, suspend and delete accounts.
       </p>
 
        <div className="mb-6 flex items-center gap-3">
-
   {/* Search Box */}
   <input
     type="text"
-    placeholder="🔍 Search users..."
+    placeholder="Search users..."
     value={search}
     onChange={(e) => setSearch(e.target.value)}
-    className="w-80 px-4 py-2 border border-gray-300 rounded-lg text-gray-800 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    className="w-80 px-4 py-2 border border-slate-700 rounded-lg text-slate-200 bg-[#111622] placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
   />
 
   {/* Filter Buttons */}
 
 <div className="flex items-center gap-2">
-
-  <span className="text-gray-700 font-medium">
+  <span className="text-slate-400 font-medium">
     Filter:
   </span>
 
   <div className="flex gap-2">
-
     <button
-  onClick={() => setRoleFilter("All")}
-  className={`px-4 py-2 rounded-lg font-medium transition ${
-    roleFilter === "All"
-      ? "bg-blue-600 text-white shadow-md"
-      : "bg-white text-gray-700 border border-gray-300"
-   }`}
-   >
-  All
+      onClick={() => setRoleFilter("All")}
+      className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+        roleFilter === "All"
+          ? "bg-sky-600 text-white shadow-md border border-sky-500"
+          : "bg-[#111622] text-slate-400 border border-slate-700 hover:border-slate-600 hover:text-slate-300"
+      }`}
+    >
+      All
     </button>
-<button
-  onClick={() => setRoleFilter("Student")}
-  className={`px-4 py-2 rounded-lg font-medium transition ${
-    roleFilter === "Student"
-      ? "bg-green-600 text-white shadow-md"
-      : "bg-white text-gray-700 border border-gray-300"
-  }`}
->
-  Students
-</button>
-
     <button
-  onClick={() => setRoleFilter("Alumni")}
-  className={`px-4 py-2 rounded-lg font-medium transition ${
-    roleFilter === "Alumni"
-      ? "bg-purple-600 text-white shadow-md"
-      : "bg-white text-gray-700 border border-gray-300"
-  }`}
->
-  Alumni
-</button>
-
+      onClick={() => setRoleFilter("Student")}
+      className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+        roleFilter === "Student"
+          ? "bg-sky-600 text-white shadow-md border border-sky-500"
+          : "bg-[#111622] text-slate-400 border border-slate-700 hover:border-slate-600 hover:text-slate-300"
+      }`}
+    >
+      Students
+    </button>
+    <button
+      onClick={() => setRoleFilter("Alumni")}
+      className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+        roleFilter === "Alumni"
+          ? "bg-sky-600 text-white shadow-md border border-sky-500"
+          : "bg-[#111622] text-slate-400 border border-slate-700 hover:border-slate-600 hover:text-slate-300"
+      }`}
+    >
+      Alumni
+    </button>
   </div>
-
 </div>
 </div>
-
  
-
-      <div className="bg-white rounded-xl shadow-md overflow-hidden">
-
+      <div className="bg-[#111622] rounded-xl shadow-md overflow-hidden border border-slate-800">
         <table className="w-full text-left">
-
-          <thead className="bg-gray-200 text-gray-700">
-
+          <thead className="bg-slate-800 text-slate-300">
             <tr>
-              <th className="p-4">Name</th>
-              <th className="p-4">Email</th>
-              <th className="p-4">Role</th>
-              <th className="p-4">Status</th>
-              <th className="p-4">Action</th>
+              <th className="p-4 font-semibold">Name</th>
+              <th className="p-4 font-semibold">Email</th>
+              <th className="p-4 font-semibold">Role</th>
+              <th className="p-4 font-semibold">Status</th>
+              <th className="p-4 font-semibold">Action</th>
             </tr>
-
           </thead>
 
 
@@ -194,37 +183,28 @@ function AccountManagement() {
 
               <tr
                 key={user.id}
-                className="border-b text-gray-800"
+                className="border-b border-slate-800 text-slate-300 hover:bg-slate-800/50 transition-colors"
               >
-
                 <td className="p-4">
                   {user.name}
                 </td>
-
-
                 <td className="p-4">
                   {user.email}
                 </td>
-
-
                 <td className="p-4">
                   {user.role}
                 </td>
-
-
                 <td className="p-4">
                   <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${
+                    className={`px-2 py-1 rounded text-xs font-medium ${
                       user.status === "Active"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
+                        ? "bg-emerald-500/20 text-emerald-400"
+                        : "bg-red-500/20 text-red-400"
                     }`}
                   >
                     {user.status}
                   </span>
                 </td>
-
-
                 <td className="p-4 space-x-2">
                   {user.role !== "Student" && (
                     <>
@@ -232,23 +212,22 @@ function AccountManagement() {
                         onClick={() => toggleSuspendUser(user.id, user.status)}
                         className={`${
                          user.status === "Active"
-                           ? "bg-yellow-500 hover:bg-yellow-600"
-                            : "bg-green-500 hover:bg-green-600"
-                        } text-white px-3 py-2 rounded-lg`}
+                           ? "bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border-amber-500/20"
+                            : "bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border-emerald-500/20"
+                        } border px-3 py-2 rounded-lg text-sm font-medium transition-colors`}
                       >
                        {user.status === "Active" ? "Suspend" : "Reactivate"}
                       </button>
 
                       <button
                         onClick={() => deleteUser(user.id)}
-                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg"
+                        className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
                       >
                         Delete
                       </button>
                     </>
                   )}
                 </td>
-
               </tr>
 
             ))}

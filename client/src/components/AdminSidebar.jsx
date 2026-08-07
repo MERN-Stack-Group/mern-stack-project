@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
+import { LayoutDashboard, Clock, Users, UserCog, LogOut } from "lucide-react";
 
 function AdminSidebar() {
 
   const navigate = useNavigate();
 
   return (
-    <div className="w-64 h-screen bg-slate-800 text-white p-5">
+    <div className="w-64 h-screen bg-[#0b0f17] border-r border-slate-800 text-slate-200 p-5">
 
-      <h1 className="text-2xl font-bold mb-8">
+      <h1 className="text-2xl font-bold mb-8 text-white">
         Admin Panel
       </h1>
 
@@ -15,30 +16,30 @@ function AdminSidebar() {
 
         <li
           onClick={() => navigate("/admin-dashboard")}
-          className="cursor-pointer hover:text-yellow-300"
+          className="cursor-pointer hover:text-sky-400 transition-colors flex items-center gap-3"
         >
-          🏠 Dashboard
+          <LayoutDashboard size={20} /> Dashboard
         </li>
 
         <li
           onClick={() => navigate("/pending-approval")}
-          className="cursor-pointer hover:text-yellow-300"
+          className="cursor-pointer hover:text-sky-400 transition-colors flex items-center gap-3"
         >
-          ⏳ Pending Approval
+          <Clock size={20} /> Pending Approval
         </li>
         
         <li
         onClick={() => navigate("/mentorship-monitor")}
-         className="cursor-pointer hover:text-yellow-300"
+         className="cursor-pointer hover:text-sky-400 transition-colors flex items-center gap-3"
         >
-         🤝 Mentorship Monitor
+         <Users size={20} /> Mentorship Monitor
         </li>
 
         <li
         onClick={() => navigate("/account-management")}
-        className="cursor-pointer hover:text-yellow-300"
+        className="cursor-pointer hover:text-sky-400 transition-colors flex items-center gap-3"
         >
-        👤 Account Management
+        <UserCog size={20} /> Account Management
         </li>
 
         <li
@@ -46,9 +47,9 @@ function AdminSidebar() {
             localStorage.removeItem("adminLogin");
             navigate("/admin-login");
           }}
-          className="cursor-pointer hover:text-red-300"
+          className="cursor-pointer hover:text-red-400 transition-colors mt-8 pt-4 border-t border-slate-800 flex items-center gap-3"
         >
-          🚪 Logout
+          <LogOut size={20} /> Logout
         </li>
 
       </ul>

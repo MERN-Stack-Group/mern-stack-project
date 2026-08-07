@@ -235,6 +235,21 @@ const getUserMentorships = async (req, res) => {
   }
 };
 
+// @desc    Get all mentorships (Admin)
+// @route   GET /api/mentorships/admin/all
+// @access  Public (Admin Demo)
+const getAllMentorshipsAdmin = async (req, res) => {
+  try {
+    const mentorships = await Mentorship.find().populate(
+        "alumni",
+        "name email role faculty alumniProfile"
+    );
+    res.json(mentorships);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createMentorship,
   deleteMentorship,
@@ -244,4 +259,5 @@ module.exports = {
   getMentorshipById,
   getAlumniMentorships,
   getUserMentorships,
+  getAllMentorshipsAdmin,
 };

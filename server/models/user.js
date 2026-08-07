@@ -29,13 +29,11 @@ const userSchema = new mongoose.Schema(
 
     about: {
       type: String,
-      required: true,
       trim: true,
     },
 
     tags: {
       type: [String],
-      required: true,
       trim: true,
     },
 
@@ -51,18 +49,22 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
 
-    roles: [
+    role: [
       {
         type: String,
         required: true,
         enum: ["student", "alumni"],
       },
     ],
-    //Only populated for student type user
+    
+    // Sub-document for active student metrics. Null/empty for alumni-only accounts.
     studentProfile: {
       StudentId: {
         type: String,
         unique: true,
+        // Sparse index allows multiple alumni to have an undefined StudentId 
+        // without violating the unique constraint.
+        sparse: true,
         trim: true,
       },
       year: {
@@ -70,14 +72,14 @@ const userSchema = new mongoose.Schema(
       },
     },
 
-    //only populated for alumni user type
+    // Sub-document for post-graduate networking. Null/empty for student-only accounts.
     alumniProfile: {
-      degree: {
+      NIC: {
         type: String,
-        trim: true,
-      },
-      faculty: {
-        type: String,
+        unique: true,
+        // Sparse is critical here. It permits student accounts to exist 
+        // without an NIC while still enforcing uniqueness among actual alumni.
+        sparse: true, 
         trim: true,
       },
       employment: {
@@ -95,7 +97,7 @@ const userSchema = new mongoose.Schema(
         },
       },
     },
-  },
+  },    
   { timestamps: true },
 );
 

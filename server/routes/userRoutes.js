@@ -8,6 +8,12 @@ const {
   updateUserProfile,
   updateProfileImage,
   getUsersByRole,
+  getAlumniApprovals,
+  approveAlumni,
+  rejectAlumni,
+  getAllUsersAdmin,
+  deleteUserAdmin,
+  suspendAlumni,
 } = require("../controllers/userController");
 const upload = require("../middleware/upload");
 
@@ -33,5 +39,14 @@ router.put(
 router.get("/profile/:userId", protect, getUserProfileById);
 
 router.get("/", protect, getUsersByRole);
+
+// Admin Routes (Unprotected for local demo auth)
+router.get("/admin/alumni", getAlumniApprovals);
+router.put("/admin/approve/:id", approveAlumni);
+router.put("/admin/reject/:id", rejectAlumni);
+
+router.get("/admin/users", getAllUsersAdmin);
+router.put("/admin/suspend/:id", suspendAlumni);
+router.delete("/admin/delete/:id", deleteUserAdmin);
 
 module.exports = router;

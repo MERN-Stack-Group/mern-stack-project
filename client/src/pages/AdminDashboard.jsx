@@ -1,7 +1,60 @@
 import AdminSidebar from "../components/AdminSidebar";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { getAllAlumni } from "../api/userApi";
+import LoadingScreen, { useMinLoading } from "../components/LoadingScreen";
+
 function AdminDashboard() {
     const navigate = useNavigate();
+    const [stats, setStats] = useState({
+      total: 0,
+      pending: 0,
+      approved: 0,
+      rejected: 0,
+    });
+    
+    const [loading, setLoading] = useState(true);
+    const showLoading = useMinLoading(loading);
+
+    useEffect(() => {
+      const fetchStats = async () => {
+        try {
+          const data = await getAllAlumni();
+          
+          let pending = 0;
+          let approved = 0;
+          let rejected = 0;
+
+          data.forEach(user => {
+            const profile = user.alumniProfile || {};
+            if (profile.approved) {
+              approved++;
+            } else if (profile.rejected) {
+              rejected++;
+            } else {
+              pending++;
+            }
+          });
+
+          setStats({
+            total: data.length,
+            pending,
+            approved,
+            rejected
+          });
+        } catch (error) {
+          console.error("Failed to fetch admin stats:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchStats();
+    }, []);
+
+    if (showLoading) {
+      return <LoadingScreen fullScreen={true} message="Loading Dashboard..." />;
+    }
 
    return (
   <div className="flex">
@@ -25,32 +78,31 @@ function AdminDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
         <div className="bg-white p-6 rounded-xl shadow-md border hover:shadow-lg transition">
-          <h2 className="text-gray-500">Total Users</h2>
+          <h2 className="text-gray-500">Total Alumni</h2>
           <p className="text-3xl font-bold text-gray-800">
-             100
-        </p>
+             {stats.total}
+          </p>
         </div>
 
         <div className="bg-white p-6 rounded-xl shadow-md border hover:shadow-lg transition">
           <h2 className="text-gray-500">Pending Requests</h2>
           <p className="text-3xl font-bold text-gray-800">
-            20
-            </p>
-          
+             {stats.pending}
+          </p>
         </div>
 
         <div className="bg-white p-6 rounded-xl shadow-md border hover:shadow-lg transition">
-          <h2 className="text-gray-500">Approved Users</h2>
+          <h2 className="text-gray-500">Approved Alumni</h2>
           <p className="text-3xl font-bold text-gray-800">
-             70
-            </p>
+             {stats.approved}
+          </p>
         </div>
 
         <div className="bg-white p-6 rounded-xl shadow-md border hover:shadow-lg transition">
-          <h2 className="text-gray-500">Rejected Users</h2>
+          <h2 className="text-gray-500">Rejected Alumni</h2>
           <p className="text-3xl font-bold text-gray-800">
-             10
-        </p>
+             {stats.rejected}
+          </p>
         </div>
 
       </div>

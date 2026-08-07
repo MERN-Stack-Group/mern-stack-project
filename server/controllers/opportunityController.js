@@ -1,5 +1,19 @@
 const Opportunity = require("../models/opportunity");
 
+//helper
+const filterUnapprovedAlumni = (items) => {
+  return items.filter(item => {
+    if (item.status === 'deleted') return true;
+    const user = item.postedBy;
+    if (user && user.role && user.role.includes('alumni')) {
+      if (!user.alumniProfile || !user.alumniProfile.approved) {
+        return false;
+      }
+    }
+    return true;
+  });
+};
+
 // @desc    Create a new opportunity
 // @route   POST /api/opportunities
 // @access  Private
@@ -52,9 +66,9 @@ const getActiveOpportunities = async (req, res) => {
   try {
     const opportunities = await Opportunity.find({ status: "active" })
       .sort({ createdAt: -1 })
-      .populate("postedBy", "name email role faculty");
+      .populate("postedBy", "name email role faculty alumniProfile");
 
-    res.json(opportunities);
+    res.json(filterUnapprovedAlumni(opportunities));
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -148,11 +162,18 @@ const getOpportunityById = async (req, res) => {
   try {
     const opportunity = await Opportunity.findById(req.params.id).populate(
       "postedBy",
-      "name email profileImage faculty degree"
+      "name email profileImage faculty degree role alumniProfile"
     );
 
     if (!opportunity) {
       return res.status(404).json({ message: "Opportunity not found" });
+    }
+
+    if (opportunity.status !== 'deleted') {
+      const user = opportunity.postedBy;
+      if (user && user.role && user.role.includes('alumni') && (!user.alumniProfile || !user.alumniProfile.approved)) {
+        return res.status(404).json({ message: "Opportunity not found" });
+      }
     }
 
     res.json(opportunity);

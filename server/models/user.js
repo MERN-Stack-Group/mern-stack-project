@@ -56,13 +56,13 @@ const userSchema = new mongoose.Schema(
         enum: ["student", "alumni"],
       },
     ],
-    
+
     // Sub-document for active student metrics. Null/empty for alumni-only accounts.
     studentProfile: {
       StudentId: {
         type: String,
         unique: true,
-        // Sparse index allows multiple alumni to have an undefined StudentId 
+        // Sparse index allows multiple alumni to have an undefined StudentId
         // without violating the unique constraint.
         sparse: true,
         trim: true,
@@ -77,10 +77,20 @@ const userSchema = new mongoose.Schema(
       NIC: {
         type: String,
         unique: true,
-        // Sparse is critical here. It permits student accounts to exist 
+        // Sparse is critical here. It permits student accounts to exist
         // without an NIC while still enforcing uniqueness among actual alumni.
-        sparse: true, 
+        sparse: true,
         trim: true,
+      },
+      approved: {
+        type: Boolean,
+        default: false,
+        sparse: true,
+      },
+      rejected: {
+        type: Boolean,
+        default: false,
+        sparse: true,
       },
       employment: {
         jobTitle: {
@@ -97,7 +107,7 @@ const userSchema = new mongoose.Schema(
         },
       },
     },
-  },    
+  },
   { timestamps: true },
 );
 

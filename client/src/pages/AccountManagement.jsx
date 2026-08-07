@@ -1,58 +1,88 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminSidebar from "../components/AdminSidebar";
+import { getAllUsers, suspendAlumniRequest, approveAlumniRequest, deleteUserRequest } from "../api/userApi";
+import LoadingScreen, { useMinLoading } from "../components/LoadingScreen";
 
 function AccountManagement() {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const showLoading = useMinLoading(loading);
 
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "Kasun Perera",
-      email: "kasun@gmail.com",
-      role: "Alumni",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Nimali Silva",
-      email: "nimali@gmail.com",
-      role: "Student",
-      status: "Active",
-    },
-    {
-      id: 3,
-      name: "Amal Fernando",
-      email: "amal@gmail.com",
-      role: "Alumni",
-      status: "Active",
-    },
-  ]);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const data = await getAllUsers();
+        const formattedUsers = data.map(user => {
+          // Determine Primary Role for display
+          let displayRole = "Unknown";
+          if (user.role && user.role.includes("student")) displayRole = "Student";
+          else if (user.role && user.role.includes("alumni")) displayRole = "Alumni";
+
+          // Determine Status
+          let status = "Active";
+          if (displayRole === "Alumni" && user.alumniProfile) {
+            if (user.alumniProfile.rejected) status = "Rejected";
+            else if (!user.alumniProfile.approved) status = "Suspended";
+          }
+
+          return {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: displayRole,
+            status: status,
+          };
+        });
+        setUsers(formattedUsers);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const [search, setSearch] = useState("");
 
   const [roleFilter, setRoleFilter] = useState("All");
 
-  const toggleSuspendUser = (id) => {
-  setUsers(
-    users.map((user) =>
-      user.id === id
-        ? {
-            ...user,
-            status:
-              user.status === "Active"
-                ? "Suspended"
-                : "Active",
-          }
-        : user
-    )
-  );
-};
-
-
-  const deleteUser = (id) => {
-    setUsers(
-      users.filter((user) => user.id !== id)
-    );
+  const toggleSuspendUser = async (id, currentStatus) => {
+    try {
+      if (currentStatus === "Active") {
+        await suspendAlumniRequest(id);
+      } else {
+        await approveAlumniRequest(id);
+      }
+      
+      setUsers(
+        users.map((user) =>
+          user.id === id
+            ? {
+                ...user,
+                status: currentStatus === "Active" ? "Suspended" : "Active",
+              }
+            : user
+        )
+      );
+    } catch (error) {
+      alert("Failed to update status");
+    }
   };
+
+  const deleteUser = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
+    try {
+      await deleteUserRequest(id);
+      setUsers(users.filter((user) => user.id !== id));
+    } catch (error) {
+      alert("Failed to delete user");
+    }
+  };
+
+  if (showLoading) {
+    return <LoadingScreen fullScreen={true} message="Loading Accounts..." />;
+  }
 
 
   return (
@@ -196,28 +226,27 @@ function AccountManagement() {
 
 
                 <td className="p-4 space-x-2">
+                  {user.role !== "Student" && (
+                    <>
+                      <button
+                        onClick={() => toggleSuspendUser(user.id, user.status)}
+                        className={`${
+                         user.status === "Active"
+                           ? "bg-yellow-500 hover:bg-yellow-600"
+                            : "bg-green-500 hover:bg-green-600"
+                        } text-white px-3 py-2 rounded-lg`}
+                      >
+                       {user.status === "Active" ? "Suspend" : "Reactivate"}
+                      </button>
 
-                  <button
-                  onClick={() => toggleSuspendUser(user.id)}
-                  className={`${
-                   user.status === "Active"
-                     ? "bg-yellow-500 hover:bg-yellow-600"
-                      : "bg-green-500 hover:bg-green-600"
-                  } text-white px-3 py-2 rounded-lg`}
-                  >
-                 {user.status === "Active"
-                   ? "Suspend"
-                   : "Reactivate"}
-                  </button>
-
-
-                  <button
-                    onClick={() => deleteUser(user.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg"
-                  >
-                    Delete
-                  </button>
-
+                      <button
+                        onClick={() => deleteUser(user.id)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg"
+                      >
+                        Delete
+                      </button>
+                    </>
+                  )}
                 </td>
 
               </tr>

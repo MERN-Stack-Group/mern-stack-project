@@ -4,7 +4,7 @@ import MentorshipProgramCard from "../components/MentorshipProgramCard";
 import CompletedProgramCard from "../components/CompletedProgramCard";
 import CreatePostForm from "../components/CreatePostForm";
 import ReviewCard from "../components/ReviewCard";
-import LoadingScreen from "../components/LoadingScreen";
+import LoadingScreen, { useMinLoading } from "../components/LoadingScreen";
 import { X } from "lucide-react";
 import { useAuth } from "../hooks/AuthContext";
 import {
@@ -612,7 +612,10 @@ function MentorDashboard({
     );
   };
 
-  if (loading || authLoading) {
+  const isLoading = loading || authLoading;
+  const showLoading = useMinLoading(isLoading);
+
+  if (showLoading) {
     return <LoadingScreen fullScreen={true} message="Loading Dashboard..." />;
   }
 

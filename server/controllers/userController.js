@@ -101,6 +101,15 @@ const loginUser = async (req, res) => {
       });
     }
 
+    if (
+      user.role.includes("alumni") &&
+      (!user.alumniProfile || !user.alumniProfile.approved)
+    ) {
+      return res.status(403).json({
+        message: "Your alumni account is pending approval.",
+      });
+    }
+
     const isPasswordMatch = await bcrypt.compare(password, user.password);
 
     if (!isPasswordMatch) {
@@ -146,6 +155,15 @@ const getUserProfileById = async (req, res) => {
     const user = await User.findById(req.params.userId).select("-password");
 
     if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    if (
+      user.role.includes("alumni") &&
+      (!user.alumniProfile || !user.alumniProfile.approved)
+    ) {
       return res.status(404).json({
         message: "User not found",
       });
@@ -234,19 +252,18 @@ const getUsersByRole = async (req, res) => {
         const { role } = req.query;
 
 
-        let users;
-
+        let query = {
+            $or: [
+                { role: { $ne: 'alumni' } },
+                { 'alumniProfile.approved': true }
+            ]
+        };
 
         if (role) {
-            users = await User.find({
-                role: role
-            })
-            .select("-password");
-        } 
-        else {
-            users = await User.find()
-            .select("-password");
+            query.role = role;
         }
+
+        const users = await User.find(query).select("-password");
 
 
         res.json(users);
@@ -262,6 +279,123 @@ const getUsersByRole = async (req, res) => {
 };
 
 
+// @desc    Get all alumni for admin approval dashboard
+// @route   GET /api/users/admin/alumni
+// @access  Private (Admin)
+const getAlumniApprovals = async (req, res) => {
+  try {
+    const alumni = await User.find({ role: "alumni" }).select("-password").sort({ createdAt: -1 });
+    res.json(alumni);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Approve an alumni account
+// @route   PUT /api/users/admin/approve/:id
+// @access  Private (Admin)
+const approveAlumni = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (user.alumniProfile) {
+      user.alumniProfile.approved = true;
+      user.alumniProfile.rejected = false;
+      await user.save();
+      res.json(user);
+    } else {
+      res.status(400).json({ message: "User is not an alumni" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Reject an alumni account
+// @route   PUT /api/users/admin/reject/:id
+// @access  Private (Admin)
+const rejectAlumni = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (user.alumniProfile) {
+      user.alumniProfile.approved = false;
+      user.alumniProfile.rejected = true;
+      await user.save();
+      res.json(user);
+    } else {
+      res.status(400).json({ message: "User is not an alumni" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Get all users for account management
+// @route   GET /api/users/admin/users
+// @access  Private (Admin)
+const getAllUsersAdmin = async (req, res) => {
+  try {
+    const users = await User.find({}).select("-password").sort({ createdAt: -1 });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Delete a user (Only Alumni allowed to be deleted)
+// @route   DELETE /api/users/admin/delete/:id
+// @access  Private (Admin)
+const deleteUserAdmin = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    // Rule: Students cannot be deleted
+    if (user.role && user.role.includes("student")) {
+      return res.status(403).json({ message: "Cannot delete student accounts" });
+    }
+
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: "User removed successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Suspend an alumni account (set approved to false)
+// @route   PUT /api/users/admin/suspend/:id
+// @access  Private (Admin)
+const suspendAlumni = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Rule: Students cannot be suspended
+    if (user.role && user.role.includes("student")) {
+      return res.status(403).json({ message: "Cannot suspend student accounts" });
+    }
+
+    if (user.alumniProfile) {
+      user.alumniProfile.approved = false;
+      await user.save();
+      res.json(user);
+    } else {
+      res.status(400).json({ message: "User does not have an alumni profile" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
@@ -270,4 +404,10 @@ module.exports = {
   updateUserProfile,
   updateProfileImage,
   getUsersByRole,
+  getAlumniApprovals,
+  approveAlumni,
+  rejectAlumni,
+  getAllUsersAdmin,
+  deleteUserAdmin,
+  suspendAlumni,
 };

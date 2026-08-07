@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { getOpportunityById } from "../api/opportunityApi";
 import { useAuth } from "../hooks/AuthContext";
 import { ArrowLeft, Building, MapPin, Briefcase, Mail, UserCircle } from "lucide-react";
-import LoadingScreen from "../components/LoadingScreen";
+import LoadingScreen, { useMinLoading } from "../components/LoadingScreen";
 
 export default function OpportunityDetail() {
   const { id } = useParams();
@@ -28,7 +28,9 @@ export default function OpportunityDetail() {
     if (token && !authLoading) fetchOpportunity();
   }, [id, token, authLoading]);
 
-  if (loading) {
+  const showLoading = useMinLoading(loading);
+
+  if (showLoading) {
     return <LoadingScreen fullScreen={true} message="Loading Opportunity..." />;
   }
 

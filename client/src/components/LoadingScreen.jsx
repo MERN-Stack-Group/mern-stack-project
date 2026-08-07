@@ -4,7 +4,10 @@ import React from "react";
  * Premium Loading Screen Component
  * Features a glowing infinity symbol tracing animation to match the sleek sky/slate theme.
  */
-export default function LoadingScreen({ fullScreen = true, message = "Loading..." }) {
+export default function LoadingScreen({
+  fullScreen = true,
+  message = "Loading...",
+}) {
   const containerClass = fullScreen
     ? "min-h-screen flex flex-col items-center justify-center bg-slate-300 dark:bg-[#0b0f17] transition-colors duration-500 fixed inset-0 z-[100]"
     : "w-full py-24 flex flex-col items-center justify-center bg-transparent";
@@ -14,7 +17,7 @@ export default function LoadingScreen({ fullScreen = true, message = "Loading...
       <div className="relative flex flex-col items-center justify-center">
         {/* Ambient Back Glow */}
         <div className="absolute w-32 h-32 bg-sky-400/20 dark:bg-slate-2000/20 rounded-full blur-[40px] animate-pulse"></div>
-        
+
         {/* Infinity SVG Container */}
         <div className="relative w-24 h-12 flex items-center justify-center">
           <svg
@@ -66,4 +69,28 @@ export default function LoadingScreen({ fullScreen = true, message = "Loading...
       `}</style>
     </div>
   );
+}
+//timer for the loading screen
+export function useMinLoading(isLoading, minTime = 1000) {
+  const [showLoading, setShowLoading] = React.useState(isLoading);
+  const [startTime, setStartTime] = React.useState(Date.now());
+
+  React.useEffect(() => {
+    if (isLoading) {
+      setShowLoading(true);
+      setStartTime(Date.now());
+    } else {
+      const elapsed = Date.now() - startTime;
+      if (elapsed < minTime) {
+        const timeout = setTimeout(() => {
+          setShowLoading(false);
+        }, minTime - elapsed);
+        return () => clearTimeout(timeout);
+      } else {
+        setShowLoading(false);
+      }
+    }
+  }, [isLoading, minTime, startTime]);
+
+  return showLoading;
 }

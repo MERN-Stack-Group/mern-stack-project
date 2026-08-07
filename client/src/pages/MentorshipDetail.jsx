@@ -7,7 +7,7 @@ import {
 } from "../api/mentorshipRequestApi";
 import { useAuth } from "../hooks/AuthContext";
 import { ArrowLeft, Clock, GraduationCap, Info, Send } from "lucide-react";
-import LoadingScreen from "../components/LoadingScreen";
+import LoadingScreen, { useMinLoading } from "../components/LoadingScreen";
 
 export default function MentorshipDetail() {
   const { id } = useParams();
@@ -42,7 +42,9 @@ export default function MentorshipDetail() {
     if (token && !authLoading) fetchData();
   }, [id, token, user, authLoading]);
 
-  if (loading) {
+  const showLoading = useMinLoading(loading);
+
+  if (showLoading) {
     return <LoadingScreen fullScreen={true} message="Loading Mentorship..." />;
   }
 

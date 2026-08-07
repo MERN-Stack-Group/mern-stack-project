@@ -32,6 +32,8 @@ function Signin() {
         setErrorMsg("No account exists with this email");
         setEmail("");
         setPassword("");
+      } else if (error.message.toLowerCase().includes("pending approval")) {
+        navigate("/under-approval");
       } else if (error.message.includes("password")) {
         setErrorMsg("Wrong password");
         setPassword("");

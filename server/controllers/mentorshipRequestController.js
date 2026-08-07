@@ -10,9 +10,14 @@ const createRequest = async (req, res) => {
     const { mentorshipId, message } = req.body;
     const requesterId = req.user._id;
 
-    const mentorshipProgram = await Mentorship.findById(mentorshipId);
+    const mentorshipProgram = await Mentorship.findById(mentorshipId).populate("alumni", "role alumniProfile");
 
     if (!mentorshipProgram) {
+      return res.status(404).json({ message: "Program not found" });
+    }
+
+    const user = mentorshipProgram.alumni;
+    if (user && user.role && user.role.includes("alumni") && (!user.alumniProfile || !user.alumniProfile.approved)) {
       return res.status(404).json({ message: "Program not found" });
     }
 

@@ -1,5 +1,18 @@
 const Mentorship = require("../models/mentorship");
 
+const filterUnapprovedAlumni = (items) => {
+  return items.filter(item => {
+    if (item.stage === 'completed') return true;
+    const user = item.alumni;
+    if (user && user.role && user.role.includes('alumni')) {
+      if (!user.alumniProfile || !user.alumniProfile.approved) {
+        return false;
+      }
+    }
+    return true;
+  });
+};
+
 // @desc    Create a new mentorship program
 // @route   POST /api/mentorships
 // @access  Private (Alumni only)
@@ -138,15 +151,15 @@ const getMentorshipsByStage = async (req, res) => {
     if (stage) {
       mentorships = await Mentorship.find({
         stage: stage,
-      }).populate("alumni", "name email role faculty");
+      }).populate("alumni", "name email role faculty alumniProfile");
     } else {
       mentorships = await Mentorship.find().populate(
         "alumni",
-        "name email role faculty",
+        "name email role faculty alumniProfile",
       );
     }
 
-    res.json(mentorships);
+    res.json(filterUnapprovedAlumni(mentorships));
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -161,13 +174,22 @@ const getMentorshipById = async (req, res) => {
   try {
     const mentorship = await Mentorship.findById(req.params.id).populate(
       "alumni",
-      "name email profileImage faculty degree"
+      "name email profileImage faculty degree role alumniProfile"
     );
 
     if (!mentorship) {
       return res.status(404).json({
         message: "Mentorship not found",
       });
+    }
+
+    if (mentorship.stage !== 'completed') {
+      const user = mentorship.alumni;
+      if (user && user.role && user.role.includes('alumni') && (!user.alumniProfile || !user.alumniProfile.approved)) {
+        return res.status(404).json({
+          message: "Mentorship not found",
+        });
+      }
     }
 
     res.json(mentorship);
@@ -184,10 +206,10 @@ const getAlumniMentorships = async (req, res) => {
     const mentorships = await Mentorship.find({
       alumni: req.user._id,
     })
-      .populate("alumni", "name email role faculty")
+      .populate("alumni", "name email role faculty alumniProfile")
       .populate("students", "name profileImage faculty degree");
 
-    res.json(mentorships);
+    res.json(filterUnapprovedAlumni(mentorships));
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -204,10 +226,10 @@ const getUserMentorships = async (req, res) => {
     const mentorships = await Mentorship.find({
       $or: [{ alumni: userId }, { students: userId }],
     })
-      .populate("alumni", "name email profileImage faculty role")
+      .populate("alumni", "name email profileImage faculty role alumniProfile")
       .populate("students", "name profileImage faculty degree role");
 
-    res.json(mentorships);
+    res.json(filterUnapprovedAlumni(mentorships));
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

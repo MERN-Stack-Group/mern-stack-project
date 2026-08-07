@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../hooks/AuthContext";
 import { Link } from "react-router-dom";
-import LoadingScreen from "../components/LoadingScreen";
+import LoadingScreen, { useMinLoading } from "../components/LoadingScreen";
 
 // Content definitions for student and alumni roles
 const studentData = {
@@ -102,6 +102,7 @@ const alumniData = {
 
 export default function Home() {
   const { user, loading } = useAuth();
+  const showLoading = useMinLoading(loading);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isStudent = user?.role?.includes("student");
   const content = isStudent ? studentData : alumniData;
@@ -117,7 +118,7 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [quotes.length]);
 
-  if (loading) {
+  if (showLoading) {
     return <LoadingScreen fullScreen={true} message="Loading..." />;
   }
 

@@ -4,7 +4,7 @@ import banner from "../assets/banner.jpg";
 import TagCard from "../components/TagCard";
 import { MentorshipCard } from "../components/MentorshipCard";
 import ReviewCard from "../components/ReviewCard";
-import LoadingScreen from "../components/LoadingScreen";
+import LoadingScreen, { useMinLoading } from "../components/LoadingScreen";
 import { useAuth } from "../hooks/AuthContext";
 import { getUserProfileById } from "../api/userApi";
 import { getUserMentorships } from "../api/mentorshipApi";
@@ -87,7 +87,10 @@ export const Profile = () => {
     }
   }, [displayData?.about]);
 
-  if (authLoading || isFetchingOther || (!isOwnProfile && !otherUserData)) {
+  const isLoading = authLoading || isFetchingOther || (!isOwnProfile && !otherUserData);
+  const showLoading = useMinLoading(isLoading);
+
+  if (showLoading) {
     return <LoadingScreen fullScreen={true} message="Loading profile..." />;
   }
 

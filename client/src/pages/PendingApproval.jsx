@@ -1,76 +1,115 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import AdminSidebar from "../components/AdminSidebar";
+import { useAuth } from "../hooks/AuthContext";
+import { getAllAlumni, approveAlumniRequest, rejectAlumniRequest } from "../api/userApi";
+import LoadingScreen, { useMinLoading } from "../components/LoadingScreen";
 
 function PendingApproval() {
-  // Mock data for initial pending users
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "Kasun Perera",
-      nic: "200012345678",
-      email: "kasun@gmail.com",
-      faculty: "Computing",
-      industry: "Software Engineering",
-      date: "2026-07-20",
-    },
-    {
-      id: 2,
-      name: "Nimali Silva",
-      nic: "199856789012",
-      email: "nimali@gmail.com",
-      faculty: "Business",
-      industry: "Marketing",
-      date: "2026-07-21",
-    },
-    {
-      id: 3,
-      name: "Amal Fernando",
-      nic: "199912345678",
-      email: "amal@gmail.com",
-      faculty: "Engineering",
-      industry: "IT",
-      date: "2026-07-22",
-    },
-  ]);
-
+  const [users, setUsers] = useState([]);
   const [approvedUsers, setApprovedUsers] = useState([]);
   const [rejectedUsers, setRejectedUsers] = useState([]);
 
   // Tracks which table view is currently active
   const [selectedView, setSelectedView] = useState("pending");
   const [darkMode, setDarkMode] = useState(false);
+  
+  const [loading, setLoading] = useState(true);
+  const showLoading = useMinLoading(loading);
+
+  useEffect(() => {
+    const fetchAlumni = async () => {
+      try {
+        const data = await getAllAlumni();
+        
+        // Categorize based on alumniProfile status
+        const pending = [];
+        const approved = [];
+        const rejected = [];
+        
+        data.forEach(user => {
+          const profile = user.alumniProfile || {};
+          const formattedUser = {
+            id: user._id,
+            name: user.name,
+            nic: profile.NIC || "N/A",
+            email: user.email,
+            faculty: user.faculty,
+            industry: profile.employment?.jobTitle ? `${profile.employment.jobTitle} at ${profile.employment.employer}` : "N/A",
+            date: new Date(user.createdAt).toLocaleDateString(),
+          };
+
+          if (profile.approved) {
+            approved.push(formattedUser);
+          } else if (profile.rejected) {
+            rejected.push(formattedUser);
+          } else {
+            pending.push(formattedUser);
+          }
+        });
+        
+        setUsers(pending);
+        setApprovedUsers(approved);
+        setRejectedUsers(rejected);
+      } catch (error) {
+        console.error("Failed to fetch alumni:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchAlumni();
+  }, []);
 
   // Moves a user from pending/rejected to the approved list
-  const approveUser = (id) => {
-    const pendingUser = users.find((user) => user.id === id);
-    const rejectedUser = rejectedUsers.find((user) => user.id === id);
-    const userToApprove = pendingUser || rejectedUser;
+  const approveUser = async (id) => {
+    try {
+      await approveAlumniRequest(id);
+      
+      const pendingUser = users.find((user) => user.id === id);
+      const rejectedUser = rejectedUsers.find((user) => user.id === id);
+      const userToApprove = pendingUser || rejectedUser;
 
-    if (!userToApprove) return;
+      if (!userToApprove) return;
 
-    setApprovedUsers([...approvedUsers, userToApprove]);
-    setUsers(users.filter((user) => user.id !== id));
-    setRejectedUsers(rejectedUsers.filter((user) => user.id !== id));
+      setApprovedUsers([...approvedUsers, userToApprove]);
+      setUsers(users.filter((user) => user.id !== id));
+      setRejectedUsers(rejectedUsers.filter((user) => user.id !== id));
+    } catch (error) {
+      alert("Failed to approve user");
+    }
   };
 
   // Moves a user from pending/approved to the rejected list
-  const rejectUser = (id) => {
-    const pendingUser = users.find((user) => user.id === id);
-    const approvedUser = approvedUsers.find((user) => user.id === id);
-    const userToReject = pendingUser || approvedUser;
+  const rejectUser = async (id) => {
+    try {
+      await rejectAlumniRequest(id);
+      
+      const pendingUser = users.find((user) => user.id === id);
+      const approvedUser = approvedUsers.find((user) => user.id === id);
+      const userToReject = pendingUser || approvedUser;
 
-    if (!userToReject) return;
+      if (!userToReject) return;
 
-    setRejectedUsers([...rejectedUsers, userToReject]);
-    setUsers(users.filter((user) => user.id !== id));
-    setApprovedUsers(approvedUsers.filter((user) => user.id !== id));
+      setRejectedUsers([...rejectedUsers, userToReject]);
+      setUsers(users.filter((user) => user.id !== id));
+      setApprovedUsers(approvedUsers.filter((user) => user.id !== id));
+    } catch (error) {
+      alert("Failed to reject user");
+    }
   };
+
+  if (showLoading) {
+    return <LoadingScreen fullScreen={true} message="Loading Dashboard..." />;
+  }
 
   return (
     <div
       className={`flex min-h-screen ${
         darkMode ? "bg-gray-900 text-white" : "bg-purple-50 text-gray-800"
       }`}
+      
     >
+      <AdminSidebar />
       <main className="flex-1 p-10">
         {/* Header */}
         <header className="flex justify-between items-center mb-10">

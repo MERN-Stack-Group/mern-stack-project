@@ -145,3 +145,80 @@ export const getUsersByRole = async (role, token) => {
 
   return data;
 };
+
+// --- Admin Endpoints ---
+
+// Get all alumni
+export const getAllAlumni = async () => {
+  const response = await fetch(`${API_URL}/admin/alumni`, {
+    method: "GET",
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return data;
+};
+
+// Approve alumni
+export const approveAlumniRequest = async (userId) => {
+  const response = await fetch(`${API_URL}/admin/approve/${userId}`, {
+    method: "PUT",
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return data;
+};
+
+// Reject alumni
+export const rejectAlumniRequest = async (userId) => {
+  const response = await fetch(`${API_URL}/admin/reject/${userId}`, {
+    method: "PUT",
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
+  return data;
+};
+
+// Get all users (Admin)
+export const getAllUsers = async () => {
+  const response = await fetch(`${API_URL}/admin/users`, {
+    method: "GET",
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message);
+  return data;
+};
+
+// Suspend alumni
+export const suspendAlumniRequest = async (userId) => {
+  const response = await fetch(`${API_URL}/admin/suspend/${userId}`, {
+    method: "PUT",
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message);
+  return data;
+};
+
+// Delete user
+export const deleteUserRequest = async (userId) => {
+  const response = await fetch(`${API_URL}/admin/delete/${userId}`, {
+    method: "DELETE",
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message);
+  return data;
+};

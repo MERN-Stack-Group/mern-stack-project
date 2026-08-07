@@ -14,8 +14,14 @@ const protect = async (req, res, next) => {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
             // Fetch the user from the database and attach it to the request
-            // select('-password') ensures we don't accidentally pass the password along
             req.user = await User.findById(decoded.id).select('-password');
+
+            if (
+                req.user.role.includes('alumni') && 
+                (!req.user.alumniProfile || !req.user.alumniProfile.approved)
+            ) {
+                return res.status(403).json({ message: 'Not authorized, alumni account pending approval' });
+            }
 
             // Move on to the next middleware or controller
             next();

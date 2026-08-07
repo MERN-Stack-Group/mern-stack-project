@@ -1,5 +1,8 @@
 import MentorDashboard from "./pages/MentorDashboard";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useState } from "react";
+import MentorshipMonitor from "./pages/MentorshipMonitor";
+import AccountManagement from "./pages/AccountManagement";
 
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
@@ -17,6 +20,11 @@ import { MentorshipModel } from "./components/MentorshipModel";
 import ProtectedRoot from "./pages/ProtectedRoot";
 import LoadingScreen from "./components/LoadingScreen";
 import Footer from "./components/Footer";
+
+import AdminLogin from "./pages/AdminLogin";
+
+import AdminDashboard from "./pages/AdminDashboard";
+
 
 /**
  * Main Application Router
@@ -90,6 +98,10 @@ function App() {
                 <MentorDashboard mainTab="mentorship" mentorSub="history" />
               }
             />
+            <Route 
+            path="/admin-login" 
+            element={<AdminLogin />} 
+            />
 
             <Route
               path="/mentor-dashboard/mentorships/reviews"
@@ -97,6 +109,28 @@ function App() {
                 <MentorDashboard mainTab="mentorship" mentorSub="reviews" />
               }
             />
+            {/* Admin Dashboard */}
+            <Route 
+            path="/admin-dashboard" 
+            element={<AdminDashboard />} 
+            />
+          </>
+          
+          {/* Monitor Mentorships */}
+          <Route 
+          path="/mentorship-monitor" 
+          element={<MentorshipMonitor />} 
+          />
+
+          {/* Account Management */}
+          <Route 
+          path="/account-management" 
+          element={<AccountManagement />} 
+          />
+          
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
 
             {/* ---------- Search ---------- */}
             <Route

@@ -29,7 +29,14 @@ export const Navbar = () => {
     }
   };
 
-  const hideOnRoutes = ["/signin", "/signup"];
+  const hideOnRoutes = [
+  "/signin", 
+  "/signup",
+  "/admin-login",
+  "/admin-dashboard",
+  "/pending-approval",
+  "/mentorship-monitor",
+  "/account-management",];
 
   if (hideOnRoutes.includes(location.pathname)) {
     return null;

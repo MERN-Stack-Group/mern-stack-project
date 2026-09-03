@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import SelectList from "../components/SelectList";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { registerUser } from "../api/userApi";
+import { useAuth } from "../hooks/AuthContext";
 import logoImg from "../assets/gradbridge_logo.png";
 
 /**
@@ -11,6 +12,8 @@ import logoImg from "../assets/gradbridge_logo.png";
  */
 function Signup() {
   const navigate = useNavigate();
+
+  const { setUser, setToken } = useAuth();
 
   const [role, setRole] = useState("");
   const [formData, setFormData] = useState({});
@@ -76,6 +79,8 @@ function Signup() {
       const data = await registerUser(submissionData);
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data));
+      setToken(data.token);
+      setUser(data);
       setMessage("Registration successful! Redirecting...");
 
       setTimeout(() => {

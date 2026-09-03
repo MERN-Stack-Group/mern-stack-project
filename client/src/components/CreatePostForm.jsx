@@ -200,7 +200,7 @@ const CreatePostForm = ({ type, onSubmit, onCancel }) => {
           </button>
           <button
             type="submit"
-            className="px-4 py-2 text-xs font-semibold text-white bg-sky-600 rounded-xl hover:bg-slate-2000 shadow-md shadow-sky-600/20 transition cursor-pointer"
+            className="px-4 py-2 text-xs font-semibold text-white bg-sky-600 rounded-xl hover:bg-sky-700 shadow-md shadow-sky-600/20 transition cursor-pointer"
           >
             {isMentorship ? "Create Program" : "Post Opportunity"}
           </button>

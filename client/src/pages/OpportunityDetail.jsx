@@ -79,13 +79,13 @@ export default function OpportunityDetail() {
             </div>
             <a
               href={`mailto:${opportunity.applicationEmail}`}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-sky-600 hover:bg-slate-2000 text-white font-bold text-sm transition-colors shadow-lg shadow-sky-600/20 whitespace-nowrap"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm transition-colors shadow-lg shadow-sky-600/20 whitespace-nowrap"
             >
               <Mail size={18} /> Apply Now
             </a>
           </div>
 
-          <div className="flex flex-col sm:flex-row flex-wrap gap-x-10 gap-y-6 mb-10 border-y border-slate-200 dark:border-slate-800 py-6">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-x-10 gap-y-6 mb-10 border-y border-slate-400/30 dark:border-slate-800 py-6">
             <div className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
               <Building className="text-slate-400 dark:text-slate-500" size={24} />
               <div>

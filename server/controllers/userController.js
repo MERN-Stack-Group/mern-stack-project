@@ -257,7 +257,7 @@ const getUsersByRole = async (req, res) => {
         };
 
         if (role) {
-            query.role = role;
+            query.role = String(role);
         }
 
         const users = await User.find(query).select("-password");

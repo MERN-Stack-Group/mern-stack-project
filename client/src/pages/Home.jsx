@@ -163,7 +163,7 @@ export default function Home() {
 
         <Link
           to={content.to}
-          className="inline-flex items-center justify-center bg-sky-600 text-white py-4 px-12 text-lg font-bold uppercase tracking-wider rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-slate-2000 shadow-[0_0_20px_rgba(14,165,233,0.3)] hover:shadow-[0_0_30px_rgba(14,165,233,0.5)]"
+          className="inline-flex items-center justify-center bg-sky-600 text-white py-4 px-12 text-lg font-bold uppercase tracking-wider rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-sky-700 shadow-[0_0_20px_rgba(14,165,233,0.3)] hover:shadow-[0_0_30px_rgba(14,165,233,0.5)]"
         >
           {content.cta}
         </Link>

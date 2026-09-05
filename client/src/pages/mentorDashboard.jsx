@@ -28,7 +28,7 @@ import {
 } from "../api/opportunityApi";
 
 const OpportunityCard = ({ opp, onDelete }) => (
-  <div className="bg-slate-300 dark:bg-[#111622] rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm dark:shadow-xl transition-all mb-4 text-left">
+  <div className="bg-slate-300 dark:bg-[#111622] rounded-2xl border border-slate-400/40 dark:border-slate-800 p-5 shadow-md dark:shadow-xl transition-all mb-4 text-left">
     <div className="flex justify-between items-start mb-3">
       <div>
         <h3 className="text-base font-bold text-slate-900 dark:text-white">{opp.title}</h3>
@@ -39,7 +39,7 @@ const OpportunityCard = ({ opp, onDelete }) => (
           className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border ${
             opp.status === "posted"
               ? "bg-slate-200 dark:bg-sky-950/80 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800/50"
-              : "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700"
+              : "bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-400/30 dark:border-slate-700"
           }`}
         >
           {opp.status}
@@ -63,7 +63,7 @@ const OpportunityCard = ({ opp, onDelete }) => (
         )}
       </div>
     </div>
-    <p className="text-xs text-slate-700 dark:text-slate-300 bg-slate-300 dark:bg-[#161d2b] p-3.5 rounded-xl border border-slate-200 dark:border-slate-800/80 leading-relaxed">
+    <p className="text-xs text-slate-700 dark:text-slate-300 bg-slate-300 dark:bg-[#161d2b] p-3.5 rounded-xl border border-slate-400/30 dark:border-slate-800/80 leading-relaxed">
       {opp.description}
     </p>
   </div>
@@ -411,7 +411,7 @@ function MentorDashboard({
 
   const renderMentorshipSection = () => (
     <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-6 mt-6 min-h-[500px] shadow-sm dark:shadow-xl text-left transition-colors">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/90 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-400/30 dark:border-slate-800/90 mb-6">
         <div className="flex gap-6 overflow-x-auto">
           {["requests", "active", "history", "reviews"].map((tab) => (
             <button
@@ -436,7 +436,7 @@ function MentorDashboard({
         {mentorSubTab === "active" && !showAddMentorship && (
           <button
             onClick={() => setShowAddMentorship(true)}
-            className="mb-3 sm:mb-0 px-4 py-2 bg-sky-600 hover:bg-slate-2000 text-white text-xs font-bold rounded-xl transition shadow-md shadow-sky-600/20 whitespace-nowrap cursor-pointer"
+            className="mb-3 sm:mb-0 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold rounded-xl transition shadow-md shadow-sky-600/20 whitespace-nowrap cursor-pointer"
           >
             + Create Program
           </button>
@@ -534,7 +534,7 @@ function MentorDashboard({
 
     return (
       <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-6 mt-6 min-h-[500px] shadow-sm dark:shadow-xl text-left transition-colors">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800/90 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-400/30 dark:border-slate-800/90 mb-6">
           <div className="flex gap-6 overflow-x-auto">
             <button
               onClick={() => setOppSubTab("active")}
@@ -560,7 +560,7 @@ function MentorDashboard({
           {oppSubTab === "active" && !showAddOpportunity && (
             <button
               onClick={() => setShowAddOpportunity(true)}
-              className="mb-3 sm:mb-0 px-4 py-2 bg-sky-600 hover:bg-slate-2000 text-white text-xs font-bold rounded-xl transition shadow-md shadow-sky-600/20 whitespace-nowrap cursor-pointer"
+              className="mb-3 sm:mb-0 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold rounded-xl transition shadow-md shadow-sky-600/20 whitespace-nowrap cursor-pointer"
             >
               + Post Opportunity
             </button>

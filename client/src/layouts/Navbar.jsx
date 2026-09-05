@@ -104,8 +104,8 @@ export const Navbar = () => {
                   className={({ isActive }) =>
                     `inline-flex items-center gap-2 text-sm font-bold px-4 py-2.5 rounded-xl transition-colors ${
                       isActive
-                        ? "text-sky-600 dark:text-sky-400 bg-slate-200 dark:bg-sky-950/40"
-                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800/40"
+                        ? "text-sky-600 dark:text-sky-400 bg-sky-100 dark:bg-sky-950/40"
+                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-800/40"
                     }`
                   }
                 >
@@ -121,7 +121,7 @@ export const Navbar = () => {
             {/* Theme Toggle Button */}
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="p-2.5 rounded-xl text-amber-500 dark:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 transition cursor-pointer"
+              className="p-2.5 rounded-xl text-amber-500 dark:text-amber-400 hover:bg-slate-300 dark:hover:bg-slate-800/60 transition cursor-pointer"
               title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
             >
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -131,14 +131,14 @@ export const Navbar = () => {
               <div className="flex items-center gap-2 border-l border-slate-300 dark:border-slate-800 pl-4 ml-1">
                 <Link
                   to="/profile"
-                  className="p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-800/60 transition"
+                  className="p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-300 dark:hover:bg-slate-800/60 transition"
                   title="Profile"
                 >
                   <UserCircle size={22} />
                 </Link>
 
                 <button
-                  className="p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-slate-200 dark:hover:bg-slate-800/60 transition cursor-pointer"
+                  className="p-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-slate-300 dark:hover:bg-slate-800/60 transition cursor-pointer"
                   title="Logout"
                   onClick={handleLogout}
                 >

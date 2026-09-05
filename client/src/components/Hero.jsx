@@ -31,7 +31,7 @@ function Hero() {
           <div className="flex flex-col sm:flex-row flex-wrap items-center gap-4 pt-2">
             <Link
               to="/signup"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-sky-600 hover:bg-slate-2000 text-white font-medium px-6 py-3 rounded-xl transition duration-200 shadow-lg shadow-sky-600/20"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-medium px-6 py-3 rounded-xl transition duration-200 shadow-lg shadow-sky-600/20"
             >
               Get Started
               <ArrowRight size={18} />

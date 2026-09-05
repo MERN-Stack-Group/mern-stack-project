@@ -11,7 +11,7 @@ import logoImg from "../assets/gradbridge_logo.png";
  */
 function Signin() {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { setUser, setToken } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,6 +25,7 @@ function Signin() {
     try {
       const data = await loginUser(email, password);
       localStorage.setItem("token", data.token);
+      setToken(data.token);
       setUser(data.user);
       navigate("/");
     } catch (error) {
@@ -131,7 +132,7 @@ function Signin() {
 
             <button
               type="submit"
-              className="w-full bg-sky-600 hover:bg-slate-2000 text-white font-medium py-3 rounded-xl transition duration-200 shadow-lg shadow-sky-600/20 text-sm mt-2 cursor-pointer"
+              className="w-full bg-sky-600 hover:bg-sky-700 text-white font-medium py-3 rounded-xl transition duration-200 shadow-lg shadow-sky-600/20 text-sm mt-2 cursor-pointer"
             >
               Sign In
             </button>

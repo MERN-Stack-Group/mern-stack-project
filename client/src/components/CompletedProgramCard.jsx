@@ -11,7 +11,7 @@ const CompletedProgramCard = ({
   const [showDetails, setShowDetails] = useState(false);
 
   return (
-    <div className="bg-slate-200 dark:bg-[#111622] rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm dark:shadow-xl mb-6 transition-colors">
+    <div className="bg-slate-200 dark:bg-[#111622] rounded-2xl border border-slate-400/40 dark:border-slate-800 p-6 shadow-md dark:shadow-xl mb-6 transition-colors">
       {/* Header */}
       <div className="flex justify-between items-start mb-2">
         <div>
@@ -24,7 +24,7 @@ const CompletedProgramCard = ({
       </div>
 
       {/* Accordion Toggle */}
-      <div className="mt-4 border-t border-slate-200 dark:border-slate-800/80 pt-4">
+      <div className="mt-4 border-t border-slate-400/30 dark:border-slate-800/80 pt-4">
         <button
           onClick={() => setShowDetails(!showDetails)}
           className="flex items-center text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition cursor-pointer"
@@ -50,7 +50,7 @@ const CompletedProgramCard = ({
                 {mentees.map((mentee, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center gap-3 p-3 bg-slate-300 dark:bg-[#161d2b] rounded-xl border border-slate-200 dark:border-slate-800"
+                    className="flex items-center gap-3 p-3 bg-slate-300 dark:bg-[#161d2b] rounded-xl border border-slate-400/30 dark:border-slate-800"
                   >
                     <div className="w-8 h-8 bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-400 border border-sky-200 dark:border-sky-800/50 rounded-full flex items-center justify-center font-bold text-xs">
                       {mentee.name.charAt(0)}
@@ -82,7 +82,7 @@ const CompletedProgramCard = ({
                   {reviews.map((review, idx) => (
                     <div
                       key={idx}
-                      className="p-4 bg-slate-300 dark:bg-[#161d2b] rounded-xl border border-slate-200 dark:border-slate-800"
+                      className="p-4 bg-slate-300 dark:bg-[#161d2b] rounded-xl border border-slate-400/30 dark:border-slate-800"
                     >
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs font-bold text-slate-900 dark:text-white">

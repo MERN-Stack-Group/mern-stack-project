@@ -136,7 +136,7 @@ export const Profile = () => {
         {/* Main Column */}
         <div className="flex flex-col gap-6 w-full md:w-2/3 lg:w-3/4 max-w-4xl">
           {/* Header Card */}
-          <div className="relative bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 overflow-visible pb-6 shadow-sm dark:shadow-xl">
+          <div className="relative bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-400/40 dark:border-slate-800 overflow-visible pb-6 shadow-md dark:shadow-xl">
             {/* Banner Image */}
             <div className="relative h-48 w-full bg-slate-300 dark:bg-slate-900 rounded-t-3xl overflow-hidden">
               <img
@@ -202,7 +202,7 @@ export const Profile = () => {
 
             {/* Employer Section for Alumni */}
             {displayData?.role?.includes("alumni") && (
-              <div className="mt-6 border-t border-slate-200 dark:border-slate-800/80 pt-6 px-6 text-left">
+              <div className="mt-6 border-t border-slate-400/30 dark:border-slate-800/80 pt-6 px-6 text-left">
                 <h2 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">
                   Current Employer
                 </h2>
@@ -228,7 +228,7 @@ export const Profile = () => {
           </div>
 
           {/* About Section Card */}
-          <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm dark:shadow-xl text-left">
+          <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-400/40 dark:border-slate-800 p-6 shadow-md dark:shadow-xl text-left">
             <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
               About
             </h2>
@@ -266,7 +266,7 @@ export const Profile = () => {
         {/* Sidebar Column */}
         <div className="flex flex-col gap-6 w-full md:w-1/3 lg:w-1/4 text-left">
           {/* Active Mentorships Sidebar Card */}
-          <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm dark:shadow-xl">
+          <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-400/40 dark:border-slate-800 p-5 shadow-md dark:shadow-xl">
             <h2 className="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-wide">
               Active Mentorships
             </h2>
@@ -275,7 +275,7 @@ export const Profile = () => {
               {activeMentorshipsList.map((m) => (
                 <div
                   key={m._id}
-                  className="flex items-center gap-3 border-b border-slate-200 dark:border-slate-800/80 pb-3"
+                  className="flex items-center gap-3 border-b border-slate-400/30 dark:border-slate-800/80 pb-3"
                 >
                   <div className="w-10 h-10 bg-sky-100 dark:bg-sky-950 border border-sky-200 dark:border-sky-800/50 rounded-full flex-shrink-0 flex items-center justify-center text-xs text-sky-700 dark:text-sky-400 font-bold overflow-hidden">
                     {displayData?.role?.includes("alumni") ? (
@@ -307,7 +307,7 @@ export const Profile = () => {
               )}
             </div>
 
-            <div className="mt-4 border-t border-slate-200 dark:border-slate-800/80 pt-2">
+            <div className="mt-4 border-t border-slate-400/30 dark:border-slate-800/80 pt-2">
               <button
                 onClick={activeMentorships}
                 className="w-full py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition rounded-xl text-center cursor-pointer"
@@ -318,7 +318,7 @@ export const Profile = () => {
           </div>
 
           {/* Completed Mentorships Sidebar Card */}
-          <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm dark:shadow-xl">
+          <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-400/40 dark:border-slate-800 p-5 shadow-md dark:shadow-xl">
             <h2 className="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-wide">
               Completed Mentorships
             </h2>
@@ -327,7 +327,7 @@ export const Profile = () => {
               {completedMentorshipsList.map((m) => (
                 <div
                   key={m._id}
-                  className="flex items-center gap-3 border-b border-slate-200 dark:border-slate-800/80 pb-3"
+                  className="flex items-center gap-3 border-b border-slate-400/30 dark:border-slate-800/80 pb-3"
                 >
                   <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800/50 rounded-full flex-shrink-0 flex items-center justify-center text-xs text-emerald-700 dark:text-emerald-400 font-bold overflow-hidden">
                     {displayData?.role?.includes("alumni") ? (
@@ -365,7 +365,7 @@ export const Profile = () => {
               )}
             </div>
 
-            <div className="mt-4 border-t border-slate-200 dark:border-slate-800/80 pt-2">
+            <div className="mt-4 border-t border-slate-400/30 dark:border-slate-800/80 pt-2">
               <button
                 onClick={completedMentorships}
                 className="w-full py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition rounded-xl text-center cursor-pointer"
@@ -377,7 +377,7 @@ export const Profile = () => {
 
           {/* Mentee Reviews (Alumni only) */}
           {displayData?.role?.includes("alumni") && (
-            <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm dark:shadow-xl">
+            <div className="bg-slate-200 dark:bg-[#111622] rounded-3xl border border-slate-400/40 dark:border-slate-800 p-5 shadow-md dark:shadow-xl">
               <h2 className="text-sm font-bold text-slate-900 dark:text-white mb-4 tracking-wide">
                 Mentee Reviews
               </h2>
@@ -386,7 +386,7 @@ export const Profile = () => {
                 {mentorReviewsList.map((review) => (
                   <div
                     key={review._id}
-                    className="border-b border-slate-200 dark:border-slate-800/80 pb-3"
+                    className="border-b border-slate-400/30 dark:border-slate-800/80 pb-3"
                   >
                     <div className="flex items-center justify-between mb-1">
                       {review.reviewer?._id ? (
@@ -416,7 +416,7 @@ export const Profile = () => {
                 )}
               </div>
 
-              <div className="mt-4 border-t border-slate-200 dark:border-slate-800/80 pt-2">
+              <div className="mt-4 border-t border-slate-400/30 dark:border-slate-800/80 pt-2">
                 <button
                   onClick={viewAllReviews}
                   className="w-full py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition rounded-xl text-center cursor-pointer"
@@ -438,7 +438,7 @@ export const Profile = () => {
       {/* Contact Info Modal */}
       {isContactOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-slate-200 dark:bg-[#111622] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl w-full max-w-sm p-6 relative text-left">
+          <div className="bg-slate-200 dark:bg-[#111622] rounded-2xl border border-slate-400/40 dark:border-slate-800 shadow-2xl w-full max-w-sm p-6 relative text-left">
             <button
               onClick={() => setIsContactOpen(false)}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white transition cursor-pointer"

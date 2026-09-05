@@ -153,7 +153,7 @@ export default function Search({ categoryType = "mentors" }) {
       </h1>
 
       <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center gap-3 bg-slate-200 dark:bg-[#111622] p-2.5 rounded-3xl md:rounded-full border border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl hover:shadow-sky-500/5 transition-all duration-300">
+        <div className="flex flex-col md:flex-row items-center gap-3 bg-slate-200 dark:bg-[#111622] p-2.5 rounded-3xl md:rounded-full border border-slate-400/40 dark:border-slate-800 shadow-md dark:shadow-xl hover:shadow-sky-500/20 dark:hover:shadow-sky-500/5 transition-all duration-300">
           {/* Search Bar */}
           <div className="relative w-full flex-1 group">
             <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-sky-500 transition-colors">
@@ -163,7 +163,7 @@ export default function Search({ categoryType = "mentors" }) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={`Search ${currentCategory}...`}
-              className="w-full pl-12 pr-4 py-3 bg-slate-300 md:bg-transparent dark:bg-[#0b0f17] md:dark:bg-transparent rounded-2xl md:rounded-full text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none transition-colors"
+              className="w-full pl-12 pr-4 py-3 bg-slate-300/50 md:bg-transparent dark:bg-[#0b0f17] md:dark:bg-transparent rounded-2xl md:rounded-full text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-500 focus:outline-none transition-colors"
             />
           </div>
 
@@ -199,7 +199,7 @@ export default function Search({ categoryType = "mentors" }) {
           )}
 
           {/* Search Button (Desktop) */}
-          <button className="hidden md:flex items-center justify-center bg-sky-600 hover:bg-slate-2000 text-white p-3.5 rounded-full transition-colors mr-1 shadow-md shadow-sky-600/20">
+          <button className="hidden md:flex items-center justify-center bg-sky-600 hover:bg-sky-700 text-white p-3.5 rounded-full transition-colors mr-1 shadow-md shadow-sky-600/40">
             <SearchIcon size={18} />
           </button>
         </div>

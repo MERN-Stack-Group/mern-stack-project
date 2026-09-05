@@ -122,13 +122,10 @@ const loginUser = async (req, res) => {
       expiresIn: "30d",
     });
 
+    const userResponse = await User.findById(user._id).select("-password");
+
     res.json({
-      user: {
-        _id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      user: userResponse,
       token,
     });
   } catch (error) {

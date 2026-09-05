@@ -60,89 +60,205 @@ function App() {
             {/* ---------- Authentication ---------- */}
             <Route path="/signup" element={<Signup />} />
             <Route path="/signin" element={<Signin />} />
-            <Route path="/under-approval" element={<UserRoute><UnderApproval /></UserRoute>} />
-            
+            <Route
+              path="/under-approval"
+              element={
+                <UserRoute>
+                  <UnderApproval />
+                </UserRoute>
+              }
+            />
+
             {/* ---------- Profiles ---------- */}
-            <Route path="/profile" element={<UserRoute><Profile /></UserRoute>} />
-            <Route path="/profile/:userId" element={<UserRoute><Profile /></UserRoute>} />
+            <Route
+              path="/profile"
+              element={
+                <UserRoute>
+                  <Profile />
+                </UserRoute>
+              }
+            />
+            <Route
+              path="/profile/:userId"
+              element={
+                <UserRoute>
+                  <Profile />
+                </UserRoute>
+              }
+            />
 
             {/* ---------- Student Mentorships ---------- */}
             <Route
               path="/profile/mentorships-active"
-              element={<UserRoute><MentorshipModel viewType="active" /></UserRoute>}
+              element={
+                <UserRoute>
+                  <MentorshipModel viewType="active" />
+                </UserRoute>
+              }
             />
             <Route
               path="/profile/mentorships-completed"
-              element={<UserRoute><MentorshipModel viewType="completed" /></UserRoute>}
+              element={
+                <UserRoute>
+                  <MentorshipModel viewType="completed" />
+                </UserRoute>
+              }
             />
             <Route
               path="/profile/mentorships-reviews"
-              element={<UserRoute><MentorshipModel viewType="reviews" /></UserRoute>}
+              element={
+                <UserRoute>
+                  <MentorshipModel viewType="reviews" />
+                </UserRoute>
+              }
             />
 
             {/* ---------- Viewing Another User ---------- */}
             <Route
               path="/profile/:userId/mentorships-active"
-              element={<UserRoute><MentorshipModel viewType="active" /></UserRoute>}
+              element={
+                <UserRoute>
+                  <MentorshipModel viewType="active" />
+                </UserRoute>
+              }
             />
             <Route
               path="/profile/:userId/mentorships-completed"
-              element={<UserRoute><MentorshipModel viewType="completed" /></UserRoute>}
+              element={
+                <UserRoute>
+                  <MentorshipModel viewType="completed" />
+                </UserRoute>
+              }
             />
             <Route
               path="/profile/:userId/mentorships-reviews"
-              element={<UserRoute><MentorshipModel viewType="reviews" /></UserRoute>}
+              element={
+                <UserRoute>
+                  <MentorshipModel viewType="reviews" />
+                </UserRoute>
+              }
             />
 
             {/* ---------- Mentor Dashboard ---------- */}
-            <Route path="/mentor-dashboard" element={<UserRoute><MentorDashboard /></UserRoute>} />
+            <Route
+              path="/mentor-dashboard"
+              element={
+                <UserRoute>
+                  <MentorDashboard />
+                </UserRoute>
+              }
+            />
             <Route
               path="/mentor-dashboard/mentorships/active"
               element={
-                <UserRoute><MentorDashboard mainTab="mentorship" mentorSub="active" /></UserRoute>
+                <UserRoute>
+                  <MentorDashboard mainTab="mentorship" mentorSub="active" />
+                </UserRoute>
               }
             />
             <Route
               path="/mentor-dashboard/mentorships/history"
               element={
-                <UserRoute><MentorDashboard mainTab="mentorship" mentorSub="history" /></UserRoute>
+                <UserRoute>
+                  <MentorDashboard mainTab="mentorship" mentorSub="history" />
+                </UserRoute>
               }
             />
             <Route
               path="/mentor-dashboard/mentorships/reviews"
               element={
-                <UserRoute><MentorDashboard mainTab="mentorship" mentorSub="reviews" /></UserRoute>
+                <UserRoute>
+                  <MentorDashboard mainTab="mentorship" mentorSub="reviews" />
+                </UserRoute>
               }
             />
 
             {/* ---------- Admin ---------- */}
             <Route path="/admin-login" element={<AdminLogin />} />
-            <Route path="/admin-dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-            <Route path="/pending-approval" element={<AdminRoute><PendingApproval /></AdminRoute>} />
-            <Route path="/mentorship-monitor" element={<AdminRoute><MentorshipMonitor /></AdminRoute>} />
-            <Route path="/account-management" element={<AdminRoute><AccountManagement /></AdminRoute>} />
+            <Route
+              path="/admin-dashboard"
+              element={
+                <AdminRoute>
+                  <AdminDashboard />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/pending-approval"
+              element={
+                <AdminRoute>
+                  <PendingApproval />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/mentorship-monitor"
+              element={
+                <AdminRoute>
+                  <MentorshipMonitor />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/account-management"
+              element={
+                <AdminRoute>
+                  <AccountManagement />
+                </AdminRoute>
+              }
+            />
 
             {/* ---------- Search ---------- */}
             <Route
               path="/search/mentors"
-              element={<UserRoute><Search categoryType="mentors" /></UserRoute>}
+              element={
+                <UserRoute>
+                  <Search categoryType="mentors" key="mentors" />
+                </UserRoute>
+              }
             />
             <Route
               path="/search/students"
-              element={<UserRoute><Search categoryType="students" /></UserRoute>}
+              element={
+                <UserRoute>
+                  <Search categoryType="students" key="students" />
+                </UserRoute>
+              }
             />
             <Route
               path="/search/mentorships"
-              element={<UserRoute><Search categoryType="mentorships" /></UserRoute>}
+              element={
+                <UserRoute>
+                  <Search categoryType="mentorships" key="mentorships" />
+                </UserRoute>
+              }
             />
             <Route
               path="/search/opportunites"
-              element={<UserRoute><Search categoryType="opportunities" /></UserRoute>}
+              element={
+                <UserRoute>
+                  <Search categoryType="opportunities" key="opportunities" />
+                </UserRoute>
+              }
             />
 
             {/* ---------- Details ---------- */}
-            <Route path="/mentorship/:id" element={<UserRoute><MentorshipDetail /></UserRoute>} />
-            <Route path="/opportunity/:id" element={<UserRoute><OpportunityDetail /></UserRoute>} />
+            <Route
+              path="/mentorship/:id"
+              element={
+                <UserRoute>
+                  <MentorshipDetail />
+                </UserRoute>
+              }
+            />
+            <Route
+              path="/opportunity/:id"
+              element={
+                <UserRoute>
+                  <OpportunityDetail />
+                </UserRoute>
+              }
+            />
 
             {/* ---------- Testing ---------- */}
             <Route path="/loadingScreen" element={<LoadingScreen />} />

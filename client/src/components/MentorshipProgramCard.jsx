@@ -26,7 +26,7 @@ const MentorshipProgramCard = ({
   const hasUnsavedChanges = step !== savedStep;
 
   return (
-    <div className="bg-slate-300 dark:bg-[#111622] rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-sm dark:shadow-xl mb-6 transition-colors">
+    <div className="bg-slate-300 dark:bg-[#111622] rounded-2xl border border-slate-400/40 dark:border-slate-800 p-6 shadow-md dark:shadow-xl mb-6 transition-colors">
       {/* Program Header */}
       <div className="flex justify-between items-start mb-2">
         <div>
@@ -80,7 +80,7 @@ const MentorshipProgramCard = ({
         <button
           onClick={onNextStep}
           disabled={step === 2 || hasUnsavedChanges}
-          className="px-3.5 py-1.5 text-xs font-semibold text-white bg-sky-600 border border-transparent rounded-xl hover:bg-slate-2000 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer shadow-md shadow-sky-600/20"
+          className="px-3.5 py-1.5 text-xs font-semibold text-white bg-sky-600 border border-transparent rounded-xl hover:bg-sky-700 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer shadow-md shadow-sky-600/20"
         >
           Next Step &rarr;
         </button>
@@ -104,7 +104,7 @@ const MentorshipProgramCard = ({
       )}
 
       {/* Accordion Toggle for Students */}
-      <div className="mt-4 border-t border-slate-200 dark:border-slate-800/80 pt-4">
+      <div className="mt-4 border-t border-slate-400/30 dark:border-slate-800/80 pt-4">
         <button
           onClick={() => setShowStudents(!showStudents)}
           className="flex items-center text-xs font-semibold text-sky-600 dark:text-sky-400 hover:underline transition cursor-pointer"
@@ -144,7 +144,7 @@ const MentorshipProgramCard = ({
                 {mentees.map((mentee, idx) => (
                   <div
                     key={idx}
-                    className="p-4 bg-slate-300 dark:bg-[#161d2b] rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between relative group"
+                    className="p-4 bg-slate-300 dark:bg-[#161d2b] rounded-xl border border-slate-400/30 dark:border-slate-800 flex flex-col justify-between relative group"
                   >
                     <div>
                       <div className="flex items-center gap-3 mb-2">

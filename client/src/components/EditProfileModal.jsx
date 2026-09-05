@@ -222,10 +222,18 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                     if (!url) return "";
                     const trimmed = url.trim().toLowerCase();
 
-                    // CodeQL flagged this URL as a potential XSS risk because an attacker
-                    // could supply a JavaScript URL. Reject executable schemes before use.
-                    if (trimmed.startsWith("javascript:")) return "";
-                    return url;
+                    // CodeQL flagged this as an incomplete check.
+                    // The safest approach is an allow-list of known safe schemes:
+                    if (
+                      trimmed.startsWith("http://") ||
+                      trimmed.startsWith("https://") ||
+                      trimmed.startsWith("data:image/") ||
+                      trimmed.startsWith("blob:") ||
+                      trimmed.startsWith("/")
+                    ) {
+                      return url;
+                    }
+                    return ""; // Reject anything else (javascript:, vbscript:, data:text/html, etc.)
                   })()}
                   alt="Profile"
                   className="w-20 h-20 rounded-full object-cover border-2 border-slate-300 dark:border-slate-700"

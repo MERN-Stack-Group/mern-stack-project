@@ -144,7 +144,7 @@ const removeStudent = async (req, res) => {
 // @access  Private
 const getMentorshipsByStage = async (req, res) => {
   try {
-    const { stage } = req.query;
+    const stage = req.query.stage ? String(req.query.stage) : undefined;
 
     let mentorships;
 

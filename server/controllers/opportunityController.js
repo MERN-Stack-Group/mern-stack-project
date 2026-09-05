@@ -110,12 +110,21 @@ const updateOpportunity = async (req, res) => {
         .json({ message: "Not authorized to update this opportunity" });
     }
 
+    // Sanitize req.body to prevent NoSQL injection via operators
+    const allowedUpdates = ["title", "description", "companyName", "opportunityType", "location", "applicationEmail", "tags", "status"];
+    const updateData = {};
+    Object.keys(req.body).forEach((key) => {
+      if (allowedUpdates.includes(key)) {
+        updateData[key] = req.body[key];
+      }
+    });
+
     // Update the document.
     // { new: true } returns the updated document instead of the old one.
     // { runValidators: true } ensures the updated data still matches schema rules.
     const updatedOpportunity = await Opportunity.findByIdAndUpdate(
       String(req.params.id),
-      req.body,
+      updateData,
       { new: true, runValidators: true },
     );
 

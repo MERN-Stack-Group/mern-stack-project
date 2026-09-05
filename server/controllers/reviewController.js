@@ -6,7 +6,8 @@ const Mentorship = require('../models/mentorship');
 // @access  Private (Students only)
 const createReview = async (req, res) => {
     try {
-        const { mentorshipId, rating, content } = req.body;
+        const { rating, content } = req.body;
+        const mentorshipId = String(req.body.mentorshipId);
         const reviewerId = req.user._id;
 
         if (!mentorshipId || !rating || !content) {
@@ -49,7 +50,7 @@ const createReview = async (req, res) => {
 // @access  Public (Anyone should be able to see a mentor's reviews)
 const getMentorReviews = async (req, res) => {
     try {
-        const mentorId = req.params.mentorId;
+        const mentorId = String(req.params.mentorId);
 
         const reviews = await Review.find({ mentor: mentorId })
             .sort({ createdAt: -1 })
@@ -67,7 +68,7 @@ const getMentorReviews = async (req, res) => {
 // @access  Public
 const getMentorshipReviews = async (req, res) => {
     try {
-        const mentorshipId = req.params.mentorshipId;
+        const mentorshipId = String(req.params.mentorshipId);
         const reviews = await Review.find({ mentorship: mentorshipId })
             .sort({ createdAt: -1 })
             .populate('reviewer', 'name profileImage');
@@ -83,7 +84,7 @@ const getMentorshipReviews = async (req, res) => {
 // @access  Private
 const getMyReviewForMentorship = async (req, res) => {
     try {
-        const mentorshipId = req.params.mentorshipId;
+        const mentorshipId = String(req.params.mentorshipId);
         const reviewerId = req.user._id;
 
         const review = await Review.findOne({
@@ -103,7 +104,7 @@ const getMyReviewForMentorship = async (req, res) => {
 const updateReview = async (req, res) => {
     try {
         const { rating, content } = req.body;
-        const review = await Review.findById(req.params.id);
+        const review = await Review.findById(String(req.params.id));
 
         if (!review) {
             return res.status(404).json({ message: 'Review not found' });
@@ -131,7 +132,7 @@ const updateReview = async (req, res) => {
 // @access  Private (Only the review author)
 const deleteReview = async (req, res) => {
     try {
-        const review = await Review.findById(req.params.id);
+        const review = await Review.findById(String(req.params.id));
 
         if (!review) {
             return res.status(404).json({ message: 'Review not found' });

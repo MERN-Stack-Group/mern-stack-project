@@ -45,7 +45,7 @@ const createMentorship = async (req, res) => {
 // @access  Private (Alumni only)
 const deleteMentorship = async (req, res) => {
   try {
-    const mentorship = await Mentorship.findById(req.params.id);
+    const mentorship = await Mentorship.findById(String(req.params.id));
 
     if (!mentorship) {
       return res.status(404).json({ message: "Mentorship not found" });
@@ -84,7 +84,7 @@ const progressStage = async (req, res) => {
       return res.status(400).json({ message: "Invalid stage provided" });
     }
 
-    const mentorship = await Mentorship.findById(req.params.id);
+    const mentorship = await Mentorship.findById(String(req.params.id));
 
     if (!mentorship) {
       return res.status(404).json({ message: "Mentorship not found" });
@@ -111,7 +111,7 @@ const removeStudent = async (req, res) => {
   try {
     const { id, studentId } = req.params;
 
-    const mentorship = await Mentorship.findById(id);
+    const mentorship = await Mentorship.findById(String(id));
 
     if (!mentorship) {
       return res.status(404).json({ message: "Mentorship not found" });
@@ -172,7 +172,7 @@ const getMentorshipsByStage = async (req, res) => {
 // @access  Private
 const getMentorshipById = async (req, res) => {
   try {
-    const mentorship = await Mentorship.findById(req.params.id).populate(
+    const mentorship = await Mentorship.findById(String(req.params.id)).populate(
       "alumni",
       "name email profileImage faculty degree role alumniProfile"
     );
@@ -222,7 +222,7 @@ const getAlumniMentorships = async (req, res) => {
 // @access  Private
 const getUserMentorships = async (req, res) => {
   try {
-    const userId = req.params.userId;
+    const userId = String(req.params.userId);
     const mentorships = await Mentorship.find({
       $or: [{ alumni: userId }, { students: userId }],
     })

@@ -69,6 +69,43 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  //checks if the image url is safe as in no code injection and it will return empty string if the url is not safe
+  // CodeQL flagged this URL as a potential XSS risk because an attacker
+  // could supply a JavaScript URL. Reject executable schemes before use.
+  const getSafeImageSrc = (rawUrl) => {
+    if (typeof rawUrl !== "string") return "";
+    const candidate = rawUrl.trim();
+    if (!candidate) return "";
+
+    // Allow site-relative URLs.
+    if (candidate.startsWith("/")) return candidate;
+
+    try {
+      const parsed = new URL(candidate);
+      const protocol = parsed.protocol.toLowerCase();
+
+      if (
+        protocol === "http:" ||
+        protocol === "https:" ||
+        protocol === "blob:"
+      ) {
+        return candidate;
+      }
+
+      // Allow only image data URLs.
+      if (
+        protocol === "data:" &&
+        candidate.toLowerCase().startsWith("data:image/")
+      ) {
+        return candidate;
+      }
+    } catch {
+      return "";
+    }
+
+    return "";
+  };
+
   const addTag = () => {
     const tag = form.tagInput.trim();
     if (tag && !form.tags.includes(tag)) {
@@ -169,7 +206,9 @@ const EditProfileModal = ({ isOpen, onClose }) => {
       <div
         onClick={onClose}
         className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-[1000] transition-opacity duration-300 ${
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          isOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         }`}
       />
 
@@ -215,7 +254,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
             <div className="flex items-center gap-5">
               <div className="relative w-20 h-20 flex-shrink-0">
                 <img
-                  src={imagePreview || user?.profileImage}
+                  src={getSafeImageSrc(imagePreview || user?.profileImage)}
                   alt="Profile"
                   className="w-20 h-20 rounded-full object-cover border-2 border-slate-300 dark:border-slate-700"
                 />
@@ -248,7 +287,9 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   JPG or PNG &mdash; uploaded instantly on select
                 </p>
                 {imageError && (
-                  <p className="text-xs text-red-500 dark:text-red-400 mt-1">{imageError}</p>
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1">
+                    {imageError}
+                  </p>
                 )}
               </div>
             </div>
@@ -425,7 +466,9 @@ const Field = ({ label, required, children }) => (
   <label className="block space-y-1">
     <span className="text-xs font-medium text-slate-700 dark:text-slate-400">
       {label}
-      {required && <span className="text-red-500 dark:text-red-400 ml-0.5">*</span>}
+      {required && (
+        <span className="text-red-500 dark:text-red-400 ml-0.5">*</span>
+      )}
     </span>
     {children}
   </label>

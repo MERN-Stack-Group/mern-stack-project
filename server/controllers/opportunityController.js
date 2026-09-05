@@ -97,7 +97,7 @@ const getDeletedOpportunities = async (req, res) => {
 // @access  Private
 const updateOpportunity = async (req, res) => {
   try {
-    const opportunity = await Opportunity.findById(req.params.id);
+    const opportunity = await Opportunity.findById(String(req.params.id));
 
     if (!opportunity) {
       return res.status(404).json({ message: "Opportunity not found" });
@@ -114,7 +114,7 @@ const updateOpportunity = async (req, res) => {
     // { new: true } returns the updated document instead of the old one.
     // { runValidators: true } ensures the updated data still matches schema rules.
     const updatedOpportunity = await Opportunity.findByIdAndUpdate(
-      req.params.id,
+      String(req.params.id),
       req.body,
       { new: true, runValidators: true },
     );
@@ -130,7 +130,7 @@ const updateOpportunity = async (req, res) => {
 // @access  Private
 const deleteOpportunity = async (req, res) => {
   try {
-    const opportunity = await Opportunity.findById(req.params.id);
+    const opportunity = await Opportunity.findById(String(req.params.id));
 
     if (!opportunity) {
       return res.status(404).json({ message: "Opportunity not found" });
@@ -160,7 +160,7 @@ const deleteOpportunity = async (req, res) => {
 // @access  Private
 const getOpportunityById = async (req, res) => {
   try {
-    const opportunity = await Opportunity.findById(req.params.id).populate(
+    const opportunity = await Opportunity.findById(String(req.params.id)).populate(
       "postedBy",
       "name email profileImage faculty degree role alumniProfile"
     );

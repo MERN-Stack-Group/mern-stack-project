@@ -7,7 +7,9 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 
-// --- 1. ROUTE IMPORTS ---
+const rateLimit = require("express-rate-limit");
+
+// --- ROUTE IMPORTS ---
 const opportunityRoutes = require("./routes/opportunityRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const mentorshipRoutes = require("./routes/mentorshipRoutes");
@@ -20,6 +22,21 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// --- RATE LIMITING SETUP ---
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, //Time window: 15 minutes
+  max: 100, //Limit each IP to 100 requests per windowMs
+  message: {
+    message:
+      "Too many requests from this IP, please try again after 15 minutes",
+  },
+  standardHeaders: true, 
+  legacyHeaders: false, 
+});
+
+// This protects the endpoints from brute-force and DoS attacks
+app.use("/api", globalLimiter);
 
 app.get("/", (req, res) => {
   res.json({ message: "API is running..." });

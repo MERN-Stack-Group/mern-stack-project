@@ -16,7 +16,7 @@ const registerUser = async (req, res) => {
     let studentProfile = req.body.studentProfile;
 
     // Prevent duplicate registrations
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ email: String(email) });
     console.log("Checking email:", email);
     console.log("Found user:", userExists);
 
@@ -27,7 +27,7 @@ const registerUser = async (req, res) => {
     // STUDENT ROLE VALIDATION
     // Students are verified against official university records
     if (role && role.includes("student")) {
-      const uniRecord = await UniversityStudent.findOne({ email });
+      const uniRecord = await UniversityStudent.findOne({ email: String(email) });
 
       if (!uniRecord) {
         return res.status(403).json({
@@ -93,7 +93,7 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: String(email) });
 
     if (!user) {
       return res.status(404).json({
@@ -149,7 +149,7 @@ const getMyProfile = async (req, res) => {
 // @access  Private
 const getUserProfileById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId).select("-password");
+    const user = await User.findById(String(req.params.userId)).select("-password");
 
     if (!user) {
       return res.status(404).json({
@@ -293,7 +293,7 @@ const getAlumniApprovals = async (req, res) => {
 // @access  Private (Admin)
 const approveAlumni = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(String(req.params.id));
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -315,7 +315,7 @@ const approveAlumni = async (req, res) => {
 // @access  Private (Admin)
 const rejectAlumni = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(String(req.params.id));
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -349,7 +349,7 @@ const getAllUsersAdmin = async (req, res) => {
 // @access  Private (Admin)
 const deleteUserAdmin = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(String(req.params.id));
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -359,7 +359,7 @@ const deleteUserAdmin = async (req, res) => {
       return res.status(403).json({ message: "Cannot delete student accounts" });
     }
 
-    await User.findByIdAndDelete(req.params.id);
+    await User.findByIdAndDelete(String(req.params.id));
     res.json({ message: "User removed successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -371,7 +371,7 @@ const deleteUserAdmin = async (req, res) => {
 // @access  Private (Admin)
 const suspendAlumni = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(String(req.params.id));
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

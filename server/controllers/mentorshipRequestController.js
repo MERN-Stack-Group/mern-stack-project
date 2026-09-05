@@ -7,7 +7,8 @@ const Mentorship = require("../models/mentorship");
 // @access  Private
 const createRequest = async (req, res) => {
   try {
-    const { mentorshipId, message } = req.body;
+    const { message } = req.body;
+    const mentorshipId = String(req.body.mentorshipId);
     const requesterId = req.user._id;
 
     const mentorshipProgram = await Mentorship.findById(mentorshipId).populate("alumni", "role alumniProfile");
@@ -69,7 +70,7 @@ const createRequest = async (req, res) => {
 // @access  Private
 const acceptRequest = async (req, res) => {
   try {
-    const requestId = req.params.id;
+    const requestId = String(req.params.id);
     const alumniId = req.user._id;
 
     const mentorshipRequest = await MentorshipRequest.findById(requestId);
@@ -148,7 +149,7 @@ const getPendingRequests = async (req, res) => {
 // @access  Private (Alumni only)
 const rejectRequest = async (req, res) => {
     try {
-        const requestId = req.params.id; 
+        const requestId = String(req.params.id); 
         const alumniId = req.user._id; 
 
         const mentorshipRequest = await MentorshipRequest.findById(requestId);

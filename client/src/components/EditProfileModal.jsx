@@ -169,7 +169,9 @@ const EditProfileModal = ({ isOpen, onClose }) => {
       <div
         onClick={onClose}
         className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-[1000] transition-opacity duration-300 ${
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          isOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
         }`}
       />
 
@@ -215,7 +217,16 @@ const EditProfileModal = ({ isOpen, onClose }) => {
             <div className="flex items-center gap-5">
               <div className="relative w-20 h-20 flex-shrink-0">
                 <img
-                  src={imagePreview || user?.profileImage}
+                  src={(() => {
+                    const url = imagePreview || user?.profileImage;
+                    if (!url) return "";
+                    const trimmed = url.trim().toLowerCase();
+
+                    // CodeQL flagged this URL as a potential XSS risk because an attacker
+                    // could supply a JavaScript URL. Reject executable schemes before use.
+                    if (trimmed.startsWith("javascript:")) return "";
+                    return url;
+                  })()}
                   alt="Profile"
                   className="w-20 h-20 rounded-full object-cover border-2 border-slate-300 dark:border-slate-700"
                 />
@@ -248,7 +259,9 @@ const EditProfileModal = ({ isOpen, onClose }) => {
                   JPG or PNG &mdash; uploaded instantly on select
                 </p>
                 {imageError && (
-                  <p className="text-xs text-red-500 dark:text-red-400 mt-1">{imageError}</p>
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1">
+                    {imageError}
+                  </p>
                 )}
               </div>
             </div>
@@ -425,7 +438,9 @@ const Field = ({ label, required, children }) => (
   <label className="block space-y-1">
     <span className="text-xs font-medium text-slate-700 dark:text-slate-400">
       {label}
-      {required && <span className="text-red-500 dark:text-red-400 ml-0.5">*</span>}
+      {required && (
+        <span className="text-red-500 dark:text-red-400 ml-0.5">*</span>
+      )}
     </span>
     {children}
   </label>

@@ -124,7 +124,9 @@ const updateOpportunity = async (req, res) => {
     // { runValidators: true } ensures the updated data still matches schema rules.
     const updatedOpportunity = await Opportunity.findByIdAndUpdate(
       String(req.params.id),
-      updateData,
+      //used $set to prevent NoSQL injection via operators
+      //flagged by SonarQube as a bug
+      { $set: updateData },
       { new: true, runValidators: true },
     );
 

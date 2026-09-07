@@ -66,6 +66,14 @@ const registerUser = async (req, res) => {
 
     console.log("Saved user:", user);
 
+    if (user.role && user.role.includes("alumni")) {
+      return res.status(201).json({
+        message: "Your alumni account is pending approval.",
+        _id: user.id,
+        role: user.role,
+      });
+    }
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "30d",
     });
@@ -102,7 +110,7 @@ const loginUser = async (req, res) => {
     }
 
     if (
-      user.role.includes("alumni") &&
+      user.role && user.role.includes("alumni") &&
       (!user.alumniProfile || !user.alumniProfile.approved)
     ) {
       return res.status(403).json({

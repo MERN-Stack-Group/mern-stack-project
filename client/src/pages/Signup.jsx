@@ -77,6 +77,15 @@ function Signup() {
       };
 
       const data = await registerUser(submissionData);
+      
+      if (data.message && data.message.toLowerCase().includes("pending approval")) {
+        setMessage("Registration successful! Your account is pending approval.");
+        setTimeout(() => {
+          navigate("/under-approval");
+        }, 1500);
+        return;
+      }
+
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data));
       setToken(data.token);

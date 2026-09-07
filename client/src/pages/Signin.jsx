@@ -39,7 +39,7 @@ function Signin() {
         setErrorMsg("Wrong password");
         setPassword("");
       } else {
-        setErrorMsg("An unexpected error occurred");
+        setErrorMsg("An unexpected error occurred: " + error.message);
         setEmail("");
         setPassword("");
       }

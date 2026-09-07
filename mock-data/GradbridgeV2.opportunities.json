@@ -1,0 +1,315 @@
+[{
+  "_id": {
+    "$oid": "703f5edca15c27d8d3281ddb"
+  },
+  "title": "Software Engineering Intern",
+  "description": "Develop and maintain web applications using the MERN stack.",
+  "companyName": "WSO2",
+  "opportunityType": "internship",
+  "location": "hybrid",
+  "applicationEmail": "careers@wso2.com",
+  "tags": [
+    "React",
+    "Node.js",
+    "MongoDB"
+  ],
+  "postedBy": {
+    "$oid": "6a7198b46997037b51a1d295"
+  },
+  "status": "active"
+},
+{
+  "_id": {
+    "$oid": "075e2a1f45452709a76d8135"
+  },
+  "title": "Frontend Developer",
+  "description": "Build responsive user interfaces with React and TypeScript.",
+  "companyName": "Sysco LABS",
+  "opportunityType": "full-time",
+  "location": "hybrid",
+  "applicationEmail": "jobs@syscolabs.com",
+  "tags": [
+    "React",
+    "TypeScript",
+    "CSS"
+  ],
+  "postedBy": {
+    "$oid": "6a70bd35fe56189d97ee4110"
+  },
+  "status": "deleted",
+  "updatedAt": {
+    "$date": "2026-08-05T12:29:56.613Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "b90a55dd3fccc74790fdb38b"
+  },
+  "title": "Backend Developer",
+  "description": "Create scalable APIs with Express and MongoDB.",
+  "companyName": "99X",
+  "opportunityType": "full-time",
+  "location": "on site",
+  "applicationEmail": "careers@99x.io",
+  "tags": [
+    "Node.js",
+    "Express",
+    "MongoDB"
+  ],
+  "postedBy": {
+    "$oid": "6a7198b46997037b51a1d295"
+  },
+  "status": "active"
+},
+{
+  "_id": {
+    "$oid": "84fab7e633d9d728f203eb59"
+  },
+  "title": "UI/UX Design Intern",
+  "description": "Design intuitive user experiences and high-fidelity prototypes.",
+  "companyName": "IFS",
+  "opportunityType": "internship",
+  "location": "hybrid",
+  "applicationEmail": "internships@ifs.com",
+  "tags": [
+    "Figma",
+    "UI",
+    "UX"
+  ],
+  "postedBy": {
+    "$oid": "384372c845b93d08b541c700"
+  },
+  "status": "active"
+},
+{
+  "_id": {
+    "$oid": "d08b0a730470aa32e3a2c270"
+  },
+  "title": "Flutter Developer",
+  "description": "Develop and maintain Flutter applications connected to Firebase.",
+  "companyName": "CodeGen",
+  "opportunityType": "contract",
+  "location": "remote",
+  "applicationEmail": "hr@codegen.co.uk",
+  "tags": [
+    "Flutter",
+    "Firebase",
+    "Dart"
+  ],
+  "postedBy": {
+    "$oid": "6a7198b46997037b51a1d295"
+  },
+  "status": "active"
+},
+{
+  "_id": {
+    "$oid": "da6cda085ce2bd4b0d517ef6"
+  },
+  "title": "Data Analyst",
+  "description": "Analyze business data and build dashboards using Power BI.",
+  "companyName": "Dialog Axiata",
+  "opportunityType": "full-time",
+  "location": "on site",
+  "applicationEmail": "careers@dialog.lk",
+  "tags": [
+    "SQL",
+    "Power BI",
+    "Python"
+  ],
+  "postedBy": {
+    "$oid": "c0c29dc8e77790bf70ff9a37"
+  },
+  "status": "active"
+},
+{
+  "_id": {
+    "$oid": "a1c2d530d6539e3985d34b6e"
+  },
+  "title": "DevOps Engineer",
+  "description": "Manage Docker containers, CI/CD pipelines, and AWS infrastructure.",
+  "companyName": "Virtusa",
+  "opportunityType": "full-time",
+  "location": "hybrid",
+  "applicationEmail": "jobs@virtusa.com",
+  "tags": [
+    "Docker",
+    "AWS",
+    "CI/CD"
+  ],
+  "postedBy": {
+    "$oid": "6a759430ec6eca147246b312"
+  },
+  "status": "active"
+},
+{
+  "_id": {
+    "$oid": "03cb98e5427e09fb6fdba2a4"
+  },
+  "title": "Freelance Web Developer",
+  "description": "Develop a responsive company website with an admin dashboard.",
+  "companyName": "Pixel Studio",
+  "opportunityType": "freelance",
+  "location": "remote",
+  "applicationEmail": "projects@pixelstudio.lk",
+  "tags": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+  "postedBy": {
+    "$oid": "6a70bd35fe56189d97ee4110"
+  },
+  "status": "deleted",
+  "updatedAt": {
+    "$date": "2026-08-04T13:07:56.149Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "973daeb008167936047e30c6"
+  },
+  "title": "QA Engineering Intern",
+  "description": "Assist in manual and automated software testing.",
+  "companyName": "Creative Software",
+  "opportunityType": "internship",
+  "location": "on site",
+  "applicationEmail": "hr@creativesoftware.com",
+  "tags": [
+    "QA",
+    "Testing",
+    "Selenium"
+  ],
+  "postedBy": {
+    "$oid": "6a7198b46997037b51a1d295"
+  },
+  "status": "deleted"
+},
+{
+  "_id": {
+    "$oid": "f40f1da23207c2af2e88438f"
+  },
+  "title": "Technical Support Associate",
+  "description": "Provide technical support for enterprise software products.",
+  "companyName": "TechOne Solutions",
+  "opportunityType": "part-time",
+  "location": "remote",
+  "applicationEmail": "supportjobs@techone.lk",
+  "tags": [
+    "Linux",
+    "Networking",
+    "Customer Support"
+  ],
+  "postedBy": {
+    "$oid": "6a70bd35fe56189d97ee4110"
+  },
+  "status": "deleted"
+},
+{
+  "_id": {
+    "$oid": "a2904307d19d69a9f8542af1"
+  },
+  "title": "Full Stack Developer",
+  "description": "Build and maintain full-stack features across a MERN-based product suite.",
+  "companyName": "Zone24x7",
+  "opportunityType": "full-time",
+  "location": "hybrid",
+  "applicationEmail": "careers@zone24x7.com",
+  "tags": [
+    "React",
+    "Node.js",
+    "Express",
+    "MongoDB"
+  ],
+  "postedBy": {
+    "$oid": "c0c29dc8e77790bf70ff9a37"
+  },
+  "status": "active",
+  "createdAt": {
+    "$date": "2026-08-18T09:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-18T09:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "457b6e9bc73898ba41a5703d"
+  },
+  "title": "Mobile App Developer Intern",
+  "description": "Assist in building and testing Flutter-based mobile applications.",
+  "companyName": "hSenid Mobile",
+  "opportunityType": "internship",
+  "location": "remote",
+  "applicationEmail": "careers@hsenidmobile.com",
+  "tags": [
+    "Flutter",
+    "Dart",
+    "Firebase"
+  ],
+  "postedBy": {
+    "$oid": "6a759430ec6eca147246b312"
+  },
+  "status": "active",
+  "createdAt": {
+    "$date": "2026-08-19T09:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-19T09:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "59d364ab9c17905fc005f2f6"
+  },
+  "title": "Business Systems Analyst",
+  "description": "Analyze business processes and translate requirements into technical specifications.",
+  "companyName": "John Keells IT",
+  "opportunityType": "full-time",
+  "location": "on site",
+  "applicationEmail": "careers@johnkeellsit.com",
+  "tags": [
+    "SQL",
+    "Business Analysis",
+    "Power BI"
+  ],
+  "postedBy": {
+    "$oid": "384372c845b93d08b541c700"
+  },
+  "status": "active",
+  "createdAt": {
+    "$date": "2026-08-20T09:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-20T09:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "c9a63b86eb5f835fa0aabe0a"
+  },
+  "title": "Junior Cybersecurity Analyst",
+  "description": "Monitor security alerts and support incident response for enterprise clients.",
+  "companyName": "Millennium IT ESP",
+  "opportunityType": "full-time",
+  "location": "hybrid",
+  "applicationEmail": "careers@millenniumitesp.com",
+  "tags": [
+    "Networking",
+    "Security",
+    "SOC"
+  ],
+  "postedBy": {
+    "$oid": "6a70bd35fe56189d97ee4110"
+  },
+  "status": "active",
+  "createdAt": {
+    "$date": "2026-08-21T09:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-21T09:00:00.000Z"
+  },
+  "__v": 0
+}]

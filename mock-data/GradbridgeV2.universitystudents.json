@@ -1,0 +1,143 @@
+[{
+  "_id": {
+    "$oid": "12483fe934f8ad7c085a88e7"
+  },
+  "name": "Kasun Perera",
+  "email": "kasun.perera@student.sjp.ac.lk",
+  "studentId": "SJP2025001",
+  "faculty": "Faculty of Applied Sciences",
+  "degree": "BSc ICT",
+  "currentYear": 1
+},
+{
+  "_id": {
+    "$oid": "2899afde43b1956d613b1390"
+  },
+  "name": "Nimal Silva",
+  "email": "nimal.silva@student.sjp.ac.lk",
+  "studentId": "SJP2025002",
+  "faculty": "Faculty of Management Studies and Commerce",
+  "degree": "BSc Business Administration",
+  "currentYear": 2
+},
+{
+  "_id": {
+    "$oid": "353987833a70e398fbb12eea"
+  },
+  "name": "Amal Jayasinghe",
+  "email": "amal.jayasinghe@student.sjp.ac.lk",
+  "studentId": "SJP2025003",
+  "faculty": "Faculty of Engineering",
+  "degree": "BSc Engineering",
+  "currentYear": 3
+},
+{
+  "_id": {
+    "$oid": "ab943dd57c872817912145e3"
+  },
+  "name": "Sachini Fernando",
+  "email": "sachini.fernando@student.sjp.ac.lk",
+  "studentId": "SJP2025004",
+  "faculty": "Faculty of Computing",
+  "degree": "BSc Computer Science",
+  "currentYear": 4
+},
+{
+  "_id": {
+    "$oid": "370b78200932ed083b06697b"
+  },
+  "name": "Dilshan Wickrama",
+  "email": "dilshan.wickrama@student.sjp.ac.lk",
+  "studentId": "SJP2025005",
+  "faculty": "Faculty of Humanities and Social Sciences",
+  "degree": "BA Humanities",
+  "currentYear": 2
+},
+{
+  "_id": {
+    "$oid": "3dba2b157d3cb8531f2b8c2c"
+  },
+  "name": "Tharushi Fernando",
+  "email": "tharushi.fernando@student.sjp.ac.lk",
+  "studentId": "SJP2025006",
+  "faculty": "Faculty of Medical Sciences",
+  "degree": "MBBS",
+  "currentYear": 3
+},
+{
+  "_id": {
+    "$oid": "4bf349ba505500b1c4558394"
+  },
+  "name": "Ravindu Perera",
+  "email": "ravindu.perera@student.sjp.ac.lk",
+  "studentId": "SJP2025007",
+  "faculty": "Faculty of Technology",
+  "degree": "BSc Technology",
+  "currentYear": 1
+},
+{
+  "_id": {
+    "$oid": "376130cdbd8d18dd9149cab4"
+  },
+  "name": "Ishara Gunawardena",
+  "email": "ishara.gunawardena@student.sjp.ac.lk",
+  "studentId": "SJP2025008",
+  "faculty": "Faculty of Computing",
+  "degree": "BSc Data Science",
+  "currentYear": 2
+},
+{
+  "_id": {
+    "$oid": "cbfd8672f17c97d5ff2141dd"
+  },
+  "name": "Chathura Bandara",
+  "email": "chathura.bandara@student.sjp.ac.lk",
+  "studentId": "SJP2025009",
+  "faculty": "Faculty of Engineering",
+  "degree": "BSc Engineering",
+  "currentYear": 4
+},
+{
+  "_id": {
+    "$oid": "127008321e353456bedad1c6"
+  },
+  "name": "Nethmi Rathnayake",
+  "email": "nethmi.rathnayake@student.sjp.ac.lk",
+  "studentId": "SJP2025010",
+  "faculty": "Faculty of Applied Sciences",
+  "degree": "BSc ICT",
+  "currentYear": 1
+},
+{
+  "_id": {
+    "$oid": "d4e491b9458d321066910f17"
+  },
+  "name": "Yohan Peiris",
+  "email": "yohan.peiris@student.sjp.ac.lk",
+  "studentId": "SJP2025011",
+  "faculty": "Faculty of Management Studies and Commerce",
+  "degree": "BSc Business Administration",
+  "currentYear": 3
+},
+{
+  "_id": {
+    "$oid": "f72964018ee8e864fb7cd098"
+  },
+  "name": "Hasini Karunaratne",
+  "email": "hasini.karunaratne@student.sjp.ac.lk",
+  "studentId": "SJP2025012",
+  "faculty": "Faculty of Technology",
+  "degree": "BSc Technology",
+  "currentYear": 2
+},
+{
+  "_id": {
+    "$oid": "5b083cf23e0af59bbd50ac37"
+  },
+  "name": "Malith Senanayake",
+  "email": "malith.senanayake@student.sjp.ac.lk",
+  "studentId": "SJP2025013",
+  "faculty": "Faculty of Graduate Studies",
+  "degree": "MSc Computer Science",
+  "currentYear": 1
+}]

@@ -1,0 +1,352 @@
+[{
+  "_id": {
+    "$oid": "6a71ae4395bc0b42183fbc24"
+  },
+  "alumni": {
+    "$oid": "6a7198b46997037b51a1d295"
+  },
+  "students": [],
+  "stage": "enrollment",
+  "title": "Flutter Mobile App Development",
+  "description": "Develop cross-platform mobile applications with Flutter and Firebase.",
+  "durationInWeeks": 10,
+  "startDate": {
+    "$date": "2026-08-04T11:20:28.235Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-04T11:20:28.235Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71ae4395bc0b42183fbc25"
+  },
+  "alumni": {
+    "$oid": "6a70bd35fe56189d97ee4110"
+  },
+  "students": [
+    {
+      "$oid": "6a72069deba3fe3f4c12a6da"
+    }
+  ],
+  "stage": "completed",
+  "title": "Machine Learning Foundations",
+  "description": "Introduction to Python, data preprocessing, and machine learning algorithms.",
+  "durationInWeeks": 12,
+  "__v": 3,
+  "updatedAt": {
+    "$date": "2026-08-04T16:24:29.794Z"
+  },
+  "startDate": {
+    "$date": "2026-08-04T16:24:28.114Z"
+  },
+  "endDate": {
+    "$date": "2026-08-04T16:24:29.794Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71ae4395bc0b42183fbc26"
+  },
+  "alumni": {
+    "$oid": "6a7198b46997037b51a1d295"
+  },
+  "students": [
+    {
+      "$oid": "8529cbe91666043722ae78aa"
+    }
+  ],
+  "stage": "active",
+  "title": "Cloud Computing Essentials",
+  "description": "Understand AWS fundamentals, cloud deployment, and infrastructure basics.",
+  "durationInWeeks": 6,
+  "startDate": {
+    "$date": "2026-08-04T11:06:20.392Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-09T09:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71ae4395bc0b42183fbc27"
+  },
+  "alumni": {
+    "$oid": "6a70bd35fe56189d97ee4110"
+  },
+  "students": [
+    {
+      "$oid": "6a70bcf1fe56189d97ee410f"
+    },
+    {
+      "$oid": "6a72069deba3fe3f4c12a6da"
+    }
+  ],
+  "stage": "active",
+  "title": "Cybersecurity Basics",
+  "description": "Learn networking, ethical hacking concepts, and security best practices.",
+  "durationInWeeks": 8,
+  "__v": 12,
+  "startDate": {
+    "$date": "2026-08-05T12:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-06T07:39:23.100Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71ae4395bc0b42183fbc28"
+  },
+  "alumni": {
+    "$oid": "6a7198b46997037b51a1d295"
+  },
+  "students": [
+    {
+      "$oid": "1c107a5bf2bb9a372d4cc7da"
+    },
+    {
+      "$oid": "339f20edb84e4ea79c2b56a9"
+    }
+  ],
+  "stage": "completed",
+  "title": "Career Preparation for Software Engineers",
+  "description": "Resume reviews, mock interviews, and career guidance for final-year students.",
+  "durationInWeeks": 8,
+  "startDate": {
+    "$date": "2026-07-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2026-08-05T17:23:04.080Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T17:23:04.080Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71ae4395bc0b42183fbc29"
+  },
+  "alumni": {
+    "$oid": "6a70bd35fe56189d97ee4110"
+  },
+  "students": [
+    {
+      "$oid": "b073b0156491e5f787326412"
+    }
+  ],
+  "stage": "completed",
+  "title": "Database Design and SQL",
+  "description": "Covered relational database design, SQL queries, indexing, and optimization.",
+  "durationInWeeks": 8,
+  "startDate": {
+    "$date": "2026-03-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2026-05-01T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6a71d60c0083c3692392139e"
+  },
+  "alumni": {
+    "$oid": "6a70bd35fe56189d97ee4110"
+  },
+  "students": [
+    {
+      "$oid": "6a70bcf1fe56189d97ee410f"
+    }
+  ],
+  "stage": "completed",
+  "title": "Advanced System Design 101",
+  "description": "A comprehensive mentorship on building scalable systems.",
+  "durationInWeeks": 8,
+  "startDate": {
+    "$date": "2026-06-05T12:07:40.982Z"
+  },
+  "endDate": {
+    "$date": "2026-07-31T12:07:40.982Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-04T12:07:40.989Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-04T12:07:40.989Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "bd1116948c39ecb6de1287e2"
+  },
+  "alumni": {
+    "$oid": "c0c29dc8e77790bf70ff9a37"
+  },
+  "students": [
+    {
+      "$oid": "a111b3cae3862ca8cb9a6c4f"
+    }
+  ],
+  "stage": "active",
+  "title": "Data Structures & Algorithms Mastery",
+  "description": "Sharpen problem-solving skills through core data structures, algorithms, and competitive-programming practice.",
+  "durationInWeeks": 10,
+  "startDate": {
+    "$date": "2026-08-12T09:00:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-12T09:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-12T09:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "ee0cf54c09d1ebf0b0fd1292"
+  },
+  "alumni": {
+    "$oid": "384372c845b93d08b541c700"
+  },
+  "students": [],
+  "stage": "enrollment",
+  "title": "UI/UX Design Fundamentals",
+  "description": "Learn user research, wireframing, and high-fidelity prototyping with Figma.",
+  "durationInWeeks": 6,
+  "createdAt": {
+    "$date": "2026-08-14T09:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-14T09:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "33310b3ea0d5fd6db757a624"
+  },
+  "alumni": {
+    "$oid": "6a759430ec6eca147246b312"
+  },
+  "students": [
+    {
+      "$oid": "339f20edb84e4ea79c2b56a9"
+    }
+  ],
+  "stage": "active",
+  "title": "DevOps & CI/CD Pipelines",
+  "description": "Hands-on mentorship covering Docker, CI/CD pipelines, and cloud deployment workflows.",
+  "durationInWeeks": 8,
+  "startDate": {
+    "$date": "2026-08-15T09:00:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2026-08-15T09:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-15T09:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "c3c601db8d3110b0da1a4679"
+  },
+  "alumni": {
+    "$oid": "c0c29dc8e77790bf70ff9a37"
+  },
+  "students": [],
+  "stage": "enrollment",
+  "title": "Data Science with Python",
+  "description": "Covers data wrangling, visualization, and introductory statistical modeling with Python.",
+  "durationInWeeks": 12,
+  "createdAt": {
+    "$date": "2026-08-16T09:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-16T09:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "db39258758afd55f13f4cae3"
+  },
+  "alumni": {
+    "$oid": "6a759430ec6eca147246b312"
+  },
+  "students": [
+    {
+      "$oid": "a111b3cae3862ca8cb9a6c4f"
+    }
+  ],
+  "stage": "completed",
+  "title": "Introduction to Cloud Security",
+  "description": "Fundamentals of securing cloud infrastructure, IAM policies, and threat monitoring on AWS.",
+  "durationInWeeks": 6,
+  "startDate": {
+    "$date": "2026-06-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2026-07-13T00:00:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2026-06-01T00:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-13T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "a68104d40d0d15fb027727a2"
+  },
+  "alumni": {
+    "$oid": "c0c29dc8e77790bf70ff9a37"
+  },
+  "students": [
+    {
+      "$oid": "b073b0156491e5f787326412"
+    }
+  ],
+  "stage": "completed",
+  "title": "Business Analytics Fundamentals",
+  "description": "Introduces business data analysis, dashboarding, and reporting using SQL and Power BI.",
+  "durationInWeeks": 8,
+  "startDate": {
+    "$date": "2026-05-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2026-06-26T00:00:00.000Z"
+  },
+  "createdAt": {
+    "$date": "2026-05-01T00:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-26T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a9e70d2bf574095b65f4e4f"
+  },
+  "alumni": {
+    "$oid": "6a70bd35fe56189d97ee4110"
+  },
+  "students": [],
+  "stage": "enrollment",
+  "title": "Demo Mentorship",
+  "description": "Viva demonstration.",
+  "durationInWeeks": 3,
+  "createdAt": {
+    "$date": "2026-09-07T08:07:46.871Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-07T08:07:46.871Z"
+  },
+  "__v": 0
+}]

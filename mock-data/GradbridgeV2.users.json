@@ -1,0 +1,429 @@
+[{
+  "_id": {
+    "$oid": "6a70bd35fe56189d97ee4110"
+  },
+  "name": "Kalana Dasanayaka",
+  "email": "kalana@gmail.com",
+  "password": "$2b$10$SSYRevINy6SUliDvyEo6c.S0C3uT4NucAydXG6cNpf.cnZbAjeyLG",
+  "profileImage": "https://res.cloudinary.com/q2vpiza0/image/upload/v1788767616/gradbridge/profile/s6sqeer1wjybpnevchml.jpg",
+  "tags": [
+    "react",
+    "node.js",
+    "system design"
+  ],
+  "faculty": "Faculty of Applied Sciences",
+  "degree": "BSc in ICT",
+  "role": [
+    "alumni"
+  ],
+  "alumniProfile": {
+    "NIC": "200433504456",
+    "approved": true,
+    "rejected": false,
+    "employment": {
+      "jobTitle": "Software Engineer",
+      "employer": "WSO2",
+      "location": "Colombo, Sri Lanka"
+    }
+  },
+  "createdAt": {
+    "$date": "2026-08-03T16:09:25.778Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-07T07:53:37.250Z"
+  },
+  "__v": 4,
+  "about": "Software engineer at WSO2 focused on backend systems and API design. Enjoys mentoring students on databases and system design."
+},
+{
+  "_id": {
+    "$oid": "6a7198b46997037b51a1d295"
+  },
+  "name": "Thevindu Bandara",
+  "email": "thevindu@gmail.com",
+  "password": "$2b$10$UuVTAIjvFu7WICPhDeOZIiBOB/Y6sHrFH2ZUCr/lgotu2iXW7GboI",
+  "profileImage": "https://cdn-icons-png.flaticon.com/512/15339/15339256.png",
+  "tags": [
+    "flutter",
+    "aws",
+    "career coaching"
+  ],
+  "faculty": "Faculty of Technology",
+  "degree": "BSc in ICT",
+  "role": [
+    "alumni"
+  ],
+  "alumniProfile": {
+    "NIC": "200433504455",
+    "approved": true,
+    "rejected": false,
+    "employment": {
+      "jobTitle": "Mobile & Cloud Engineer",
+      "employer": "CodeGen",
+      "location": "Colombo, Sri Lanka"
+    }
+  },
+  "createdAt": {
+    "$date": "2026-08-03T16:09:25.778Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-07T08:18:06.340Z"
+  },
+  "__v": 0,
+  "about": "Builds cross-platform mobile apps and cloud infrastructure. Passionate about helping students prepare for their first tech job."
+},
+{
+  "_id": {
+    "$oid": "6a759430ec6eca147246b312"
+  },
+  "name": "Sanduni Wickramasinghe",
+  "email": "sanduni.wickramasinghe@gmail.com",
+  "password": "$2b$10$RoL3u6aHwnMztVuaP.coUNEhEkk.iqq8vH2BzNZV45pFCiRcDCajh",
+  "profileImage": "https://cdn-icons-png.flaticon.com/512/15339/15339256.png",
+  "tags": [
+    "devops",
+    "security"
+  ],
+  "faculty": "Faculty of Computing",
+  "degree": "BSc Computer Science",
+  "role": [
+    "alumni"
+  ],
+  "alumniProfile": {
+    "NIC": "200433504458",
+    "approved": true,
+    "rejected": false,
+    "employment": {
+      "jobTitle": "DevOps Engineer",
+      "employer": "Virtusa",
+      "location": "Colombo, Sri Lanka"
+    }
+  },
+  "createdAt": {
+    "$date": "2026-08-07T08:15:44.249Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-07T09:03:08.082Z"
+  },
+  "__v": 0,
+  "about": "DevOps engineer specializing in CI/CD pipelines and cloud security."
+},
+{
+  "_id": {
+    "$oid": "c0c29dc8e77790bf70ff9a37"
+  },
+  "name": "Ruwan Gunasekara",
+  "email": "ruwan.gunasekara@gmail.com",
+  "password": "$2b$10$DieQjEJ.Bq8F80ymm3T207gmhZRnFyy5r2xJ7Fj4mgblEv0.9BZhv",
+  "profileImage": "https://cdn-icons-png.flaticon.com/512/15339/15339256.png",
+  "tags": [
+    "data",
+    "python"
+  ],
+  "faculty": "Faculty of Engineering",
+  "degree": "BSc Engineering",
+  "role": [
+    "alumni"
+  ],
+  "alumniProfile": {
+    "NIC": "200433504459",
+    "approved": true,
+    "rejected": false,
+    "employment": {
+      "jobTitle": "Data Analyst",
+      "employer": "Dialog Axiata",
+      "location": "Colombo, Sri Lanka"
+    }
+  },
+  "createdAt": {
+    "$date": "2026-08-10T09:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-10T09:00:00.000Z"
+  },
+  "__v": 0,
+  "about": "Data analyst working on business intelligence dashboards and analytics pipelines."
+},
+{
+  "_id": {
+    "$oid": "384372c845b93d08b541c700"
+  },
+  "name": "Chamodi Rathnayake",
+  "email": "chamodi.rathnayake@gmail.com",
+  "password": "$2b$10$WaXH6K2.tyLBhhOhg9uhkxiiEZpFfk1OHAOEHYqM6Ojb6mjBHqSiF",
+  "profileImage": "https://cdn-icons-png.flaticon.com/512/15339/15339256.png",
+  "tags": [
+    "ui",
+    "ux"
+  ],
+  "faculty": "Faculty of Applied Sciences",
+  "degree": "BSc in ICT",
+  "role": [
+    "alumni"
+  ],
+  "alumniProfile": {
+    "NIC": "200433504460",
+    "approved": true,
+    "rejected": false,
+    "employment": {
+      "jobTitle": "Product Designer",
+      "employer": "IFS",
+      "location": "Colombo, Sri Lanka"
+    }
+  },
+  "createdAt": {
+    "$date": "2026-08-11T09:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-11T09:00:00.000Z"
+  },
+  "__v": 0,
+  "about": "Product designer with a focus on user research and high-fidelity prototyping."
+},
+{
+  "_id": {
+    "$oid": "6a70bcf1fe56189d97ee410f"
+  },
+  "name": "Kasun Perera",
+  "email": "kasun.perera@student.sjp.ac.lk",
+  "password": "$2b$10$VKu4MbMnrHontIKARAH.Ggl2JfaQqHu42bojteVs3qfNUfTAFnT0t",
+  "profileImage": "https://cdn-icons-png.flaticon.com/512/15339/15339256.png",
+  "tags": [],
+  "faculty": "Faculty of Applied Sciences",
+  "degree": "BSc ICT",
+  "role": [
+    "student"
+  ],
+  "studentProfile": {
+    "StudentId": "SJP2025001",
+    "year": 1
+  },
+  "createdAt": {
+    "$date": "2026-08-03T16:08:17.902Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-03T16:08:17.902Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a72069deba3fe3f4c12a6da"
+  },
+  "name": "Nimal Silva",
+  "email": "nimal.silva@student.sjp.ac.lk",
+  "password": "$2b$10$Euw0dwQ0FIunWe8Cz6SNDCdyZQJiJSZQdoHwHen3SO3oXyGf3azU3",
+  "profileImage": "https://cdn-icons-png.flaticon.com/512/15339/15339256.png",
+  "tags": [],
+  "faculty": "Faculty of Management Studies and Commerce",
+  "degree": "BSc Business Administration",
+  "role": [
+    "student"
+  ],
+  "studentProfile": {
+    "StudentId": "SJP2025002",
+    "year": 2
+  },
+  "createdAt": {
+    "$date": "2026-08-04T15:34:53.536Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-04T15:34:53.536Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a96fe52268ce7913ba94d24"
+  },
+  "name": "Amal Jayasinghe",
+  "email": "amal.jayasinghe@student.sjp.ac.lk",
+  "password": "$2b$10$iQOpMN0PZLqy1WwMZaMKA3P744B8vkKQlENCzsdfF8j61yX/ZFsan",
+  "profileImage": "https://cdn-icons-png.flaticon.com/512/15339/15339256.png",
+  "tags": [],
+  "faculty": "Faculty of Engineering",
+  "degree": "BSc Engineering",
+  "role": [
+    "student"
+  ],
+  "studentProfile": {
+    "StudentId": "SJP2025003",
+    "year": 3
+  },
+  "createdAt": {
+    "$date": "2026-09-01T16:33:22.739Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-01T16:37:45.429Z"
+  },
+  "__v": 0,
+  "alumniProfile": {
+    "approved": false,
+    "rejected": false
+  }
+},
+{
+  "_id": {
+    "$oid": "8529cbe91666043722ae78aa"
+  },
+  "name": "Sachini Fernando",
+  "email": "sachini.fernando@student.sjp.ac.lk",
+  "password": "$2b$10$2Cw7gFp6r7O425u85HFJ.EJ4jKEIQOkrtDXtBi10Q71hA1XcW9aTM",
+  "profileImage": "https://cdn-icons-png.flaticon.com/512/15339/15339256.png",
+  "tags": [],
+  "faculty": "Faculty of Computing",
+  "degree": "BSc Computer Science",
+  "role": [
+    "student"
+  ],
+  "studentProfile": {
+    "StudentId": "SJP2025004",
+    "year": 4
+  },
+  "createdAt": {
+    "$date": "2026-08-05T09:12:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-05T09:12:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "1c107a5bf2bb9a372d4cc7da"
+  },
+  "name": "Ishara Gunawardena",
+  "email": "ishara.gunawardena@student.sjp.ac.lk",
+  "password": "$2b$10$X1C.CI3.dXRZv7qdYdk2r7xgHWPB6PRWJ1Gk8cgSCifdFzctEq8oB",
+  "profileImage": "https://cdn-icons-png.flaticon.com/512/15339/15339256.png",
+  "tags": [],
+  "faculty": "Faculty of Computing",
+  "degree": "BSc Data Science",
+  "role": [
+    "student"
+  ],
+  "studentProfile": {
+    "StudentId": "SJP2025008",
+    "year": 2
+  },
+  "createdAt": {
+    "$date": "2026-08-06T09:12:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-06T09:12:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "a111b3cae3862ca8cb9a6c4f"
+  },
+  "name": "Chathura Bandara",
+  "email": "chathura.bandara@student.sjp.ac.lk",
+  "password": "$2b$10$7GVvouNndNWYzjFnMpfS2ViRb1.n3U6t3wI973IPFlJ5F7WRd/Px.",
+  "profileImage": "https://cdn-icons-png.flaticon.com/512/15339/15339256.png",
+  "tags": [],
+  "faculty": "Faculty of Engineering",
+  "degree": "BSc Engineering",
+  "role": [
+    "student"
+  ],
+  "studentProfile": {
+    "StudentId": "SJP2025009",
+    "year": 4
+  },
+  "createdAt": {
+    "$date": "2026-08-06T10:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-06T10:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "339f20edb84e4ea79c2b56a9"
+  },
+  "name": "Nethmi Rathnayake",
+  "email": "nethmi.rathnayake@student.sjp.ac.lk",
+  "password": "$2b$10$BTHRJJbykE0.E8.5clLCZFNV8S2QT6INGDpyOpxyB9JKmyLDUwMbq",
+  "profileImage": "https://cdn-icons-png.flaticon.com/512/15339/15339256.png",
+  "tags": [],
+  "faculty": "Faculty of Applied Sciences",
+  "degree": "BSc ICT",
+  "role": [
+    "student"
+  ],
+  "studentProfile": {
+    "StudentId": "SJP2025010",
+    "year": 1
+  },
+  "createdAt": {
+    "$date": "2026-08-07T10:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-07T10:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "b073b0156491e5f787326412"
+  },
+  "name": "Yohan Peiris",
+  "email": "yohan.peiris@student.sjp.ac.lk",
+  "password": "$2b$10$JfgLq.nbK894RxgG9oiZ.jgttMkFp1CW54M2NhmABHkuEwjua058L",
+  "profileImage": "https://cdn-icons-png.flaticon.com/512/15339/15339256.png",
+  "tags": [],
+  "faculty": "Faculty of Management Studies and Commerce",
+  "degree": "BSc Business Administration",
+  "role": [
+    "student"
+  ],
+  "studentProfile": {
+    "StudentId": "SJP2025011",
+    "year": 3
+  },
+  "createdAt": {
+    "$date": "2026-08-08T10:00:00.000Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-08T10:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a9e6de62b5a62ea94a2b069"
+  },
+  "name": "Dilshan Wickrama",
+  "email": "dilshan.wickrama@student.sjp.ac.lk",
+  "password": "$2b$10$ZyY.qG5ipjYIfhTDjv8nEOycjDJV2TzC6gtGG9jkS7k0UiPHMpONO",
+  "profileImage": "https://res.cloudinary.com/q2vpiza0/image/upload/v1788767993/gradbridge/profile/l53nuv5lxvok6n4s2xpw.jpg",
+  "tags": [
+    "demonstration",
+    "viva",
+    "ict2012"
+  ],
+  "faculty": "Faculty of Humanities and Social Sciences",
+  "degree": "BA Humanities",
+  "role": [
+    "student"
+  ],
+  "studentProfile": {
+    "StudentId": "SJP2025005",
+    "year": 2
+  },
+  "alumniProfile": {
+    "approved": false,
+    "rejected": false
+  },
+  "createdAt": {
+    "$date": "2026-09-07T07:55:18.783Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-07T07:59:48.303Z"
+  },
+  "__v": 1,
+  "about": "This is a profile created for demonstration purposes."
+}]

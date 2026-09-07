@@ -73,6 +73,7 @@ To import this data:
 3. Browse to the `mock-data` folder in this repository and select the corresponding JSON file (e.g., `users.json`).
 4. Select **JSON** as the input format and click **Import**.
 5. Repeat this process for any other collections you create (e.g., `opportunities`, `mentorships`) by creating the collection in Compass and importing the corresponding JSON file.
+   > **Important:** Make sure to create the collections with the exact same name as the corresponding JSON file (e.g., name the collection `users` for `users.json`). The application expects these specific collection names to work correctly.
 
 This instantly populates your local database with valid dummy data so you can test all the features of the application locally!
 

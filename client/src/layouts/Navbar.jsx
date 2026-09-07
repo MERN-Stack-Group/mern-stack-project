@@ -30,13 +30,15 @@ export const Navbar = () => {
   };
 
   const hideOnRoutes = [
-  "/signin", 
-  "/signup",
-  "/admin-login",
-  "/admin-dashboard",
-  "/pending-approval",
-  "/mentorship-monitor",
-  "/account-management",];
+    "/signin",
+    "/signup",
+    "/admin-login",
+    "/admin-dashboard",
+    "/pending-approval",
+    "/mentorship-monitor",
+    "/account-management",
+    "/under-approval",
+  ];
 
   if (hideOnRoutes.includes(location.pathname)) {
     return null;

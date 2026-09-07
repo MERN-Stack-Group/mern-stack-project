@@ -62,11 +62,7 @@ function App() {
             <Route path="/signin" element={<Signin />} />
             <Route
               path="/under-approval"
-              element={
-                <UserRoute>
-                  <UnderApproval />
-                </UserRoute>
-              }
+              element={<UnderApproval />}
             />
 
             {/* ---------- Profiles ---------- */}

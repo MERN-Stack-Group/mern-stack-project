@@ -182,7 +182,7 @@ const CreatePostForm = ({ type, onSubmit, onCancel }) => {
             required
             rows="3"
             placeholder={`Describe the ${isMentorship ? "mentorship program objectives" : "opportunity details and requirements"}...`}
-            className="w-full bg-[#161d2b] border border-slate-800/90 text-slate-100 px-3.5 py-2.5 rounded-xl text-sm placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition resize-y font-sans"
+            className="w-full bg-[#161d2b] border border-slate-800/90 text-slate-100 px-3.5 py-2.5 rounded-xl text-sm placeholder:text-slate-600 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition resize-none font-sans"
             value={formData.description}
             onChange={(e) =>
               setFormData({ ...formData, description: e.target.value })

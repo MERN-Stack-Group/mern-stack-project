@@ -147,6 +147,18 @@ function MentorDashboard({
         if (user?._id) {
           const fetchedReviews = await getMentorReviews(user._id, token);
           setAllReviews(fetchedReviews);
+          
+          setCompletedPrograms(prev => prev.map(program => {
+            const programReviews = fetchedReviews.filter(r => r.mentorship?._id === program.id);
+            return {
+              ...program,
+              reviews: programReviews.map(r => ({
+                author: r.reviewer?.name || "Anonymous",
+                rating: r.rating,
+                description: r.content
+              }))
+            };
+          }));
 
           const activeOpps = await getActiveOpportunities(token);
           const myActiveOpps = activeOpps.filter(

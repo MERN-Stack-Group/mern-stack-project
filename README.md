@@ -1,4 +1,4 @@
-# MERN Stack Project
+# GradBridge
 
 A full-stack web application built with MongoDB, Express, React, and Node.js.
 
